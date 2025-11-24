@@ -1,0 +1,48 @@
+/* Header.module.css */
+/* Use Tailwind utilities in JSX; keep custom rules here for glass and mobile panel */
+
+.header {
+  /* glassmorphism base */
+  background-color: rgba(18, 20, 26, 0.55); /* will be visible in dark / light depending on variables */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transition: background-color 180ms ease, backdrop-filter 180ms ease;
+}
+
+/* Make text a bit stronger in light mode if your root var is too light */
+@media (prefers-color-scheme: light) {
+  :global(body) {
+    /* ensure body text has readable contrast on light mode */
+    color: var(--foreground, #171717);
+  }
+}
+
+/* Mobile panel (hidden by default) */
+.mobilePanel {
+  position: fixed;
+  inset: 0;
+  top: 64px; /* below header */
+  transform: translateY(-8px) scale(0.98);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease, transform 150ms ease;
+  z-index: 60;
+  background: linear-gradient(180deg, rgba(10,12,16,0.96), rgba(12,14,18,0.98));
+  display: none; /* show only on small screens with JS class */
+}
+
+/* When open, show */
+.mobileOpen {
+  display: block;
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* small safety: show panel only on small screens */
+@media (min-width: 640px) {
+  .mobilePanel {
+    display: none !important;
+  }
+}
