@@ -132,3 +132,21 @@ body::after {
   border: 1px solid color-mix(in srgb, var(--foreground) 2%, transparent);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
+
+/* Infinite Scroll Animation */
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+}
+
+.animate-scroll:hover {
+  animation-play-state: paused;
+}
