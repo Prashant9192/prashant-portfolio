@@ -37,7 +37,7 @@
 }
 
 /* small safety: show panel only on small screens */
-@media (min-width: 640px) {
+@media (min-width: 768px) {
   .mobilePanel {
     display: none !important;
   }
