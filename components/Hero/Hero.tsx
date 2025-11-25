@@ -40,30 +40,30 @@ export default function Hero() {
                     transition={{ duration: 0.5 }}
                     className="space-y-6 z-10"
                 >
-                    <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight leading-tight">
+                    <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight leading-tight mb-1 ">
                         Hi, I'm <br />
                         <span className="text-white whitespace-nowrap">Prashant Basnet</span>
                     </h1>
 
-                    <h2 className="text-2xl md:text-3xl font-semibold text-[#3B82F6]">
+                    <h2 className="text-2xl md:text-3xl font-semibold text-[#3B82F6] mb-1 ">
                         Full Stack Web Developer
                     </h2>
 
-                    <p className="text-muted-foreground text-lg max-w-lg leading-relaxed">
+                    <p className="text-muted-foreground text-1xl max-w-lg leading-relaxed mb-1 ">
                         I build scalable, fast, and modern web applications. Currently, I work at Digitrix Agency.
                     </p>
 
                     <div className="flex flex-wrap gap-4 pt-4">
                         <a
                             href="#projects"
-                            className="inline-flex items-center gap-2 bg-[#3B82F6] text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors"
+                            className="text-1xl inline-flex items-center gap-2 bg-[#3B82F6] text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors"
                         >
                             View Projects
                         </a>
 
                         <a
                             href="/resume.pdf"
-                            className="inline-flex items-center gap-2 bg-[#1F2229] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#2A2D35] transition-colors border border-white/5"
+                            className="text-1xl inline-flex items-center gap-2 bg-[#1F2229] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#2A2D35] transition-colors border border-white/5"
                         >
                             Download Resume
                         </a>
