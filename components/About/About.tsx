@@ -40,7 +40,7 @@ export default function About() {
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.2 }}
-                            className="relative w-24 h-24 md:w-32 md:h-32 flex-shrink-0 rounded-full overflow-hidden border-2 border-white/10 shadow-2xl group"
+                            className="relative w-24 h-24 md:w-32 md:h-32 flex-shrink-0 rounded-full overflow-hidden border-2 border-white/10 shadow-2xl group mx-auto sm:mx-0"
                         >
                             <Image
                                 src="/MyAvatar.png"
@@ -51,7 +51,7 @@ export default function About() {
                         </motion.div>
 
                         {/* Bio Text */}
-                        <div className="space-y-4 md:space-y-6">
+                        <div className="space-y-4 md:space-y-6 text-center sm:text-left">
                             <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
                                 I'm a Full Stack web Developer with experience in building scalable, SEO-friendly and modern web applications.
                             </p>
@@ -59,9 +59,12 @@ export default function About() {
                     </div>
                 </div>
 
-                <div className="mt-6 md:mt-8 pt-6 border-t border-white/5 flex items-center gap-3 text-sm text-primary/80 bg-primary/5 p-4 rounded-xl border border-primary/10">
-                    <span className="text-xl">🚀</span>
-                    <span>Currently creating modern web solutions at <span className="font-semibold text-primary">Digitrix Agency</span></span>
+                {/* Currently Status - Dark Card Style */}
+                <div className="mt-6 md:mt-8 flex items-start gap-4 text-sm text-primary/80 bg-[#0a0a16] p-5 rounded-2xl border border-white/5 shadow-inner">
+                    <span className="text-xl mt-0.5">🚀</span>
+                    <span className="leading-relaxed">
+                        Currently creating modern web solutions at <span className="font-semibold text-primary">Digitrix Agency</span>
+                    </span>
                 </div>
             </motion.div>
         </div>
