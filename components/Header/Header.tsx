@@ -43,7 +43,7 @@ export default function Header() {
       initial={{ y: -8, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-      className={`${styles.header} sticky top-0 z-50`}
+      className={`${styles.header} glass sticky top-0 z-50`}
       role="banner"
     >
       <div className="mx-auto max-w-6xl px-4 h-20 flex items-center justify-between">
@@ -58,8 +58,8 @@ export default function Header() {
               key={link.name}
               href={link.href}
               className={`text-sm font-medium transition-colors ${activeSection === link.href.substring(1)
-                  ? 'text-primary font-bold'
-                  : 'text-muted-foreground hover:text-primary'
+                ? 'text-primary font-bold'
+                : 'text-muted-foreground hover:text-primary'
                 }`}
             >
               {link.name}
