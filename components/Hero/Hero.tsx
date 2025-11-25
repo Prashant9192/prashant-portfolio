@@ -42,7 +42,7 @@ export default function Hero() {
                 >
                     <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight leading-tight mb-1 ">
                         Hi, I'm <br />
-                        <span className="text-white whitespace-nowrap">Prashant Basnet</span>
+                        <span className="whitespace-nowrap">Prashant Basnet</span>
                     </h1>
 
                     <h2 className="text-2xl md:text-3xl font-semibold text-[#3B82F6] mb-1 md:whitespace-nowrap">
