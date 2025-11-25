@@ -54,9 +54,6 @@ export default function Projects() {
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">
                         Featured <span className="text-primary">Projects</span>
                     </h2>
-                    <p className="text-muted-foreground text-lg max-w-2xl">
-                        A selection of projects I've worked on, ranging from SaaS applications to modern web experiences.
-                    </p>
                 </motion.div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
