@@ -2,7 +2,7 @@
 
 import React from 'react'
 import Link from 'next/link'
-import { Facebook, Twitter, Linkedin, Instagram } from 'lucide-react'
+import { Facebook, Github, Linkedin, Instagram } from 'lucide-react'
 
 export default function Footer() {
     const currentYear = new Date().getFullYear()
@@ -25,16 +25,16 @@ export default function Footer() {
 
                 {/* Social Icons */}
                 <div className="flex items-center gap-4">
-                    <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                    <Link href="https://www.facebook.com/prashant.basnet.7902" className="text-muted-foreground hover:text-primary transition-colors">
                         <Facebook size={20} />
                     </Link>
-                    <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                        <Twitter size={20} />
+                    <Link href="https://github.com/Prashant9192/" className="text-muted-foreground hover:text-primary transition-colors">
+                        <Github size={20} />
                     </Link>
-                    <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                    <Link href="https://www.linkedin.com/in/prashant-basnet-173b87244/" className="text-muted-foreground hover:text-primary transition-colors">
                         <Linkedin size={20} />
                     </Link>
-                    <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                    <Link href="https://www.instagram.com/basnet_prashant02/" className="text-muted-foreground hover:text-primary transition-colors">
                         <Instagram size={20} />
                     </Link>
                 </div>
