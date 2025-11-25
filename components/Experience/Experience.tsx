@@ -26,45 +26,43 @@ const experiences = [
 
 export default function Experience() {
     return (
-        <section id="experience" className="py-12">
-            <div className="container mx-auto px-4">
-                <motion.h2
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="text-3xl font-bold mb-8"
-                >
-                    Experience
-                </motion.h2>
+        <div id="experience" className="space-y-8">
+            <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-3xl md:text-4xl font-bold"
+            >
+                Experience
+            </motion.h2>
 
-                <div className="grid gap-4 md:grid-cols-2">
-                    {experiences.map((exp, index) => (
-                        <motion.div
-                            key={exp.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
-                            className="group relative flex items-center gap-4 p-5 rounded-xl bg-[#111318] border border-white/5 hover:border-primary/20 transition-all"
-                        >
-                            <div className={`flex-shrink-0 w-12 h-12 rounded-lg ${exp.logoBg} flex items-center justify-center text-white font-bold text-xl`}>
-                                {exp.logo}
-                            </div>
-                            <div>
-                                <h3 className="text-lg font-bold text-white">
-                                    {exp.role}
-                                </h3>
-                                <p className="text-muted-foreground text-sm">
-                                    {exp.company}
-                                </p>
-                                <p className="text-xs text-muted-foreground/60 mt-1">
-                                    {exp.period}
-                                </p>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
+            <div className="flex flex-col gap-4">
+                {experiences.map((exp, index) => (
+                    <motion.div
+                        key={exp.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: index * 0.1 }}
+                        className="group relative flex items-center gap-4 p-4 rounded-xl bg-[#111318] border border-white/5 hover:border-primary/20 transition-all"
+                    >
+                        <div className={`flex-shrink-0 w-12 h-12 rounded-lg ${exp.logoBg} flex items-center justify-center text-white font-bold text-xl`}>
+                            {exp.logo}
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-bold text-white">
+                                {exp.role}
+                            </h3>
+                            <p className="text-muted-foreground text-sm">
+                                {exp.company}
+                            </p>
+                            <p className="text-xs text-muted-foreground/60 mt-1">
+                                {exp.period}
+                            </p>
+                        </div>
+                    </motion.div>
+                ))}
             </div>
-        </section>
+        </div>
     )
 }

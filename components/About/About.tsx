@@ -6,41 +6,51 @@ import Image from 'next/image'
 
 export default function About() {
     return (
-        <section id="about" className="py-20 md:py-32">
-            <div className="container mx-auto px-4">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
-                    className="grid md:grid-cols-2 gap-12 items-center"
-                >
-                    {/* Profile Image */}
-                    <div className="flex justify-center md:justify-start">
-                        <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-card shadow-xl">
-                            {/* Placeholder for Profile Image */}
-                            <div className="w-full h-full bg-muted flex items-center justify-center text-4xl">
-                                PB
-                            </div>
-                        </div>
-                    </div>
+        <div id="about" className="space-y-8">
+            <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-3xl md:text-4xl font-bold"
+            >
+                About Me
+            </motion.h2>
 
-                    {/* Content */}
-                    <div className="space-y-6">
-                        <h2 className="text-3xl md:text-4xl font-bold">About Me</h2>
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="flex flex-col sm:flex-row gap-6 items-center sm:items-start"
+            >
+                {/* Profile Image */}
+                <div className="relative w-32 h-32 flex-shrink-0 rounded-full overflow-hidden border-2 border-white/10 shadow-lg">
+                    {/* Placeholder for Profile Image - Replace with actual image */}
+                    <Image
+                        src="/MyAvatar.png"
+                        alt="Prashant Basnet"
+                        fill
+                        className="object-cover"
+                    />
+                </div>
 
-                        <div className="space-y-4 text-muted-foreground text-lg leading-relaxed">
-                            <p>
-                                I'm a Full Stack Web Developer with experience in building scalable, SEO-friendly, and modern web applications.
-                            </p>
-                            <p>
-                                Currently, I work at Digitrix Agency creating modern web solutions. I love solving complex problems and learning new technologies.
-                            </p>
-                        </div>
-                    </div>
+                {/* Bio Text */}
+                <div className="space-y-4 text-muted-foreground text-lg leading-relaxed">
+                    <p>
+                        I'm a Full Stack web Developer with experience in building scalable, SEO-friendly and modern web applications.
+                    </p>
+                </div>
+            </motion.div>
 
-                </motion.div>
-            </div>
-        </section>
+            <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="text-muted-foreground text-lg"
+            >
+                Currently, I work at Digitrix Agency creating modern web solutions.
+            </motion.p>
+        </div>
     )
 }
