@@ -35,7 +35,7 @@ export default function Header() {
     { name: 'About', href: '#about' },
     { name: 'Skills', href: '#skills' },
     { name: 'Projects', href: '#projects' },
-    // { name: 'Contact', href: '#contact' }, // Uncomment when Contact section is added
+    { name: 'Contact', href: '#contact' },
   ]
 
   return (
