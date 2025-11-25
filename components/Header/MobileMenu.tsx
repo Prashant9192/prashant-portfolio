@@ -13,7 +13,7 @@ export default function MobileMenu() {
       <button
         aria-label={open ? 'Close menu' : 'Open menu'}
         onClick={() => setOpen((s) => !s)}
-        className="rounded-md p-2 border"
+        className="rounded-md p-2"
       >
         {open ? <X size={18} /> : <Menu size={18} />}
       </button>
