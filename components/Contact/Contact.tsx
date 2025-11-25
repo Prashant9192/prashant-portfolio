@@ -85,7 +85,7 @@ export default function Contact() {
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-xl mb-2">Email</h3>
-                                    <p className="text-muted-foreground group-hover/item:text-primary transition-colors">hello@prashant.dev</p>
+                                    <p className="text-muted-foreground group-hover/item:text-primary transition-colors">prashantbasnet222@gmail.com</p>
                                 </div>
                             </div>
 
@@ -95,7 +95,7 @@ export default function Contact() {
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-xl mb-2">Phone</h3>
-                                    <p className="text-muted-foreground group-hover/item:text-primary transition-colors">+977 9800000000</p>
+                                    <p className="text-muted-foreground group-hover/item:text-primary transition-colors">+91 7030842261</p>
                                 </div>
                             </div>
 
@@ -105,7 +105,7 @@ export default function Contact() {
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-xl mb-2">Location</h3>
-                                    <p className="text-muted-foreground group-hover/item:text-primary transition-colors">Kathmandu, Nepal</p>
+                                    <p className="text-muted-foreground group-hover/item:text-primary transition-colors">Mumbai, India</p>
                                 </div>
                             </div>
                         </div>
