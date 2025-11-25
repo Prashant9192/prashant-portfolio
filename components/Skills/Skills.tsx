@@ -2,17 +2,42 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import { FileCode, Database, Server, Layout, Code2, Terminal } from 'lucide-react'
+import Image from 'next/image'
 
 const skills = [
-    { name: 'Next.js', icon: <FileCode size={24} /> },
-    { name: 'React', icon: <Code2 size={24} /> },
-    { name: 'JavaScript', icon: <span className="font-bold text-xl">Js</span> },
-    { name: 'TypeScript', icon: <span className="font-bold text-xl">TS</span> },
-    { name: 'Node.js', icon: <Server size={24} /> },
-    { name: 'Tailwind', icon: <Layout size={24} /> },
-    { name: 'PHP', icon: <span className="font-bold text-xl">php</span> },
-    { name: 'MongoDB', icon: <Database size={24} /> },
+    {
+        name: 'Next.js',
+        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
+        className: 'dark:invert' // Invert in dark mode to make it white
+    },
+    {
+        name: 'React',
+        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg'
+    },
+    {
+        name: 'JavaScript',
+        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg'
+    },
+    {
+        name: 'TypeScript',
+        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg'
+    },
+    {
+        name: 'Node.js',
+        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg'
+    },
+    {
+        name: 'Tailwind',
+        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg'
+    },
+    {
+        name: 'PHP',
+        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg'
+    },
+    {
+        name: 'MongoDB',
+        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg'
+    },
 ]
 
 export default function Skills() {
@@ -36,11 +61,16 @@ export default function Skills() {
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.05 }}
-                            className="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-card border border-border/50 hover:border-primary/50 hover:bg-primary/10 transition-all cursor-default shadow-sm"
+                            className="group flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-primary/50 dark:hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-white/10 transition-all cursor-default shadow-sm hover:shadow-lg"
                             title={skill.name}
                         >
-                            <div className="text-foreground/80 group-hover:text-primary transition-colors">
-                                {skill.icon}
+                            <div className="relative w-10 h-10 md:w-12 md:h-12 transition-transform duration-300 group-hover:scale-110">
+                                <Image
+                                    src={skill.icon}
+                                    alt={skill.name}
+                                    fill
+                                    className={`object-contain ${skill.className || ''}`}
+                                />
                             </div>
                         </motion.div>
                     ))}
