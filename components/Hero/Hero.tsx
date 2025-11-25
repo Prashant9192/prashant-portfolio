@@ -45,7 +45,7 @@ export default function Hero() {
                         <span className="text-white whitespace-nowrap">Prashant Basnet</span>
                     </h1>
 
-                    <h2 className="text-2xl md:text-3xl font-semibold text-[#3B82F6] mb-1 ">
+                    <h2 className="text-2xl md:text-3xl font-semibold text-[#3B82F6] mb-1 md:whitespace-nowrap">
                         Full Stack Web Developer
                     </h2>
 
