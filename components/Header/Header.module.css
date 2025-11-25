@@ -2,8 +2,13 @@
 /* Use Tailwind utilities in JSX; keep custom rules here for glass and mobile panel */
 
 .header {
-  /* glassmorphism handled by global .glass class */
+  /* glassmorphism base */
+  background-color: color-mix(in srgb, var(--background) 5%, transparent); /* Matches 0.05 opacity */
+  backdrop-filter: blur(5px) !important; /* Matches snippet */
+  -webkit-backdrop-filter: blur(5px);
+  /* border-bottom: 1px solid color-mix(in srgb, var(--foreground) 2%, transparent); Removed per user request */
   transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+  /* box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); Removed per user request */
 }
 
 /* Make text a bit stronger in light mode if your root var is too light */
@@ -18,7 +23,7 @@
 .mobilePanel {
   position: fixed;
   inset: 0;
-  top: 64px; /* below header */
+  top: 80px; /* Matches header height (h-20 = 5rem = 80px) */
   transform: translateY(-8px) scale(0.98);
   opacity: 0;
   pointer-events: none;
