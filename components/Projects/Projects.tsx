@@ -64,7 +64,7 @@ export default function Projects() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
-                            className="group relative flex flex-col rounded-2xl border !border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 overflow-hidden hover:border-primary/50 dark:hover:border-primary/50 transition-all duration-300 hover:shadow-lg dark:hover:shadow-primary/5"
+                            className="group relative flex flex-col rounded-2xl border !border-gray-200 dark:!border-white/10 bg-white dark:bg-white/5 overflow-hidden hover:!border-primary/50 dark:hover:!border-primary/50 transition-all duration-300 hover:shadow-lg dark:hover:shadow-primary/5"
                         >
                             {/* Image Container */}
                             <div className="relative aspect-video w-full overflow-hidden bg-muted">
