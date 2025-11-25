@@ -1,6 +1,5 @@
 'use client'
 
-'use client'
 
 import React from 'react'
 import { motion } from 'framer-motion'
@@ -56,13 +55,13 @@ export default function About() {
                             <p className="text-muted-foreground text-lg leading-relaxed">
                                 I'm a Full Stack web Developer with experience in building scalable, SEO-friendly and modern web applications.
                             </p>
-
-                            <div className="flex items-center gap-3 text-sm text-primary/80 bg-primary/5 p-3 rounded-xl border border-primary/10">
-                                <span className="text-xl">🚀</span>
-                                <span>Currently creating modern web solutions at <span className="font-semibold text-primary">Digitrix Agency</span></span>
-                            </div>
                         </div>
                     </div>
+                </div>
+
+                <div className="mt-8 pt-6 border-t border-white/5 flex items-center gap-3 text-sm text-primary/80 bg-primary/5 p-4 rounded-xl border border-primary/10">
+                    <span className="text-xl">🚀</span>
+                    <span>Currently creating modern web solutions at <span className="font-semibold text-primary">Digitrix Agency</span></span>
                 </div>
             </motion.div>
         </div>
