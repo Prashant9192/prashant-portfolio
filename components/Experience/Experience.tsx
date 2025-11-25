@@ -36,7 +36,7 @@ export default function Experience() {
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    className="text-2xl md:text-4xl font-bold mb-6 md:mb-8 bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent"
+                    className="text-2xl md:text-4xl font-bold mb-6 md:mb-8 bg-gradient-to-r from-white to-white/60 bg-clip-text"
                 >
                     Experience
                 </motion.h2>
@@ -55,7 +55,7 @@ export default function Experience() {
                                     {exp.logo}
                                 </div>
                                 <div>
-                                    <h3 className="text-base md:text-lg font-bold text-white group-hover:text-primary transition-colors">
+                                    <h3 className="text-base md:text-lg font-bold  group-hover:text-primary transition-colors">
                                         {exp.role}
                                     </h3>
                                     <p className="text-muted-foreground text-xs md:text-sm font-medium">

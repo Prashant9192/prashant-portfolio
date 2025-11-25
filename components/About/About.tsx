@@ -28,7 +28,7 @@ export default function About() {
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent"
+                        className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-white to-white/60 bg-clip-text"
                     >
                         About Me
                     </motion.h2>
@@ -60,7 +60,7 @@ export default function About() {
                 </div>
 
                 {/* Currently Status - Dark Card Style */}
-                <div className="mt-6 md:mt-8 flex items-start gap-4 text-sm text-primary/80 bg-[#0a0a16] p-5 rounded-2xl border border-white/5 shadow-inner">
+                <div className="mt-6 md:mt-8 flex items-start gap-4 text-sm text-primary/80   p-5 rounded-2xl border border-white/5 shadow-inner">
                     <span className="text-xl mt-0.5">🚀</span>
                     <span className="leading-relaxed">
                         Currently creating modern web solutions at <span className="font-semibold text-primary">Digitrix Agency</span>
