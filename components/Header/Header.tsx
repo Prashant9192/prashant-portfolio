@@ -7,7 +7,7 @@ import Brand from './Brand'
 import ThemeToggle from './ThemeToggle'
 import MobileMenu from './MobileMenu'
 import styles from './Header.module.css'
-import { ChevronLeft } from 'lucide-react'
+
 
 export default function Header() {
   return (
@@ -33,13 +33,8 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
-          {/* Back button placeholder as seen in design */}
-          <button className="hidden md:flex items-center justify-center w-8 h-8 rounded-full bg-secondary/50 hover:bg-secondary transition-colors text-muted-foreground">
-            <ChevronLeft size={16} />
-          </button>
-
-          {/* Theme Toggle (optional if we want to keep it, design doesn't explicitly show it but it's good practice) */}
-          {/* <ThemeToggle /> */}
+          {/* Theme Toggle */}
+          <ThemeToggle />
 
           {/* Mobile menu button */}
           <div className="md:hidden">
