@@ -12,9 +12,10 @@ export default function Footer() {
             <div className="mx-auto max-w-6xl px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
 
                 {/* Brand */}
+                {/* Brand */}
                 <div className="flex items-center">
-                    <span className="text-xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-                        Prashant.dev
+                    <span className="font-bold text-xl tracking-tight text-foreground">
+                        Prashant<span className="text-primary">.dev</span>
                     </span>
                 </div>
 
