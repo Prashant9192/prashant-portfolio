@@ -10,6 +10,34 @@ import styles from './Header.module.css'
 
 
 export default function Header() {
+  const [activeSection, setActiveSection] = React.useState('home')
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id)
+          }
+        })
+      },
+      { threshold: 0.5 }
+    )
+
+    const sections = document.querySelectorAll('section[id]')
+    sections.forEach((section) => observer.observe(section))
+
+    return () => sections.forEach((section) => observer.unobserve(section))
+  }, [])
+
+  const navLinks = [
+    { name: 'Home', href: '#home' },
+    { name: 'About', href: '#about' },
+    { name: 'Skills', href: '#skills' },
+    { name: 'Projects', href: '#projects' },
+    // { name: 'Contact', href: '#contact' }, // Uncomment when Contact section is added
+  ]
+
   return (
     <motion.header
       initial={{ y: -8, opacity: 0 }}
@@ -25,11 +53,18 @@ export default function Header() {
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-8" aria-label="Main navigation">
-          <Link href="/" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Home</Link>
-          <Link href="#about" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">About</Link>
-          <Link href="#skills" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Skills</Link>
-          <Link href="#projects" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Projects</Link>
-          <Link href="#contact" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Contact</Link>
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              href={link.href}
+              className={`text-sm font-medium transition-colors ${activeSection === link.href.substring(1)
+                  ? 'text-primary font-bold'
+                  : 'text-muted-foreground hover:text-primary'
+                }`}
+            >
+              {link.name}
+            </Link>
+          ))}
         </nav>
 
         <div className="flex items-center gap-3">

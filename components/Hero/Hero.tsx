@@ -30,7 +30,7 @@ export default function Hero() {
     const rotateY = useTransform(mouseX, [-0.5, 0.5], [-15, 15])
 
     return (
-        <section className="relative pt-20 pb-12 md:pt-32 md:pb-20 overflow-hidden">
+        <section id="home" className="relative pt-20 pb-12 md:pt-32 md:pb-20 overflow-hidden">
             <div className="container mx-auto px-4 grid md:grid-cols-2 gap-8 items-center">
 
                 {/* Text Content */}
