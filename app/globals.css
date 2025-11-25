@@ -1,92 +1,96 @@
 @import "tailwindcss";
 
-/* -------------------------
-   Theme tokens (class-based)
-   -------------------------
-   We use .light / .dark classes so `next-themes` (which toggles a class on <html>)
-   can switch theme reliably. This avoids relying on prefers-color-scheme only.
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
 */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
 
 :root {
-  /* base (fallback) */
-  --background: 255 255 255;
-  --foreground: 17 24 39; /* dark for light mode text */
-  --muted: 100 116 139;
-  --card: 249 250 251;
-  --glass: 255 255 255 / 0.6;
-  --accent-primary: 41 88 255; /* default cobalt blue (you can change) */
-  --accent-accent: 215 40 40; /* sampled red-ish from the reference image */
-  --ring: 41 88 255;
-  --img-ref-url: '/_local_images/color-reference.png'; /* keep as reference path if needed */
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+  --card: #ffffff;
+  --card-foreground: #0a0a0a;
+  --popover: #ffffff;
+  --popover-foreground: #0a0a0a;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --secondary: #f3f4f6;
+  --secondary-foreground: #1f2937;
+  --muted: #f3f4f6;
+  --muted-foreground: #6b7280;
+  --accent: #f3f4f6;
+  --accent-foreground: #1f2937;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #2563eb;
+  --radius: 0.5rem;
 }
 
-/* Light theme */
-.light {
-  --background: 255 255 255;
-  --foreground: 17 24 39;
-  --muted: 100 116 139;
-  --card: 249 250 251;
-  --glass: 255 255 255 / 0.7;
-  --accent-primary: 41 88 255;
-  --accent-accent: 215 40 40;
-  --ring: 41 88 255;
-}
-
-/* Dark theme */
 .dark {
-  --background: 10 12 16;
-  --foreground: 232 236 243;
-  --muted: 139 148 158;
-  --card: 20 22 28;
-  --glass: 20 22 28 / 0.55;
-  --accent-primary: 118 211 255; /* icy cyan for dark */
-  --accent-accent: 220 60 60; /* warm red for highlights */
-  --ring: 118 211 255;
-}
-
-/* Convenience CSS vars that work with Tailwind color utilities */
-.bg-default { background-color: rgb(var(--background)); }
-.text-default { color: rgb(var(--foreground)); }
-
-/* General reset / body */
-html, body, #__next {
-  height: 100%;
+  --background: #050511; /* Deep dark blue/black */
+  --foreground: #ffffff;
+  --card: #0f101f; /* Slightly lighter dark blue */
+  --card-foreground: #ffffff;
+  --popover: #0f101f;
+  --popover-foreground: #ffffff;
+  --primary: #3b82f6; /* Bright blue */
+  --primary-foreground: #ffffff;
+  --secondary: #1e293b;
+  --secondary-foreground: #ffffff;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --accent: #1e293b;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #1e293b;
+  --input: #1e293b;
+  --ring: #3b82f6;
 }
 
 body {
-  background: rgb(var(--background));
-  color: rgb(var(--foreground));
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: 1.5;
-  margin: 0;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Basic focus styles using --ring */
-:focus {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgb(var(--ring) / 0.18);
-}
-
-/* small helper for glass header if you need extra CSS beyond Tailwind */
-.header-glass {
-  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
-/* Utility small shadow used in components */
-.shadow-soft {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
-}
-
-/* reduce motion respect */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-  }
-}

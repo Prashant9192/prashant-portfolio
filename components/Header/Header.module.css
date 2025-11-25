@@ -3,10 +3,10 @@
 
 .header {
   /* glassmorphism base */
-  background-color: rgba(18, 20, 26, 0.55); /* will be visible in dark / light depending on variables */
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background-color: rgb(var(--background) / 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgb(var(--border) / 0.5);
   transition: background-color 180ms ease, backdrop-filter 180ms ease;
 }
 
