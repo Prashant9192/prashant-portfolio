@@ -40,9 +40,9 @@ export default function Hero() {
                     transition={{ duration: 0.5 }}
                     className="space-y-6 z-10"
                 >
-                    <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-tight">
+                    <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight leading-tight">
                         Hi, I'm <br />
-                        <span className="text-white">Prashant Basnet</span>
+                        <span className="text-white whitespace-nowrap">Prashant Basnet</span>
                     </h1>
 
                     <h2 className="text-2xl md:text-3xl font-semibold text-[#3B82F6]">
