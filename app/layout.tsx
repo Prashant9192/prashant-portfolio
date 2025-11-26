@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Header />
-          <main className="mx-auto max-w-6xl px-4 min-h-[calc(100vh-160px)]">
+          <main className="mx-auto max-w-6xl md:px-4 min-h-[calc(100vh-160px)]">
             {children}
           </main>
           <Footer />
