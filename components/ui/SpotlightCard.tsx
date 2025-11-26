@@ -1,9 +1,8 @@
 'use client'
 
-import { useRef, useState } from 'react'
 import { motion, useMotionTemplate, useMotionValue } from 'framer-motion'
 
-export default function SpotlightCard({ children, className = '' }: { children: React.ReactNode, className?: string }) {
+export default function SpotlightCard({ children, className = '', propClass = '' }: { children: React.ReactNode, className?: string, propClass?: string }) {
     const mouseX = useMotionValue(0)
     const mouseY = useMotionValue(0)
 
@@ -30,7 +29,7 @@ export default function SpotlightCard({ children, className = '' }: { children: 
                     `,
                 }}
             />
-            <div className="flex items-center gap-3 md:gap-4 p-2 rounded-2xl relative h-full">
+            <div className={`relative h-full ${propClass}`}>
                 {children}
             </div>
         </div>
