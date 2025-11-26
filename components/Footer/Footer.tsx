@@ -21,7 +21,7 @@ export default function Footer() {
 
                 {/* Copyright */}
                 <div className="text-sm text-muted-foreground text-center">
-                    Copyright {currentYear}© Prashant.dev
+                    Copyright {currentYear} © Prashant.dev
                 </div>
 
                 {/* Social Icons */}
