@@ -47,7 +47,7 @@ export default function Contact() {
     }
 
     return (
-        <section id="contact" className="py-20 relative overflow-hidden">
+        <section id="contact" className="py-12 md:py-20 relative overflow-hidden">
             {/* Background Elements */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
                 <div className="absolute bottom-[20%] left-[10%] w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[100px] animate-pulse" />
@@ -59,17 +59,17 @@ export default function Contact() {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="mb-12 text-center md:text-left"
+                    className="mb-8 md:mb-12 text-center md:text-left"
                 >
-                    <h2 className="text-2xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
+                    <h2 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
                         Get in <span className="text-primary">Touch</span>
                     </h2>
-                    <p className="text-muted-foreground text-lg max-w-2xl leading-relaxed">
+                    <p className="text-muted-foreground text-base md:text-lg max-w-2xl leading-relaxed mx-auto md:mx-0">
                         Have a project in mind or just want to say hi? I'm always open to discussing new ideas and opportunities.
                     </p>
                 </motion.div>
 
-                <div className="grid md:grid-cols-2 gap-12 items-start">
+                <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-start">
                     {/* Contact Info */}
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
@@ -77,35 +77,35 @@ export default function Contact() {
                         viewport={{ once: true }}
                         className="h-full"
                     >
-                        <div className="h-full p-6 md:p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm overflow-hidden hover:border-white/20 transition-colors space-y-8">
+                        <div className="h-full p-5 md:p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm overflow-hidden hover:border-white/20 transition-colors space-y-6 md:space-y-8">
 
-                            <div className="relative flex items-start gap-6 group/item">
-                                <div className="p-4 rounded-2xl bg-white/5 border border-white/5 text-primary group-hover/item:bg-primary group-hover/item:text-white transition-colors duration-300 shadow-inner">
-                                    <Mail size={24} />
+                            <div className="relative flex items-start gap-4 md:gap-6 group/item">
+                                <div className="p-3 md:p-4 rounded-2xl bg-white/5 border border-white/5 text-primary group-hover/item:bg-primary group-hover/item:text-white transition-colors duration-300 shadow-inner shrink-0">
+                                    <Mail size={20} className="md:w-6 md:h-6" />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-xl mb-2">Email</h3>
-                                    <p className="text-muted-foreground group-hover/item:text-primary transition-colors">prashantbasnet222@gmail.com</p>
+                                    <h3 className="font-bold text-lg md:text-xl mb-1 md:mb-2">Email</h3>
+                                    <p className="text-muted-foreground text-sm md:text-base group-hover/item:text-primary transition-colors break-all">prashantbasnet222@gmail.com</p>
                                 </div>
                             </div>
 
-                            <div className="relative flex items-start gap-6 group/item">
-                                <div className="p-4 rounded-2xl bg-white/5 border border-white/5 text-primary group-hover/item:bg-primary group-hover/item:text-white transition-colors duration-300 shadow-inner">
-                                    <Phone size={24} />
+                            <div className="relative flex items-start gap-4 md:gap-6 group/item">
+                                <div className="p-3 md:p-4 rounded-2xl bg-white/5 border border-white/5 text-primary group-hover/item:bg-primary group-hover/item:text-white transition-colors duration-300 shadow-inner shrink-0">
+                                    <Phone size={20} className="md:w-6 md:h-6" />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-xl mb-2">Phone</h3>
-                                    <p className="text-muted-foreground group-hover/item:text-primary transition-colors">+91 7030842261</p>
+                                    <h3 className="font-bold text-lg md:text-xl mb-1 md:mb-2">Phone</h3>
+                                    <p className="text-muted-foreground text-sm md:text-base group-hover/item:text-primary transition-colors">+91 7030842261</p>
                                 </div>
                             </div>
 
-                            <div className="relative flex items-start gap-6 group/item">
-                                <div className="p-4 rounded-2xl bg-white/5 border border-white/5 text-primary group-hover/item:bg-primary group-hover/item:text-white transition-colors duration-300 shadow-inner">
-                                    <MapPin size={24} />
+                            <div className="relative flex items-start gap-4 md:gap-6 group/item">
+                                <div className="p-3 md:p-4 rounded-2xl bg-white/5 border border-white/5 text-primary group-hover/item:bg-primary group-hover/item:text-white transition-colors duration-300 shadow-inner shrink-0">
+                                    <MapPin size={20} className="md:w-6 md:h-6" />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-xl mb-2">Location</h3>
-                                    <p className="text-muted-foreground group-hover/item:text-primary transition-colors">Mumbai, India</p>
+                                    <h3 className="font-bold text-lg md:text-xl mb-1 md:mb-2">Location</h3>
+                                    <p className="text-muted-foreground text-sm md:text-base group-hover/item:text-primary transition-colors">Mumbai, India</p>
                                 </div>
                             </div>
                         </div>
@@ -117,7 +117,7 @@ export default function Contact() {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                     >
-                        <form onSubmit={handleSubmit} className="p-6 md:p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm overflow-hidden hover:border-white/20 transition-colors space-y-6">
+                        <form onSubmit={handleSubmit} className="p-5 md:p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm overflow-hidden hover:border-white/20 transition-colors space-y-4 md:space-y-6">
 
                             <div className="space-y-2">
                                 <label htmlFor="name" className="text-sm font-medium ml-1">Name</label>
@@ -128,7 +128,7 @@ export default function Contact() {
                                     required
                                     value={formData.name}
                                     onChange={handleChange}
-                                    className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/5 focus:border-primary focus:bg-white/10 focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 placeholder:text-white/20"
+                                    className="w-full px-4 py-3 md:px-6 md:py-4 rounded-2xl bg-white/5 border border-white/5 focus:border-primary focus:bg-white/10 focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 placeholder:text-white/20 text-sm md:text-base"
                                     placeholder="John Doe"
                                 />
                             </div>
@@ -142,7 +142,7 @@ export default function Contact() {
                                     required
                                     value={formData.email}
                                     onChange={handleChange}
-                                    className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/5 focus:border-primary focus:bg-white/10 focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 placeholder:text-white/20"
+                                    className="w-full px-4 py-3 md:px-6 md:py-4 rounded-2xl bg-white/5 border border-white/5 focus:border-primary focus:bg-white/10 focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 placeholder:text-white/20 text-sm md:text-base"
                                     placeholder="john@example.com"
                                 />
                             </div>
@@ -156,7 +156,7 @@ export default function Contact() {
                                     rows={4}
                                     value={formData.message}
                                     onChange={handleChange}
-                                    className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/5 focus:border-primary focus:bg-white/10 focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 resize-none placeholder:text-white/20"
+                                    className="w-full px-4 py-3 md:px-6 md:py-4 rounded-2xl bg-white/5 border border-white/5 focus:border-primary focus:bg-white/10 focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 resize-none placeholder:text-white/20 text-sm md:text-base"
                                     placeholder="Tell me about your project..."
                                 />
                             </div>
@@ -164,11 +164,11 @@ export default function Contact() {
                             <button
                                 type="submit"
                                 disabled={status === 'loading'}
-                                className="w-full py-4 rounded-2xl bg-gradient-to-r from-primary to-purple-600 text-white font-bold text-lg flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                                className="w-full py-3 md:py-4 rounded-2xl bg-gradient-to-r from-primary to-purple-600 text-white font-bold text-base md:text-lg flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                             >
                                 {status === 'loading' ? (
                                     <>
-                                        <Loader2 size={24} className="animate-spin" />
+                                        <Loader2 size={20} className="animate-spin md:w-6 md:h-6" />
                                         Sending...
                                     </>
                                 ) : status === 'success' ? (
@@ -178,7 +178,7 @@ export default function Contact() {
                                 ) : (
                                     <>
                                         Send Message
-                                        <Send size={20} />
+                                        <Send size={18} className="md:w-5 md:h-5" />
                                     </>
                                 )}
                             </button>
