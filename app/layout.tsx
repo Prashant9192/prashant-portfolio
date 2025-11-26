@@ -3,6 +3,7 @@ import Header from '@/components/Header/Header'
 import Footer from '@/components/Footer/Footer'
 import { ThemeProvider } from 'next-themes'
 import { Toaster } from 'sonner'
+import ScrollProgress from '@/components/ScrollProgress/ScrollProgress'
 
 export const metadata = {
   title: 'Prashant Basnet — Web Developer',
@@ -14,6 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ScrollProgress />
           <Header />
           <main className="mx-auto max-w-6xl md:px-4 min-h-[calc(100vh-160px)]">
             {children}

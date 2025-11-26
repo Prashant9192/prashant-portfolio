@@ -4,6 +4,7 @@ import React, { useRef } from 'react'
 import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionTemplate } from 'framer-motion'
 import { ArrowRight, Download } from 'lucide-react'
 import Image from 'next/image'
+import Typewriter from 'typewriter-effect'
 
 export default function Hero() {
     const ref = useRef(null)
@@ -45,9 +46,22 @@ export default function Hero() {
                         <span className="whitespace-nowrap">Prashant Basnet</span>
                     </h1>
 
-                    <h2 className="text-2xl md:text-3xl font-semibold text-[#3B82F6] mb-1 md:whitespace-nowrap">
-                        Full Stack Web Developer
-                    </h2>
+                    <div className="text-2xl md:text-3xl font-semibold text-[#3B82F6] mb-1 md:whitespace-nowrap h-[40px] flex items-center">
+                        <Typewriter
+                            options={{
+                                strings: [
+                                    'Full Stack Web Developer',
+                                    'UI/UX Enthusiast',
+                                    'React Specialist',
+                                    'Next.js Expert'
+                                ],
+                                autoStart: true,
+                                loop: true,
+                                deleteSpeed: 50,
+                                delay: 50,
+                            }}
+                        />
+                    </div>
 
                     <p className="text-muted-foreground text-1xl max-w-lg leading-relaxed mb-1 ">
                         I build scalable, fast, and modern web applications. Currently, I work at Digitrix Agency.
