@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionTe
 import { ArrowRight, Download } from 'lucide-react'
 import Image from 'next/image'
 import Typewriter from 'typewriter-effect'
+import MagneticButton from '@/components/ui/MagneticButton'
 
 export default function Hero() {
     const ref = useRef(null)
@@ -68,20 +69,24 @@ export default function Hero() {
                     </p>
 
                     <div className="flex flex-wrap gap-4 pt-4">
-                        <a
-                            href="#projects"
-                            className="text-1xl inline-flex items-center gap-2 bg-[#3B82F6] text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors"
-                        >
-                            View Projects
-                        </a>
+                        <MagneticButton>
+                            <a
+                                href="#projects"
+                                className="text-1xl inline-flex items-center gap-2 bg-[#3B82F6] text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors"
+                            >
+                                View Projects
+                            </a>
+                        </MagneticButton>
 
-                        <a
-                            href="/Prashant-Resume.pdf"
-                            download="Prashant-Resume.pdf"
-                            className="text-1xl inline-flex items-center gap-2 bg-[#1F2229] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#2A2D35] transition-colors border border-white/5"
-                        >
-                            Download Resume
-                        </a>
+                        <MagneticButton>
+                            <a
+                                href="/Prashant-Resume.pdf"
+                                download="Prashant-Resume.pdf"
+                                className="text-1xl inline-flex items-center gap-2 bg-[#1F2229] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#2A2D35] transition-colors border border-white/5"
+                            >
+                                Download Resume
+                            </a>
+                        </MagneticButton>
                     </div>
                 </motion.div>
 

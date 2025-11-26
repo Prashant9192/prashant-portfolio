@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Send, Loader2, Mail, MapPin, Phone, ArrowRight, ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
+import MagneticButton from '@/components/ui/MagneticButton'
 
 export default function Contact() {
     const [isFlipped, setIsFlipped] = useState(false)
@@ -83,13 +84,15 @@ export default function Contact() {
                                     Have a project in mind? Let's discuss how we can work together.
                                 </p>
                                 <div className="hidden lg:block pt-8">
-                                    <button
-                                        onClick={() => setIsFlipped(true)}
-                                        className="px-8 py-4 rounded-2xl bg-gradient-to-r from-primary to-purple-600 text-white font-bold text-lg flex items-center gap-2 hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 group"
-                                    >
-                                        Write a Message
-                                        <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                                    </button>
+                                    <MagneticButton>
+                                        <button
+                                            onClick={() => setIsFlipped(true)}
+                                            className="px-8 py-4 rounded-2xl bg-gradient-to-r from-primary to-purple-600 text-white font-bold text-lg flex items-center gap-2 hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 group"
+                                        >
+                                            Write a Message
+                                            <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                                        </button>
+                                    </MagneticButton>
                                 </div>
                             </div>
 
