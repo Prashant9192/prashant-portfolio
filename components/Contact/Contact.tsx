@@ -74,7 +74,7 @@ export default function Contact() {
                         className="col-start-1 row-start-1 w-full h-full backface-hidden"
                         style={{ backfaceVisibility: 'hidden' }}
                     >
-                        <div className="h-full p-6 md:p-8 lg:p-12 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md flex flex-col lg:flex-row lg:items-center lg:gap-12 justify-between shadow-2xl">
+                        <div className="h-full py-6 px-4 md:py-8 md:px-8 lg:p-12 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md flex flex-col lg:flex-row lg:items-center lg:gap-12 justify-between shadow-2xl">
                             <div className="text-center lg:text-left space-y-4 lg:flex-1">
                                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
                                     Get in <span className="text-primary">Touch</span>
@@ -149,7 +149,7 @@ export default function Contact() {
                         className="col-start-1 row-start-1 w-full h-full backface-hidden"
                         style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
                     >
-                        <div className="h-full p-6 md:p-8 lg:p-12 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md flex flex-col shadow-2xl">
+                        <div className="h-full py-6 px-4 md:py-8 md:px-8 lg:p-12 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md flex flex-col shadow-2xl">
                             <div className="flex items-center justify-between mb-4 md:mb-6">
                                 <h2 className="text-2xl lg:text-3xl font-bold">Send Message</h2>
                                 <button
