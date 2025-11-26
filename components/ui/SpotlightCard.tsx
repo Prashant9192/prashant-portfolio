@@ -30,7 +30,7 @@ export default function SpotlightCard({ children, className = '' }: { children: 
                     `,
                 }}
             />
-            <div className="relative h-full">
+            <div className="flex items-center gap-3 md:gap-4 p-2 rounded-2xl relative h-full">
                 {children}
             </div>
         </div>
