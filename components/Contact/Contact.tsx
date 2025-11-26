@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Send, Loader2, Mail, MapPin, Phone, ArrowRight, ArrowLeft } from 'lucide-react'
+import { toast } from 'sonner'
 
 export default function Contact() {
     const [isFlipped, setIsFlipped] = useState(false)
@@ -29,6 +30,7 @@ export default function Contact() {
             if (!response.ok) throw new Error('Failed to send message')
 
             setStatus('success')
+            toast.success('Message sent successfully!')
             setFormData({ name: '', email: '', message: '' })
 
             // Reset success message after 3 seconds
@@ -39,6 +41,7 @@ export default function Contact() {
         } catch (error) {
             console.error('Error:', error)
             setStatus('error')
+            toast.error('Failed to send message. Please try again.')
             setTimeout(() => setStatus('idle'), 3000)
         }
     }
@@ -91,23 +94,32 @@ export default function Contact() {
                             </div>
 
                             <div className="space-y-4 md:space-y-6 my-6 md:my-8 lg:my-0 lg:flex-1">
-                                <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
-                                    <div className="p-3 rounded-xl bg-primary/10 text-primary">
+                                <div
+                                    onClick={() => window.location.href = 'mailto:prashantbasnet222@gmail.com'}
+                                    className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors cursor-pointer group/item"
+                                >
+                                    <div className="p-3 rounded-xl bg-primary/10 text-primary group-hover/item:bg-primary/20 transition-colors">
                                         <Mail size={20} />
                                     </div>
                                     <div className="overflow-hidden">
-                                        <p className="text-sm text-muted-foreground">Email</p>
-                                        <p className="font-medium text-sm md:text-base break-all">prashantbasnet222@gmail.com</p>
+                                        <p className="font-bold text-lg">Email</p>
+                                        <p className="text-sm text-muted-foreground break-all">prashantbasnet222@gmail.com</p>
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
-                                    <div className="p-3 rounded-xl bg-primary/10 text-primary">
+                                <div
+                                    onClick={() => {
+                                        navigator.clipboard.writeText('+91 7030842261');
+                                        toast.success('Phone number copied to clipboard!');
+                                    }}
+                                    className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors cursor-pointer group/item"
+                                >
+                                    <div className="p-3 rounded-xl bg-primary/10 text-primary group-hover/item:bg-primary/20 transition-colors">
                                         <Phone size={20} />
                                     </div>
                                     <div>
-                                        <p className="text-sm text-muted-foreground">Phone</p>
-                                        <p className="font-medium">+91 7030842261</p>
+                                        <p className="font-bold text-lg">Phone</p>
+                                        <p className="text-sm text-muted-foreground">+91 7030842261</p>
                                     </div>
                                 </div>
 
@@ -116,8 +128,8 @@ export default function Contact() {
                                         <MapPin size={20} />
                                     </div>
                                     <div>
-                                        <p className="text-sm text-muted-foreground">Location</p>
-                                        <p className="font-medium">Mumbai, India</p>
+                                        <p className="font-bold text-lg">Location</p>
+                                        <p className="text-sm text-muted-foreground">Mumbai, India</p>
                                     </div>
                                 </div>
                             </div>

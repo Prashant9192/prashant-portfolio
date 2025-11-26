@@ -2,6 +2,7 @@ import './globals.css'
 import Header from '@/components/Header/Header'
 import Footer from '@/components/Footer/Footer'
 import { ThemeProvider } from 'next-themes'
+import { Toaster } from 'sonner'
 
 export const metadata = {
   title: 'Prashant Basnet — Web Developer',
@@ -18,6 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </main>
           <Footer />
+          <Toaster richColors position="bottom-right" />
         </ThemeProvider>
       </body>
     </html>
