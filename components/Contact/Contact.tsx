@@ -60,7 +60,7 @@ export default function Contact() {
 
             <div className="container mx-auto px-4 perspective-1000">
                 <motion.div
-                    className="relative w-full max-w-md mx-auto h-[600px]"
+                    className="relative w-full max-w-md lg:max-w-4xl mx-auto grid"
                     initial={false}
                     animate={{ rotateY: isFlipped ? 180 : 0 }}
                     transition={{ duration: 0.6 }}
@@ -68,27 +68,36 @@ export default function Contact() {
                 >
                     {/* FRONT FACE - Contact Info */}
                     <div
-                        className="absolute inset-0 w-full h-full backface-hidden"
+                        className="col-start-1 row-start-1 w-full h-full backface-hidden"
                         style={{ backfaceVisibility: 'hidden' }}
                     >
-                        <div className="h-full p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md flex flex-col justify-between shadow-2xl">
-                            <div className="text-center space-y-4">
-                                <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
+                        <div className="h-full p-6 md:p-8 lg:p-12 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md flex flex-col lg:flex-row lg:items-center lg:gap-12 justify-between shadow-2xl">
+                            <div className="text-center lg:text-left space-y-4 lg:flex-1">
+                                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
                                     Get in <span className="text-primary">Touch</span>
                                 </h2>
-                                <p className="text-muted-foreground text-base">
+                                <p className="text-muted-foreground text-base lg:text-lg">
                                     Have a project in mind? Let's discuss how we can work together.
                                 </p>
+                                <div className="hidden lg:block pt-8">
+                                    <button
+                                        onClick={() => setIsFlipped(true)}
+                                        className="px-8 py-4 rounded-2xl bg-gradient-to-r from-primary to-purple-600 text-white font-bold text-lg flex items-center gap-2 hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 group"
+                                    >
+                                        Write a Message
+                                        <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                                    </button>
+                                </div>
                             </div>
 
-                            <div className="space-y-6">
+                            <div className="space-y-4 md:space-y-6 my-6 md:my-8 lg:my-0 lg:flex-1">
                                 <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
                                     <div className="p-3 rounded-xl bg-primary/10 text-primary">
                                         <Mail size={20} />
                                     </div>
                                     <div className="overflow-hidden">
                                         <p className="text-sm text-muted-foreground">Email</p>
-                                        <p className="font-medium truncate">prashantbasnet222@gmail.com</p>
+                                        <p className="font-medium text-sm md:text-base break-all">prashantbasnet222@gmail.com</p>
                                     </div>
                                 </div>
 
@@ -115,7 +124,7 @@ export default function Contact() {
 
                             <button
                                 onClick={() => setIsFlipped(true)}
-                                className="w-full py-4 rounded-2xl bg-gradient-to-r from-primary to-purple-600 text-white font-bold text-lg flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 group"
+                                className="w-full py-4 rounded-2xl bg-gradient-to-r from-primary to-purple-600 text-white font-bold text-lg flex lg:hidden items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 group mt-auto"
                             >
                                 Write a Message
                                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
@@ -125,12 +134,12 @@ export default function Contact() {
 
                     {/* BACK FACE - Contact Form */}
                     <div
-                        className="absolute inset-0 w-full h-full backface-hidden"
+                        className="col-start-1 row-start-1 w-full h-full backface-hidden"
                         style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
                     >
-                        <div className="h-full p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md flex flex-col shadow-2xl">
-                            <div className="flex items-center justify-between mb-6">
-                                <h2 className="text-2xl font-bold">Send Message</h2>
+                        <div className="h-full p-6 md:p-8 lg:p-12 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md flex flex-col shadow-2xl">
+                            <div className="flex items-center justify-between mb-4 md:mb-6">
+                                <h2 className="text-2xl lg:text-3xl font-bold">Send Message</h2>
                                 <button
                                     onClick={() => setIsFlipped(false)}
                                     className="p-2 rounded-full hover:bg-white/10 transition-colors text-muted-foreground hover:text-white"
@@ -139,36 +148,38 @@ export default function Contact() {
                                 </button>
                             </div>
 
-                            <form onSubmit={handleSubmit} className="flex-1 flex flex-col gap-4">
-                                <div className="space-y-2">
-                                    <label htmlFor="name" className="text-sm font-medium ml-1">Name</label>
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        name="name"
-                                        required
-                                        value={formData.name}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/5 focus:border-primary focus:bg-white/10 focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 placeholder:text-white/20"
-                                        placeholder="John Doe"
-                                    />
+                            <form onSubmit={handleSubmit} className="flex-1 flex flex-col gap-3 md:gap-4 lg:gap-6">
+                                <div className="grid lg:grid-cols-2 gap-3 md:gap-4 lg:gap-6">
+                                    <div className="space-y-1.5 md:space-y-2">
+                                        <label htmlFor="name" className="text-sm font-medium ml-1">Name</label>
+                                        <input
+                                            type="text"
+                                            id="name"
+                                            name="name"
+                                            required
+                                            value={formData.name}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/5 focus:border-primary focus:bg-white/10 focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 placeholder:text-white/20"
+                                            placeholder="John Doe"
+                                        />
+                                    </div>
+
+                                    <div className="space-y-1.5 md:space-y-2">
+                                        <label htmlFor="email" className="text-sm font-medium ml-1">Email</label>
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            name="email"
+                                            required
+                                            value={formData.email}
+                                            onChange={handleChange}
+                                            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/5 focus:border-primary focus:bg-white/10 focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 placeholder:text-white/20"
+                                            placeholder="john@example.com"
+                                        />
+                                    </div>
                                 </div>
 
-                                <div className="space-y-2">
-                                    <label htmlFor="email" className="text-sm font-medium ml-1">Email</label>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        name="email"
-                                        required
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/5 focus:border-primary focus:bg-white/10 focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 placeholder:text-white/20"
-                                        placeholder="john@example.com"
-                                    />
-                                </div>
-
-                                <div className="space-y-2 flex-1">
+                                <div className="space-y-1.5 md:space-y-2 flex-1">
                                     <label htmlFor="message" className="text-sm font-medium ml-1">Message</label>
                                     <textarea
                                         id="message"
@@ -176,7 +187,7 @@ export default function Contact() {
                                         required
                                         value={formData.message}
                                         onChange={handleChange}
-                                        className="w-full h-full min-h-[120px] px-4 py-3 rounded-xl bg-white/5 border border-white/5 focus:border-primary focus:bg-white/10 focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 resize-none placeholder:text-white/20"
+                                        className="w-full h-full min-h-[120px] lg:min-h-[160px] px-4 py-3 rounded-xl bg-white/5 border border-white/5 focus:border-primary focus:bg-white/10 focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 resize-none placeholder:text-white/20"
                                         placeholder="Tell me about your project..."
                                     />
                                 </div>
@@ -184,7 +195,7 @@ export default function Contact() {
                                 <button
                                     type="submit"
                                     disabled={status === 'loading'}
-                                    className="w-full py-4 rounded-2xl bg-gradient-to-r from-primary to-purple-600 text-white font-bold text-lg flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 mt-auto"
+                                    className="w-full py-3.5 md:py-4 rounded-2xl bg-gradient-to-r from-primary to-purple-600 text-white font-bold text-lg flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 mt-4 md:mt-6"
                                 >
                                     {status === 'loading' ? (
                                         <>
