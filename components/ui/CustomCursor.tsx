@@ -5,6 +5,7 @@ import { motion, useMotionValue, useSpring } from 'framer-motion'
 
 export default function CustomCursor() {
     const [isHovering, setIsHovering] = useState(false)
+    const [isVisible, setIsVisible] = useState(false)
 
     // Mouse position
     const mouseX = useMotionValue(0)
@@ -16,9 +17,17 @@ export default function CustomCursor() {
     const cursorY = useSpring(mouseY, springConfig)
 
     useEffect(() => {
+        let timer: NodeJS.Timeout
+
         const moveCursor = (e: MouseEvent) => {
             mouseX.set(e.clientX - 16)
             mouseY.set(e.clientY - 16)
+            setIsVisible(true)
+
+            clearTimeout(timer)
+            timer = setTimeout(() => {
+                setIsVisible(false)
+            }, 1000) // Hide after 1 second of inactivity
         }
 
         const handleMouseOver = (e: MouseEvent) => {
@@ -28,6 +37,11 @@ export default function CustomCursor() {
             } else {
                 setIsHovering(false)
             }
+            setIsVisible(true)
+            clearTimeout(timer)
+            timer = setTimeout(() => {
+                setIsVisible(false)
+            }, 1000)
         }
 
         window.addEventListener('mousemove', moveCursor)
@@ -36,6 +50,7 @@ export default function CustomCursor() {
         return () => {
             window.removeEventListener('mousemove', moveCursor)
             window.removeEventListener('mouseover', handleMouseOver)
+            clearTimeout(timer)
         }
     }, [mouseX, mouseY])
 
@@ -46,7 +61,16 @@ export default function CustomCursor() {
                 x: cursorX,
                 y: cursorY,
                 scale: isHovering ? 1.5 : 1,
+                opacity: isVisible ? 1 : 0,
                 backgroundColor: isHovering ? 'var(--primary)' : 'transparent',
+            }}
+            animate={{
+                opacity: isVisible ? 1 : 0,
+                scale: isHovering ? 1.5 : 1,
+            }}
+            transition={{
+                opacity: { duration: 0.2 },
+                scale: { duration: 0.2 }
             }}
         >
             <div className="absolute inset-0 bg-primary/20 blur-md rounded-full" />
