@@ -3,6 +3,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { Briefcase } from 'lucide-react'
+import SpotlightCard from '@/components/ui/SpotlightCard'
 
 const experiences = [
     {
@@ -50,7 +51,7 @@ export default function Experience() {
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
                         >
-                            <div className="group relative flex items-center gap-3 md:gap-4 p-3 md:p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-primary/20 transition-all hover:scale-[1.02] hover:bg-white/10 hover:shadow-lg">
+                            <SpotlightCard className="flex items-center gap-3 md:gap-4 p-3 md:p-4 rounded-2xl">
                                 <div className={`flex-shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-xl ${exp.logoBg} flex items-center justify-center text-white font-bold text-lg md:text-xl shadow-inner`}>
                                     {exp.logo}
                                 </div>
@@ -65,7 +66,7 @@ export default function Experience() {
                                         {exp.period}
                                     </p>
                                 </div>
-                            </div>
+                            </SpotlightCard>
                         </motion.div>
                     ))}
                 </div>
