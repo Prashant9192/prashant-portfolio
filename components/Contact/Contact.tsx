@@ -2,9 +2,10 @@
 
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Send, Loader2, Mail, MapPin, Phone } from 'lucide-react'
+import { Send, Loader2, Mail, MapPin, Phone, ArrowRight, ArrowLeft } from 'lucide-react'
 
 export default function Contact() {
+    const [isFlipped, setIsFlipped] = useState(false)
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -31,7 +32,10 @@ export default function Contact() {
             setFormData({ name: '', email: '', message: '' })
 
             // Reset success message after 3 seconds
-            setTimeout(() => setStatus('idle'), 3000)
+            setTimeout(() => {
+                setStatus('idle')
+                setIsFlipped(false) // Flip back after success
+            }, 3000)
         } catch (error) {
             console.error('Error:', error)
             setStatus('error')
@@ -47,144 +51,161 @@ export default function Contact() {
     }
 
     return (
-        <section id="contact" className="py-12 md:py-20 relative overflow-hidden">
+        <section id="contact" className="py-20 relative overflow-hidden min-h-[800px] flex items-center justify-center">
             {/* Background Elements */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
                 <div className="absolute bottom-[20%] left-[10%] w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[100px] animate-pulse" />
                 <div className="absolute top-[10%] right-[5%] w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[100px] animate-pulse delay-1000" />
             </div>
 
-            <div className="container mx-auto px-4">
+            <div className="container mx-auto px-4 perspective-1000">
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="mb-8 md:mb-12 text-center md:text-left"
+                    className="relative w-full max-w-md mx-auto h-[600px]"
+                    initial={false}
+                    animate={{ rotateY: isFlipped ? 180 : 0 }}
+                    transition={{ duration: 0.6 }}
+                    style={{ transformStyle: "preserve-3d" }}
                 >
-                    <h2 className="text-3xl md:text-5xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
-                        Get in <span className="text-primary">Touch</span>
-                    </h2>
-                    <p className="text-muted-foreground text-base md:text-lg max-w-2xl leading-relaxed mx-auto md:mx-0">
-                        Have a project in mind or just want to say hi? I'm always open to discussing new ideas and opportunities.
-                    </p>
-                </motion.div>
-
-                <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-start">
-                    {/* Contact Info */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        className="h-full"
+                    {/* FRONT FACE - Contact Info */}
+                    <div
+                        className="absolute inset-0 w-full h-full backface-hidden"
+                        style={{ backfaceVisibility: 'hidden' }}
                     >
-                        <div className="h-full p-5 md:p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm overflow-hidden hover:border-white/20 transition-colors space-y-6 md:space-y-8">
-
-                            <div className="relative flex items-start gap-4 md:gap-6 group/item">
-                                <div className="p-3 md:p-4 rounded-2xl bg-white/5 border border-white/5 text-primary group-hover/item:bg-primary group-hover/item:text-white transition-colors duration-300 shadow-inner shrink-0">
-                                    <Mail size={20} className="md:w-6 md:h-6" />
-                                </div>
-                                <div>
-                                    <h3 className="font-bold text-lg md:text-xl mb-1 md:mb-2">Email</h3>
-                                    <p className="text-muted-foreground text-sm md:text-base group-hover/item:text-primary transition-colors break-all">prashantbasnet222@gmail.com</p>
-                                </div>
+                        <div className="h-full p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md flex flex-col justify-between shadow-2xl">
+                            <div className="text-center space-y-4">
+                                <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
+                                    Get in <span className="text-primary">Touch</span>
+                                </h2>
+                                <p className="text-muted-foreground text-base">
+                                    Have a project in mind? Let's discuss how we can work together.
+                                </p>
                             </div>
 
-                            <div className="relative flex items-start gap-4 md:gap-6 group/item">
-                                <div className="p-3 md:p-4 rounded-2xl bg-white/5 border border-white/5 text-primary group-hover/item:bg-primary group-hover/item:text-white transition-colors duration-300 shadow-inner shrink-0">
-                                    <Phone size={20} className="md:w-6 md:h-6" />
+                            <div className="space-y-6">
+                                <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
+                                    <div className="p-3 rounded-xl bg-primary/10 text-primary">
+                                        <Mail size={20} />
+                                    </div>
+                                    <div className="overflow-hidden">
+                                        <p className="text-sm text-muted-foreground">Email</p>
+                                        <p className="font-medium truncate">prashantbasnet222@gmail.com</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h3 className="font-bold text-lg md:text-xl mb-1 md:mb-2">Phone</h3>
-                                    <p className="text-muted-foreground text-sm md:text-base group-hover/item:text-primary transition-colors">+91 7030842261</p>
+
+                                <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
+                                    <div className="p-3 rounded-xl bg-primary/10 text-primary">
+                                        <Phone size={20} />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-muted-foreground">Phone</p>
+                                        <p className="font-medium">+91 7030842261</p>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="relative flex items-start gap-4 md:gap-6 group/item">
-                                <div className="p-3 md:p-4 rounded-2xl bg-white/5 border border-white/5 text-primary group-hover/item:bg-primary group-hover/item:text-white transition-colors duration-300 shadow-inner shrink-0">
-                                    <MapPin size={20} className="md:w-6 md:h-6" />
+                                <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
+                                    <div className="p-3 rounded-xl bg-primary/10 text-primary">
+                                        <MapPin size={20} />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-muted-foreground">Location</p>
+                                        <p className="font-medium">Mumbai, India</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h3 className="font-bold text-lg md:text-xl mb-1 md:mb-2">Location</h3>
-                                    <p className="text-muted-foreground text-sm md:text-base group-hover/item:text-primary transition-colors">Mumbai, India</p>
-                                </div>
-                            </div>
-                        </div>
-                    </motion.div>
-
-                    {/* Contact Form */}
-                    <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                    >
-                        <form onSubmit={handleSubmit} className="p-5 md:p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm overflow-hidden hover:border-white/20 transition-colors space-y-4 md:space-y-6">
-
-                            <div className="space-y-2">
-                                <label htmlFor="name" className="text-sm font-medium ml-1">Name</label>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    required
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-3 md:px-6 md:py-4 rounded-2xl bg-white/5 border border-white/5 focus:border-primary focus:bg-white/10 focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 placeholder:text-white/20 text-sm md:text-base"
-                                    placeholder="John Doe"
-                                />
-                            </div>
-
-                            <div className="space-y-2">
-                                <label htmlFor="email" className="text-sm font-medium ml-1">Email</label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    required
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-3 md:px-6 md:py-4 rounded-2xl bg-white/5 border border-white/5 focus:border-primary focus:bg-white/10 focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 placeholder:text-white/20 text-sm md:text-base"
-                                    placeholder="john@example.com"
-                                />
-                            </div>
-
-                            <div className="space-y-2">
-                                <label htmlFor="message" className="text-sm font-medium ml-1">Message</label>
-                                <textarea
-                                    id="message"
-                                    name="message"
-                                    required
-                                    rows={4}
-                                    value={formData.message}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-3 md:px-6 md:py-4 rounded-2xl bg-white/5 border border-white/5 focus:border-primary focus:bg-white/10 focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 resize-none placeholder:text-white/20 text-sm md:text-base"
-                                    placeholder="Tell me about your project..."
-                                />
                             </div>
 
                             <button
-                                type="submit"
-                                disabled={status === 'loading'}
-                                className="w-full py-3 md:py-4 rounded-2xl bg-gradient-to-r from-primary to-purple-600 text-white font-bold text-base md:text-lg flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                                onClick={() => setIsFlipped(true)}
+                                className="w-full py-4 rounded-2xl bg-gradient-to-r from-primary to-purple-600 text-white font-bold text-lg flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 group"
                             >
-                                {status === 'loading' ? (
-                                    <>
-                                        <Loader2 size={20} className="animate-spin md:w-6 md:h-6" />
-                                        Sending...
-                                    </>
-                                ) : status === 'success' ? (
-                                    'Message Sent!'
-                                ) : status === 'error' ? (
-                                    'Failed to Send'
-                                ) : (
-                                    <>
-                                        Send Message
-                                        <Send size={18} className="md:w-5 md:h-5" />
-                                    </>
-                                )}
+                                Write a Message
+                                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                             </button>
-                        </form>
-                    </motion.div>
-                </div>
+                        </div>
+                    </div>
+
+                    {/* BACK FACE - Contact Form */}
+                    <div
+                        className="absolute inset-0 w-full h-full backface-hidden"
+                        style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+                    >
+                        <div className="h-full p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md flex flex-col shadow-2xl">
+                            <div className="flex items-center justify-between mb-6">
+                                <h2 className="text-2xl font-bold">Send Message</h2>
+                                <button
+                                    onClick={() => setIsFlipped(false)}
+                                    className="p-2 rounded-full hover:bg-white/10 transition-colors text-muted-foreground hover:text-white"
+                                >
+                                    <ArrowLeft size={20} />
+                                </button>
+                            </div>
+
+                            <form onSubmit={handleSubmit} className="flex-1 flex flex-col gap-4">
+                                <div className="space-y-2">
+                                    <label htmlFor="name" className="text-sm font-medium ml-1">Name</label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        required
+                                        value={formData.name}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/5 focus:border-primary focus:bg-white/10 focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 placeholder:text-white/20"
+                                        placeholder="John Doe"
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label htmlFor="email" className="text-sm font-medium ml-1">Email</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        required
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/5 focus:border-primary focus:bg-white/10 focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 placeholder:text-white/20"
+                                        placeholder="john@example.com"
+                                    />
+                                </div>
+
+                                <div className="space-y-2 flex-1">
+                                    <label htmlFor="message" className="text-sm font-medium ml-1">Message</label>
+                                    <textarea
+                                        id="message"
+                                        name="message"
+                                        required
+                                        value={formData.message}
+                                        onChange={handleChange}
+                                        className="w-full h-full min-h-[120px] px-4 py-3 rounded-xl bg-white/5 border border-white/5 focus:border-primary focus:bg-white/10 focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 resize-none placeholder:text-white/20"
+                                        placeholder="Tell me about your project..."
+                                    />
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    disabled={status === 'loading'}
+                                    className="w-full py-4 rounded-2xl bg-gradient-to-r from-primary to-purple-600 text-white font-bold text-lg flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 mt-auto"
+                                >
+                                    {status === 'loading' ? (
+                                        <>
+                                            <Loader2 size={20} className="animate-spin" />
+                                            Sending...
+                                        </>
+                                    ) : status === 'success' ? (
+                                        'Message Sent!'
+                                    ) : status === 'error' ? (
+                                        'Failed to Send'
+                                    ) : (
+                                        <>
+                                            Send Message
+                                            <Send size={20} />
+                                        </>
+                                    )}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </motion.div>
             </div>
         </section>
     )
