@@ -40,10 +40,10 @@ export default function Header() {
 
   return (
     <motion.header
-      initial={{ y: -8, opacity: 0 }}
+      initial={{ y: -8, opacity: 1 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-      className={`${styles.header} glass sticky top-0 z-50`}
+      className={`${styles.header} sticky top-0 z-50`}
       role="banner"
     >
       <div className="mx-auto max-w-6xl px-4 h-20 flex items-center justify-between">

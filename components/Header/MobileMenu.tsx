@@ -23,12 +23,14 @@ export default function MobileMenu() {
         role="dialog"
         aria-modal="true"
       >
-        <nav className="flex flex-col gap-4 p-6">
-          <Link href="/projects" onClick={() => setOpen(false)}>Projects</Link>
-          <Link href="/about" onClick={() => setOpen(false)}>About</Link>
-          <Link href="/contact" onClick={() => setOpen(false)}>Contact</Link>
-          <a href="/Prashant-Resume.pdf" onClick={() => setOpen(false)}>Download Resume</a>
-        </nav>
+        <div className="mobile-menu-glass px-4 pt-4 pb-8">
+          <nav className={` flex flex-col gap-4 text-base font-medium`}>
+            <Link href="/projects" onClick={() => setOpen(false)}>Projects</Link>
+            <Link href="/about" onClick={() => setOpen(false)}>About</Link>
+            <Link href="/contact" onClick={() => setOpen(false)}>Contact</Link>
+            <a href="/Prashant-Resume.pdf" onClick={() => setOpen(false)}>Download Resume</a>
+          </nav>
+        </div>
       </div>
     </>
   )

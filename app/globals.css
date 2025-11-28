@@ -95,6 +95,14 @@ body {
   position: relative;
   overflow-x: hidden;
   cursor: none; /* Hide default cursor */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+  width: 0;
+  height: 0;
 }
 
 /* Ambient Background Blobs */
@@ -125,14 +133,7 @@ body::after {
 }
 
 
-/* Reusable Glass Effect */
-.glass {
-  background: color-mix(in srgb, var(--background) 5%, transparent);
-  backdrop-filter: blur(5px) !important;
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid color-mix(in srgb, var(--foreground) 2%, transparent);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-}
+
 
 /* Infinite Scroll Animation */
 @keyframes scroll {
@@ -164,13 +165,3 @@ html::-webkit-scrollbar {
   height: 0;
 }
 
-body {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-
-body::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-  width: 0;
-  height: 0;
-}
