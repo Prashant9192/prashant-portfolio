@@ -4,6 +4,28 @@ import Experience from '@/components/Experience/Experience'
 import Skills from '@/components/Skills/Skills'
 import Projects from '@/components/Projects/Projects'
 import Contact from '@/components/Contact/Contact'
+import { Metadata } from 'next'
+import { getDb } from '@/lib/db'
+import { SiteMetadata } from '@/lib/models'
+
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    const db = await getDb()
+    const metadata = await db.collection<SiteMetadata>('metadata').findOne({})
+    
+    if (metadata?.canonicalUrl) {
+      return {
+        alternates: {
+          canonical: metadata.canonicalUrl,
+        },
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching canonical URL:', error)
+  }
+  
+  return {}
+}
 
 export default function Home() {
   return (

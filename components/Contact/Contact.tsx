@@ -1,19 +1,36 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Send, Loader2, Mail, MapPin, Phone, ArrowRight, ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
 import MagneticButton from '@/components/ui/MagneticButton'
+import { ContactInfo } from '@/lib/models'
 
 export default function Contact() {
     const [isFlipped, setIsFlipped] = useState(false)
+    const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null)
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         message: ''
     })
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+
+    useEffect(() => {
+        async function fetchContactInfo() {
+            try {
+                const res = await fetch('/api/content/contact')
+                if (res.ok) {
+                    const data = await res.json()
+                    setContactInfo(data)
+                }
+            } catch (error) {
+                console.error('Failed to fetch contact info:', error)
+            }
+        }
+        fetchContactInfo()
+    }, [])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -62,7 +79,7 @@ export default function Contact() {
                 <div className="absolute top-[10%] right-[5%] w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[100px] animate-pulse delay-1000" />
             </div>
 
-            <div className="container mx-auto px-4 perspective-1000">
+            <div className="container mx-auto px-4 [perspective:1000px]">
                 <motion.div
                     className="relative w-full max-w-md lg:max-w-4xl mx-auto grid"
                     initial={false}
@@ -97,44 +114,50 @@ export default function Contact() {
                             </div>
 
                             <div className="space-y-4 md:space-y-6 my-6 md:my-8 lg:my-0 lg:flex-1">
-                                <div
-                                    onClick={() => window.location.href = 'mailto:prashantbasnet222@gmail.com'}
-                                    className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors cursor-pointer group/item"
-                                >
-                                    <div className="p-3 rounded-xl bg-primary/10 text-primary group-hover/item:bg-primary/20 transition-colors">
-                                        <Mail size={20} />
+                                {contactInfo?.email && (
+                                    <div
+                                        onClick={() => window.location.href = `mailto:${contactInfo.email}`}
+                                        className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors cursor-pointer group/item"
+                                    >
+                                        <div className="p-3 rounded-xl bg-primary/10 text-primary group-hover/item:bg-primary/20 transition-colors">
+                                            <Mail size={20} />
+                                        </div>
+                                        <div className="overflow-hidden">
+                                            <p className="font-bold text-lg">Email</p>
+                                            <p className="text-sm text-muted-foreground break-all">{contactInfo.email}</p>
+                                        </div>
                                     </div>
-                                    <div className="overflow-hidden">
-                                        <p className="font-bold text-lg">Email</p>
-                                        <p className="text-sm text-muted-foreground break-all">prashantbasnet222@gmail.com</p>
-                                    </div>
-                                </div>
+                                )}
 
-                                <div
-                                    onClick={() => {
-                                        navigator.clipboard.writeText('+91 7030842261');
-                                        toast.success('Phone number copied to clipboard!');
-                                    }}
-                                    className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors cursor-pointer group/item"
-                                >
-                                    <div className="p-3 rounded-xl bg-primary/10 text-primary group-hover/item:bg-primary/20 transition-colors">
-                                        <Phone size={20} />
+                                {contactInfo?.phone && (
+                                    <div
+                                        onClick={() => {
+                                            navigator.clipboard.writeText(contactInfo.phone);
+                                            toast.success('Phone number copied to clipboard!');
+                                        }}
+                                        className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors cursor-pointer group/item"
+                                    >
+                                        <div className="p-3 rounded-xl bg-primary/10 text-primary group-hover/item:bg-primary/20 transition-colors">
+                                            <Phone size={20} />
+                                        </div>
+                                        <div>
+                                            <p className="font-bold text-lg">Phone</p>
+                                            <p className="text-sm text-muted-foreground">{contactInfo.phone}</p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p className="font-bold text-lg">Phone</p>
-                                        <p className="text-sm text-muted-foreground">+91 7030842261</p>
-                                    </div>
-                                </div>
+                                )}
 
-                                <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
-                                    <div className="p-3 rounded-xl bg-primary/10 text-primary">
-                                        <MapPin size={20} />
+                                {contactInfo?.location && (
+                                    <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
+                                        <div className="p-3 rounded-xl bg-primary/10 text-primary">
+                                            <MapPin size={20} />
+                                        </div>
+                                        <div>
+                                            <p className="font-bold text-lg">Location</p>
+                                            <p className="text-sm text-muted-foreground">{contactInfo.location}</p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p className="font-bold text-lg">Location</p>
-                                        <p className="text-sm text-muted-foreground">Mumbai, India</p>
-                                    </div>
-                                </div>
+                                )}
                             </div>
 
                             <button

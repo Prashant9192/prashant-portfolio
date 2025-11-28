@@ -1,13 +1,29 @@
 'use client'
 
-
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import { AboutContent } from '@/lib/models'
 
 export default function About() {
+    const [aboutData, setAboutData] = useState<AboutContent | null>(null)
+
+    useEffect(() => {
+        async function fetchAboutData() {
+            try {
+                const res = await fetch('/api/content/about')
+                if (res.ok) {
+                    const data = await res.json()
+                    setAboutData(data)
+                }
+            } catch (error) {
+                console.error('Failed to fetch about data:', error)
+            }
+        }
+        fetchAboutData()
+    }, [])
     return (
-        <div id="about" className="h-full">
+        <section id="about" className="h-full">
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
@@ -43,8 +59,8 @@ export default function About() {
                             className="relative w-24 h-24 md:w-32 md:h-32 flex-shrink-0 rounded-full overflow-hidden border-2 border-white/10 shadow-2xl group mx-auto sm:mx-0"
                         >
                             <Image
-                                src="/MyAvatar.png"
-                                alt="Prashant Basnet"
+                                src={aboutData?.avatar || '/MyAvatar.png'}
+                                alt="Portfolio Avatar"
                                 fill
                                 className="object-cover transition-transform duration-500 group-hover:scale-110"
                             />
@@ -53,20 +69,22 @@ export default function About() {
                         {/* Bio Text */}
                         <div className="space-y-4 md:space-y-6 text-center sm:text-left">
                             <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
-                                I'm a Full Stack web Developer with experience in building scalable, SEO-friendly and modern web applications.
+                                {aboutData?.bio || 'Loading...'}
                             </p>
                         </div>
                     </div>
                 </div>
 
                 {/* Currently Status - Dark Card Style */}
-                <div className="mt-6 md:mt-8 flex items-start gap-4 text-sm text-primary/80   p-5 rounded-2xl border border-white/5 shadow-inner">
-                    <span className="text-xl mt-0.5">🚀</span>
-                    <span className="leading-relaxed">
-                        Currently creating modern web solutions at <span className="font-semibold text-primary">Digitrix Agency</span>
-                    </span>
-                </div>
+                {aboutData?.status && (
+                    <div className="mt-6 md:mt-8 flex items-start gap-4 text-sm text-primary/80   p-5 rounded-2xl border border-white/5 shadow-inner">
+                        <span className="text-xl mt-0.5">🚀</span>
+                        <span className="leading-relaxed">
+                            Currently creating modern web solutions at <span className="font-semibold text-primary">{aboutData.status.company}</span>
+                        </span>
+                    </div>
+                )}
             </motion.div>
-        </div>
+        </section>
     )
 }

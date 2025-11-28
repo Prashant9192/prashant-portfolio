@@ -1,14 +1,34 @@
 'use client'
 
-import React, { useRef } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionTemplate } from 'framer-motion'
 import { ArrowRight, Download } from 'lucide-react'
 import Image from 'next/image'
 import Typewriter from 'typewriter-effect'
 import MagneticButton from '@/components/ui/MagneticButton'
+import { HeroContent } from '@/lib/models'
 
 export default function Hero() {
     const ref = useRef(null)
+    const [heroData, setHeroData] = useState<HeroContent | null>(null)
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        async function fetchHeroData() {
+            try {
+                const res = await fetch('/api/content/hero')
+                if (res.ok) {
+                    const data = await res.json()
+                    setHeroData(data)
+                }
+            } catch (error) {
+                console.error('Failed to fetch hero data:', error)
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchHeroData()
+    }, [])
 
     // 3D Tilt Effect
     const x = useMotionValue(0)
@@ -44,49 +64,48 @@ export default function Hero() {
                 >
                     <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight leading-tight mb-1 ">
                         Hi, I'm <br />
-                        <span className="whitespace-nowrap">Prashant Basnet</span>
+                        <span className="whitespace-nowrap">{heroData?.name || 'Loading...'}</span>
                     </h1>
 
-                    <div className="text-2xl md:text-3xl font-semibold text-[#3B82F6] mb-1 md:whitespace-nowrap h-[40px] flex items-center">
-                        <Typewriter
-                            options={{
-                                strings: [
-                                    'Full Stack Web Developer',
-                                    'UI/UX Enthusiast',
-                                    'React Specialist',
-                                    'Next.js Expert'
-                                ],
-                                autoStart: true,
-                                loop: true,
-                                deleteSpeed: 50,
-                                delay: 50,
-                            }}
-                        />
-                    </div>
+                    {heroData?.roles && heroData.roles.length > 0 && (
+                        <div className="text-2xl md:text-3xl font-semibold text-[#3B82F6] mb-1 md:whitespace-nowrap h-[40px] flex items-center">
+                            <Typewriter
+                                options={{
+                                    strings: heroData.roles,
+                                    autoStart: true,
+                                    loop: true,
+                                    deleteSpeed: 50,
+                                    delay: 50,
+                                }}
+                            />
+                        </div>
+                    )}
 
-                    <p className="text-muted-foreground text-1xl max-w-lg leading-relaxed mb-1 ">
-                        I build scalable, fast, and modern web applications. Currently, I work at Digitrix Agency.
+                    <p className="text-muted-foreground text-lg max-w-lg leading-relaxed mb-1 ">
+                        {heroData?.description || 'Loading...'}
                     </p>
 
                     <div className="flex flex-wrap gap-4 pt-4">
                         <MagneticButton>
                             <a
                                 href="#projects"
-                                className="text-1xl inline-flex items-center gap-2 bg-[#3B82F6] text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors"
+                                className="text-base inline-flex items-center gap-2 bg-[#3B82F6] text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors"
                             >
                                 View Projects
                             </a>
                         </MagneticButton>
 
-                        <MagneticButton>
-                            <a
-                                href="/Prashant-Resume.pdf"
-                                download="Prashant-Resume.pdf"
-                                className="text-1xl inline-flex items-center gap-2 bg-[#1F2229] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#2A2D35] transition-colors border border-white/5"
-                            >
-                                Download Resume
-                            </a>
-                        </MagneticButton>
+                        {heroData?.resumeUrl && (
+                            <MagneticButton>
+                                <a
+                                    href={heroData.resumeUrl}
+                                    download={heroData.resumeUrl.split('/').pop()}
+                                    className="text-base inline-flex items-center gap-2 bg-[#1F2229] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#2A2D35] transition-colors border border-white/5"
+                                >
+                                    Download Resume
+                                </a>
+                            </MagneticButton>
+                        )}
                     </div>
                 </motion.div>
 
@@ -95,7 +114,7 @@ export default function Hero() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
-                    className="relative flex justify-center md:justify-end perspective-1000"
+                    className="relative flex justify-center md:justify-end [perspective:1000px]"
                 >
                     <motion.div
                         ref={ref}
@@ -123,8 +142,8 @@ export default function Hero() {
                             }}
                         >
                             <Image
-                                src="/MyAvatar.png"
-                                alt="Prashant Basnet Avatar"
+                                src={heroData?.avatar || '/MyAvatar.png'}
+                                alt={`${heroData?.name || 'Portfolio'} Avatar`}
                                 width={600}
                                 height={600}
                                 className="relative z-10 object-contain drop-shadow-2xl"
