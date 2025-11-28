@@ -69,7 +69,7 @@ export async function POST(request: Request) {
       }
     )
     
-    const { _id, ...aboutData } = result.value || body
+    const { _id, ...aboutData } = result?.value || body
     return NextResponse.json({ success: true, data: aboutData })
   } catch (error) {
     console.error('Error updating about data:', error)

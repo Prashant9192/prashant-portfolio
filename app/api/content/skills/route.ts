@@ -112,7 +112,7 @@ export async function POST(request: Request) {
       }
     )
     
-    const sortedSkills = (result.value?.skills || skillsWithOrder)
+    const sortedSkills = (result?.value?.skills || skillsWithOrder)
       .sort((a: Skill, b: Skill) => a.order - b.order)
       .map(({ _id, ...skill }: Skill) => skill)
     

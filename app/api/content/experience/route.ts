@@ -89,7 +89,7 @@ export async function POST(request: Request) {
       }
     )
     
-    const sortedExperiences = (result.value?.experiences || experiencesWithOrder)
+    const sortedExperiences = (result?.value?.experiences || experiencesWithOrder)
       .sort((a: ExperienceItem, b: ExperienceItem) => a.order - b.order)
       .map(({ _id, ...exp }: ExperienceItem) => exp)
     
