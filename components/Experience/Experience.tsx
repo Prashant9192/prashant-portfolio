@@ -25,7 +25,7 @@ const experiences = [
 
 export default function Experience() {
     return (
-        <div id="experience" className="h-full">
+        <section id="experience" className="h-full">
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
@@ -50,7 +50,7 @@ export default function Experience() {
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
                         >
-                            <SpotlightCard propClass="flex items-center gap-3 md:gap-4 p-2 rounded-2xl" className="flex items-center gap-3 md:gap-4 p-2 rounded-2xl">
+                            <SpotlightCard className="rounded-2xl" propClass="flex items-center gap-3 md:gap-4 p-2">
                                 <div className={`flex-shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-xl ${exp.logoBg} flex items-center justify-center text-white font-bold text-lg md:text-xl shadow-inner`}>
                                     {exp.logo}
                                 </div>
@@ -70,6 +70,6 @@ export default function Experience() {
                     ))}
                 </div>
             </motion.div>
-        </div>
+        </section>
     )
 }

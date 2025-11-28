@@ -62,7 +62,7 @@ export default function Contact() {
                 <div className="absolute top-[10%] right-[5%] w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[100px] animate-pulse delay-1000" />
             </div>
 
-            <div className="container mx-auto px-4 perspective-1000">
+            <div className="container mx-auto px-4 [perspective:1000px]">
                 <motion.div
                     className="relative w-full max-w-md lg:max-w-4xl mx-auto grid"
                     initial={false}

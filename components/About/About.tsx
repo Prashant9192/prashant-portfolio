@@ -7,7 +7,7 @@ import Image from 'next/image'
 
 export default function About() {
     return (
-        <div id="about" className="h-full">
+        <section id="about" className="h-full">
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
@@ -67,6 +67,6 @@ export default function About() {
                     </span>
                 </div>
             </motion.div>
-        </div>
+        </section>
     )
 }

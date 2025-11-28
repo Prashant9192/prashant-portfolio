@@ -64,7 +64,7 @@ export default function Hero() {
                         />
                     </div>
 
-                    <p className="text-muted-foreground text-1xl max-w-lg leading-relaxed mb-1 ">
+                    <p className="text-muted-foreground text-lg max-w-lg leading-relaxed mb-1 ">
                         I build scalable, fast, and modern web applications. Currently, I work at Digitrix Agency.
                     </p>
 
@@ -72,7 +72,7 @@ export default function Hero() {
                         <MagneticButton>
                             <a
                                 href="#projects"
-                                className="text-1xl inline-flex items-center gap-2 bg-[#3B82F6] text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors"
+                                className="text-base inline-flex items-center gap-2 bg-[#3B82F6] text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors"
                             >
                                 View Projects
                             </a>
@@ -82,7 +82,7 @@ export default function Hero() {
                             <a
                                 href="/Prashant-Resume.pdf"
                                 download="Prashant-Resume.pdf"
-                                className="text-1xl inline-flex items-center gap-2 bg-[#1F2229] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#2A2D35] transition-colors border border-white/5"
+                                className="text-base inline-flex items-center gap-2 bg-[#1F2229] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#2A2D35] transition-colors border border-white/5"
                             >
                                 Download Resume
                             </a>
@@ -95,7 +95,7 @@ export default function Hero() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
-                    className="relative flex justify-center md:justify-end perspective-1000"
+                    className="relative flex justify-center md:justify-end [perspective:1000px]"
                 >
                     <motion.div
                         ref={ref}

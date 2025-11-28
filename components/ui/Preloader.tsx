@@ -38,7 +38,12 @@ export default function Preloader() {
                             animate={{ width: '100%' }}
                             transition={{ duration: 1.5, ease: "easeInOut" }}
                         >
-                            <div className="h-full bg-primary w-full origin-left animate-progress" />
+                            <motion.div 
+                                className="h-full bg-primary w-full origin-left" 
+                                initial={{ scaleX: 0 }}
+                                animate={{ scaleX: 1 }}
+                                transition={{ duration: 1.5, ease: "easeInOut" }}
+                            />
                         </motion.div>
                     </motion.div>
                 </motion.div>
