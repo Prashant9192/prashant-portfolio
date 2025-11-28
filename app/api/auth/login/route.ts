@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { verifyOTP } from '@/lib/otp'
 
-const ADMIN_EMAIL = 'prashantbasnet664@gmail.com'
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'prashantbasnet664@gmail.com'
 
 export async function POST(request: Request) {
   try {
