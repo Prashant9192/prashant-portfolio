@@ -98,7 +98,7 @@ export async function POST(request: Request) {
       }
     )
     
-    const sortedProjects = (result.value?.projects || projectsWithOrder)
+    const sortedProjects = (result?.value?.projects || projectsWithOrder)
       .sort((a: Project, b: Project) => a.order - b.order)
       .map(({ _id, ...project }: Project) => project)
     
