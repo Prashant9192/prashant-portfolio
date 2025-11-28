@@ -1,178 +1,124 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Mail, Loader2 } from 'lucide-react'
-import { toast } from 'sonner'
+import Link from 'next/link'
+import { Sparkles, User, Briefcase, Code, Award, Mail, Settings, LogOut, Home } from 'lucide-react'
+import Modal from '@/components/admin/Modal'
+import MetadataEditorModal from '@/components/admin/editors/MetadataEditorModal'
+import HeroEditorModal from '@/components/admin/editors/HeroEditorModal'
+import AboutEditorModal from '@/components/admin/editors/AboutEditorModal'
+import ProjectsEditorModal from '@/components/admin/editors/ProjectsEditorModal'
+import ExperienceEditorModal from '@/components/admin/editors/ExperienceEditorModal'
+import SkillsEditorModal from '@/components/admin/editors/SkillsEditorModal'
+import ContactEditorModal from '@/components/admin/editors/ContactEditorModal'
 
-const ADMIN_EMAIL = 'prashantbasnet664@gmail.com'
+type ModalType = 'metadata' | 'hero' | 'about' | 'projects' | 'experience' | 'skills' | 'contact' | null
 
-export default function AdminLogin() {
-    const [step, setStep] = useState<'email' | 'otp'>('email')
-    const [email, setEmail] = useState(ADMIN_EMAIL)
-    const [otp, setOtp] = useState('')
-    const [loading, setLoading] = useState(false)
+export default function AdminDashboard() {
     const router = useRouter()
+    const [activeModal, setActiveModal] = useState<ModalType>(null)
 
     useEffect(() => {
-        // Check if already logged in
-        if (localStorage.getItem('adminToken')) {
-            router.push('/admin/dashboard')
+        if (!localStorage.getItem('adminToken')) {
+            router.push('/admin/login')
         }
     }, [router])
 
-    const handleSendOTP = async (e: React.FormEvent) => {
-        e.preventDefault()
-        setLoading(true)
-
-        try {
-            const res = await fetch('/api/auth/send-otp', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email })
-            })
-
-            const data = await res.json()
-
-            if (res.ok) {
-                toast.success('OTP sent to your email!')
-                setStep('otp')
-            } else {
-                toast.error(data.error || 'Failed to send OTP')
-            }
-        } catch (err) {
-            toast.error('Failed to send OTP. Please try again.')
-        } finally {
-            setLoading(false)
-        }
+    const handleLogout = () => {
+        localStorage.removeItem('adminToken')
+        router.push('/admin/login')
     }
 
-    const handleVerifyOTP = async (e: React.FormEvent) => {
-        e.preventDefault()
-        setLoading(true)
-
-        try {
-            const res = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, otp })
-            })
-
-            const data = await res.json()
-
-            if (res.ok) {
-                localStorage.setItem('adminToken', data.token)
-                toast.success('Login successful!')
-                router.push('/admin/dashboard')
-            } else {
-                toast.error(data.error || 'Invalid OTP')
-            }
-        } catch (err) {
-            toast.error('Verification failed. Please try again.')
-        } finally {
-            setLoading(false)
-        }
-    }
+    const sections = [
+        { name: 'Site Metadata', id: 'metadata' as ModalType, icon: Settings, description: 'Edit site title and description', color: 'text-blue-500 dark:text-blue-400', maxWidth: 'xl' as const },
+        { name: 'Hero Section', id: 'hero' as ModalType, icon: Sparkles, description: 'Edit name, roles, and description', color: 'text-purple-500 dark:text-purple-400', maxWidth: 'xl' as const },
+        { name: 'About Section', id: 'about' as ModalType, icon: User, description: 'Edit bio and status', color: 'text-green-500 dark:text-green-400', maxWidth: 'xl' as const },
+        { name: 'Projects', id: 'projects' as ModalType, icon: Briefcase, description: 'Manage portfolio projects', color: 'text-orange-500 dark:text-orange-400', maxWidth: '2xl' as const },
+        { name: 'Experience', id: 'experience' as ModalType, icon: Award, description: 'Manage work experience', color: 'text-yellow-500 dark:text-yellow-400', maxWidth: '2xl' as const },
+        { name: 'Skills', id: 'skills' as ModalType, icon: Code, description: 'Manage technical skills', color: 'text-pink-500 dark:text-pink-400', maxWidth: '2xl' as const },
+        { name: 'Contact Info', id: 'contact' as ModalType, icon: Mail, description: 'Edit email, phone, and location', color: 'text-indigo-500 dark:text-indigo-400', maxWidth: 'xl' as const },
+    ]
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800 p-4">
-            <div className="w-full max-w-md">
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 shadow-2xl border border-white/20">
-                    <div className="flex items-center gap-3 mb-2">
-                        <div className="p-3 rounded-xl bg-primary/10 text-primary">
-                            <Mail size={24} />
-                        </div>
-                        <h1 className="text-3xl font-bold text-white">Admin Login</h1>
+        <>
+            {/* Header matching portfolio theme */}
+            <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-xl border-b border-border shadow-lg">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+                    <h1 className="text-2xl font-bold text-foreground">
+                        Portfolio CMS
+                    </h1>
+                    <div className="flex gap-3">
+                        <Link
+                            href="/"
+                            className="px-4 py-2 rounded-xl bg-background border border-border hover:bg-accent transition-all text-foreground flex items-center gap-2"
+                        >
+                            <Home size={18} />
+                            View Site
+                        </Link>
+                        <button
+                            onClick={handleLogout}
+                            className="px-4 py-2 rounded-xl bg-destructive/20 border border-destructive/30 text-destructive hover:bg-destructive/30 transition-all flex items-center gap-2"
+                        >
+                            <LogOut size={18} />
+                            Logout
+                        </button>
                     </div>
-                    <p className="text-gray-300 mb-8">
-                        {step === 'email'
-                            ? 'Enter your email to receive OTP'
-                            : 'Enter the 6-digit code sent to your email'}
-                    </p>
-
-                    {step === 'email' ? (
-                        <form onSubmit={handleSendOTP} className="space-y-6">
-                            <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-gray-200 mb-2">
-                                    Email Address
-                                </label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/50 outline-none transition-all"
-                                    placeholder="your@email.com"
-                                    required
-                                    disabled
-                                />
-                                <p className="text-xs text-gray-400 mt-2">Admin email is pre-configured</p>
-                            </div>
-
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-primary to-purple-600 text-white font-bold hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                            >
-                                {loading ? (
-                                    <>
-                                        <Loader2 size={18} className="animate-spin" />
-                                        Sending OTP...
-                                    </>
-                                ) : (
-                                    'Send OTP'
-                                )}
-                            </button>
-                        </form>
-                    ) : (
-                        <form onSubmit={handleVerifyOTP} className="space-y-6">
-                            <div>
-                                <label htmlFor="otp" className="block text-sm font-medium text-gray-200 mb-2">
-                                    6-Digit OTP
-                                </label>
-                                <input
-                                    type="text"
-                                    id="otp"
-                                    value={otp}
-                                    onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/50 outline-none transition-all text-center text-2xl tracking-widest font-bold"
-                                    placeholder="000000"
-                                    maxLength={6}
-                                    required
-                                    autoFocus
-                                />
-                                <p className="text-xs text-gray-400 mt-2">Code expires in 10 minutes</p>
-                            </div>
-
-                            <button
-                                type="submit"
-                                disabled={loading || otp.length !== 6}
-                                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-primary to-purple-600 text-white font-bold hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                            >
-                                {loading ? (
-                                    <>
-                                        <Loader2 size={18} className="animate-spin" />
-                                        Verifying...
-                                    </>
-                                ) : (
-                                    'Verify & Login'
-                                )}
-                            </button>
-
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setStep('email')
-                                    setOtp('')
-                                }}
-                                className="w-full text-sm text-gray-400 hover:text-white transition-colors"
-                            >
-                                ← Back to email
-                            </button>
-                        </form>
-                    )}
                 </div>
-            </div>
-        </div>
+            </header>
+
+            {/* Main Content */}
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div className="mb-8">
+                    <h2 className="text-3xl font-bold text-foreground mb-2">
+                        Dashboard
+                    </h2>
+                    <p className="text-muted-foreground">Manage your portfolio content</p>
+                </div>
+
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {sections.map((section) => (
+                        <button
+                            key={section.name}
+                            onClick={() => setActiveModal(section.id)}
+                            className="w-full text-left p-6 rounded-2xl bg-card border border-border hover:border-primary transition-all group shadow-lg hover:shadow-xl"
+                        >
+                            <div className="flex items-start gap-4">
+                                <div className={`p-3 rounded-xl bg-primary/10 ${section.color} group-hover:bg-primary/20 transition-all`}>
+                                    <section.icon size={24} />
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-foreground mb-1">{section.name}</h3>
+                                    <p className="text-sm text-muted-foreground">{section.description}</p>
+                                </div>
+                            </div>
+                        </button>
+                    ))}
+                </div>
+            </main>
+
+            {/* Modals */}
+            {activeModal && (() => {
+                const section = sections.find(s => s.id === activeModal)
+                if (!section) return null
+
+                return (
+                    <Modal
+                        isOpen={true}
+                        onClose={() => setActiveModal(null)}
+                        title={`Edit ${section.name}`}
+                        maxWidth={section.maxWidth}
+                    >
+                        {activeModal === 'metadata' && <MetadataEditorModal onClose={() => setActiveModal(null)} onSave={() => {}} />}
+                        {activeModal === 'hero' && <HeroEditorModal onClose={() => setActiveModal(null)} />}
+                        {activeModal === 'about' && <AboutEditorModal onClose={() => setActiveModal(null)} />}
+                        {activeModal === 'projects' && <ProjectsEditorModal onClose={() => setActiveModal(null)} />}
+                        {activeModal === 'experience' && <ExperienceEditorModal onClose={() => setActiveModal(null)} />}
+                        {activeModal === 'skills' && <SkillsEditorModal onClose={() => setActiveModal(null)} />}
+                        {activeModal === 'contact' && <ContactEditorModal onClose={() => setActiveModal(null)} />}
+                    </Modal>
+                )
+            })()}
+        </>
     )
 }

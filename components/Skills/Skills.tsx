@@ -1,46 +1,27 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-
-const skills = [
-    {
-        name: 'Next.js',
-        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
-        className: 'dark:invert' // Invert in dark mode to make it white
-    },
-    {
-        name: 'React',
-        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg'
-    },
-    {
-        name: 'JavaScript',
-        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg'
-    },
-    {
-        name: 'TypeScript',
-        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg'
-    },
-    {
-        name: 'Node.js',
-        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg'
-    },
-    {
-        name: 'Tailwind',
-        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg'
-    },
-    {
-        name: 'PHP',
-        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg'
-    },
-    {
-        name: 'MongoDB',
-        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg'
-    },
-]
+import { Skill } from '@/lib/models'
 
 export default function Skills() {
+    const [skills, setSkills] = useState<Skill[]>([])
+
+    useEffect(() => {
+        async function fetchSkills() {
+            try {
+                const res = await fetch('/api/content/skills')
+                if (res.ok) {
+                    const data = await res.json()
+                    setSkills(data.skills || [])
+                }
+            } catch (error) {
+                console.error('Failed to fetch skills data:', error)
+            }
+        }
+        fetchSkills()
+    }, [])
     return (
         <section id="skills" className="py-20">
             <div className="container mx-auto px-4">
@@ -54,11 +35,14 @@ export default function Skills() {
                 </motion.h2>
 
                 <div className="relative w-full overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
-                    <div className="flex animate-scroll gap-8 w-max">
-                        {/* Duplicate the skills list to create the infinite loop effect */}
-                        {[...skills, ...skills].map((skill, index) => (
-                            <motion.div
-                                key={`${skill.name}-${index}`}
+                    {skills.length === 0 ? (
+                        <p className="text-muted-foreground text-center py-8">No skills available.</p>
+                    ) : (
+                        <div className="flex animate-scroll gap-8 w-max">
+                            {/* Duplicate the skills list to create the infinite loop effect */}
+                            {[...skills, ...skills].map((skill, index) => (
+                                <motion.div
+                                    key={`${skill.name}-${index}`}
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 whileInView={{ opacity: 1, scale: 1 }}
                                 viewport={{ once: true }}
@@ -75,8 +59,9 @@ export default function Skills() {
                                     />
                                 </div>
                             </motion.div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         </section>

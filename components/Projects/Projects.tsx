@@ -1,43 +1,30 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Github, ArrowUpRight } from 'lucide-react'
 import Image from 'next/image'
 import SpotlightCard from '@/components/ui/SpotlightCard'
 import TiltCard from '@/components/ui/TiltCard'
-
-const projects = [
-    {
-        id: 1,
-        title: 'Create Receipts',
-        description: 'SaaS web app for personal bookkeeping and receipt management. Streamlines financial tracking with intuitive tools.',
-        tags: ['React', 'Node.js', 'MongoDB', 'Tailwind'],
-        image: '/projects/receipts.png',
-        liveUrl: '#',
-        githubUrl: '#'
-    },
-    {
-        id: 2,
-        title: 'AI Homework',
-        description: 'Subscription based AI homework helper platform developed with Next.js. Helps students solve complex problems instantly.',
-        tags: ['Next.js', 'OpenAI API', 'Stripe', 'TypeScript'],
-        image: '/projects/homework.png',
-        liveUrl: '#',
-        githubUrl: '#'
-    },
-    {
-        id: 3,
-        title: 'Portfolio Websites',
-        description: 'Modern portfolio websites developed using Vite, Tailwind CSS and Framer Motion. Showcasing creative developer identities.',
-        tags: ['React', 'Vite', 'Tailwind CSS', 'Framer Motion'],
-        image: '/projects/portfolio.png',
-        liveUrl: '#',
-        githubUrl: '#'
-    }
-]
+import { Project } from '@/lib/models'
 
 export default function Projects() {
+    const [projects, setProjects] = useState<Project[]>([])
+
+    useEffect(() => {
+        async function fetchProjects() {
+            try {
+                const res = await fetch('/api/content/projects')
+                if (res.ok) {
+                    const data = await res.json()
+                    setProjects(data.projects || [])
+                }
+            } catch (error) {
+                console.error('Failed to fetch projects data:', error)
+            }
+        }
+        fetchProjects()
+    }, [])
     return (
         <section id="projects" className="py-20 relative overflow-hidden">
             {/* Background Elements */}
@@ -59,14 +46,17 @@ export default function Projects() {
                 </motion.div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {projects.map((project, index) => (
-                        <motion.div
-                            key={project.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
-                        >
+                    {projects.length === 0 ? (
+                        <p className="text-muted-foreground text-center py-8 col-span-full">No projects available.</p>
+                    ) : (
+                        projects.map((project, index) => (
+                            <motion.div
+                                key={`${project.title}-${index}`}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 }}
+                            >
                             <TiltCard className="h-full">
                                 <SpotlightCard className="flex flex-col rounded-2xl h-full">
                                     {/* Image Container */}
@@ -110,7 +100,8 @@ export default function Projects() {
                                 </SpotlightCard>
                             </TiltCard>
                         </motion.div>
-                    ))}
+                        ))
+                    )}
                 </div>
             </div>
         </section>

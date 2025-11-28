@@ -1,29 +1,27 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import SpotlightCard from '@/components/ui/SpotlightCard'
-
-const experiences = [
-    {
-        id: 1,
-        role: 'Web Developer',
-        company: 'Digitrix Agency',
-        period: 'Aug 2024 - Present',
-        logo: 'm',
-        logoBg: 'bg-blue-600'
-    },
-    {
-        id: 2,
-        role: 'Sr. PHP Developer',
-        company: 'Benum.oDesign',
-        period: 'Apr 2024 - Jun 2024',
-        logo: '☼',
-        logoBg: 'bg-blue-500'
-    }
-]
+import { ExperienceItem } from '@/lib/models'
 
 export default function Experience() {
+    const [experiences, setExperiences] = useState<ExperienceItem[]>([])
+
+    useEffect(() => {
+        async function fetchExperiences() {
+            try {
+                const res = await fetch('/api/content/experience')
+                if (res.ok) {
+                    const data = await res.json()
+                    setExperiences(data.experiences || [])
+                }
+            } catch (error) {
+                console.error('Failed to fetch experience data:', error)
+            }
+        }
+        fetchExperiences()
+    }, [])
     return (
         <section id="experience" className="h-full">
             <motion.div
@@ -42,32 +40,36 @@ export default function Experience() {
                 </motion.h2>
 
                 <div className="space-y-6 md:space-y-8">
-                    {experiences.map((exp, index) => (
-                        <motion.div
-                            key={exp.id}
-                            initial={{ opacity: 0, x: 20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
-                        >
-                            <SpotlightCard className="rounded-2xl" propClass="flex items-center gap-3 md:gap-4 p-2">
-                                <div className={`flex-shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-xl ${exp.logoBg} flex items-center justify-center text-white font-bold text-lg md:text-xl shadow-inner`}>
-                                    {exp.logo}
-                                </div>
-                                <div>
-                                    <h3 className="text-base md:text-lg font-bold  group-hover:text-primary transition-colors">
-                                        {exp.role}
-                                    </h3>
-                                    <p className="text-muted-foreground text-xs md:text-sm font-medium">
-                                        {exp.company}
-                                    </p>
-                                    <p className="text-[10px] md:text-xs text-muted-foreground/60 mt-0.5 md:mt-1">
-                                        {exp.period}
-                                    </p>
-                                </div>
-                            </SpotlightCard>
-                        </motion.div>
-                    ))}
+                    {experiences.length === 0 ? (
+                        <p className="text-muted-foreground text-center py-8">No experience data available.</p>
+                    ) : (
+                        experiences.map((exp, index) => (
+                            <motion.div
+                                key={`${exp.role}-${exp.company}-${index}`}
+                                initial={{ opacity: 0, x: 20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 }}
+                            >
+                                <SpotlightCard className="rounded-2xl" propClass="flex items-center gap-3 md:gap-4 p-2">
+                                    <div className={`flex-shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-xl ${exp.logoBg} flex items-center justify-center text-white font-bold text-lg md:text-xl shadow-inner`}>
+                                        {exp.logo}
+                                    </div>
+                                    <div>
+                                        <h3 className="text-base md:text-lg font-bold  group-hover:text-primary transition-colors">
+                                            {exp.role}
+                                        </h3>
+                                        <p className="text-muted-foreground text-xs md:text-sm font-medium">
+                                            {exp.company}
+                                        </p>
+                                        <p className="text-[10px] md:text-xs text-muted-foreground/60 mt-0.5 md:mt-1">
+                                            {exp.period}
+                                        </p>
+                                    </div>
+                                </SpotlightCard>
+                            </motion.div>
+                        ))
+                    )}
                 </div>
             </motion.div>
         </section>
