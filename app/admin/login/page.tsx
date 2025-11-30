@@ -16,7 +16,7 @@ export default function AdminLogin() {
 
     useEffect(() => {
         // Check if already logged in
-        if (localStorage.getItem('adminToken')) {
+        if (typeof window !== 'undefined' && localStorage.getItem('adminToken')) {
             router.push('/admin')
         }
     }, [router])
@@ -61,7 +61,9 @@ export default function AdminLogin() {
             const data = await res.json()
 
             if (res.ok) {
-                localStorage.setItem('adminToken', data.token)
+                if (typeof window !== 'undefined') {
+                    localStorage.setItem('adminToken', data.token)
+                }
                 toast.success('Login successful!')
                 router.push('/admin')
             } else {
@@ -181,11 +183,8 @@ export default function AdminLogin() {
                                 ← Back to email
                             </button>
                         </form>
-                    </div>
-                </div>
-            </div>
-                        </form>
                     )}
+                    </div>
                 </div>
             </div>
         </div>

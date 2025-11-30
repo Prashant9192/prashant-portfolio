@@ -22,13 +22,15 @@ export default function AdminDashboard() {
 
     useEffect(() => {
         setMounted(true)
-        if (!localStorage.getItem('adminToken')) {
+        if (typeof window !== 'undefined' && !localStorage.getItem('adminToken')) {
             router.push('/admin/login')
         }
     }, [router])
 
     const handleLogout = () => {
-        localStorage.removeItem('adminToken')
+        if (typeof window !== 'undefined') {
+            localStorage.removeItem('adminToken')
+        }
         router.push('/admin/login')
     }
 
