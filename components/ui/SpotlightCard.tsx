@@ -14,7 +14,7 @@ export default function SpotlightCard({ children, className = '', propClass = ''
 
     return (
         <div
-            className={`group relative border border-white/10 bg-white/5 overflow-hidden ${className}`}
+            className={`group relative border border-border bg-card dark:border-white/10 dark:bg-white/5 overflow-hidden shadow-sm hover:shadow-md transition-shadow ${className}`}
             onMouseMove={handleMouseMove}
         >
             <motion.div

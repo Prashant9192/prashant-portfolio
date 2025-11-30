@@ -28,6 +28,13 @@ export async function POST(request: Request) {
     // Return admin token
     const token = process.env.ADMIN_SECRET
     
+    if (!token) {
+      return NextResponse.json(
+        { error: 'Server configuration error' },
+        { status: 500 }
+      )
+    }
+    
     return NextResponse.json({ 
       success: true, 
       token 

@@ -92,9 +92,9 @@ export default function Contact() {
                         className="col-start-1 row-start-1 w-full h-full backface-hidden"
                         style={{ backfaceVisibility: 'hidden' }}
                     >
-                        <div className="h-full py-6 px-4 md:py-8 md:px-8 lg:p-12 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md flex flex-col lg:flex-row lg:items-center lg:gap-12 justify-between shadow-2xl">
+                        <div className="h-full py-6 px-4 md:py-8 md:px-8 lg:p-12 rounded-3xl bg-card border border-border backdrop-blur-md flex flex-col lg:flex-row lg:items-center lg:gap-12 justify-between shadow-2xl dark:bg-white/5 dark:border-white/10">
                             <div className="text-center lg:text-left space-y-4 lg:flex-1">
-                                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
+                                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
                                     Get in <span className="text-primary">Touch</span>
                                 </h2>
                                 <p className="text-muted-foreground text-base lg:text-lg">
@@ -117,7 +117,7 @@ export default function Contact() {
                                 {contactInfo?.email && (
                                     <div
                                         onClick={() => window.location.href = `mailto:${contactInfo.email}`}
-                                        className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors cursor-pointer group/item"
+                                        className="flex items-center gap-4 p-4 rounded-2xl bg-secondary/50 border border-border hover:bg-secondary transition-colors cursor-pointer group/item dark:bg-white/5 dark:border-white/5 dark:hover:bg-white/10"
                                     >
                                         <div className="p-3 rounded-xl bg-primary/10 text-primary group-hover/item:bg-primary/20 transition-colors">
                                             <Mail size={20} />
@@ -135,7 +135,7 @@ export default function Contact() {
                                             navigator.clipboard.writeText(contactInfo.phone);
                                             toast.success('Phone number copied to clipboard!');
                                         }}
-                                        className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors cursor-pointer group/item"
+                                        className="flex items-center gap-4 p-4 rounded-2xl bg-secondary/50 border border-border hover:bg-secondary transition-colors cursor-pointer group/item dark:bg-white/5 dark:border-white/5 dark:hover:bg-white/10"
                                     >
                                         <div className="p-3 rounded-xl bg-primary/10 text-primary group-hover/item:bg-primary/20 transition-colors">
                                             <Phone size={20} />
@@ -148,7 +148,7 @@ export default function Contact() {
                                 )}
 
                                 {contactInfo?.location && (
-                                    <div className="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
+                                    <div className="flex items-center gap-4 p-4 rounded-2xl bg-secondary/50 border border-border hover:bg-secondary transition-colors dark:bg-white/5 dark:border-white/5 dark:hover:bg-white/10">
                                         <div className="p-3 rounded-xl bg-primary/10 text-primary">
                                             <MapPin size={20} />
                                         </div>
@@ -175,12 +175,12 @@ export default function Contact() {
                         className="col-start-1 row-start-1 w-full h-full backface-hidden"
                         style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
                     >
-                        <div className="h-full py-6 px-4 md:py-8 md:px-8 lg:p-12 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md flex flex-col shadow-2xl">
+                        <div className="h-full py-6 px-4 md:py-8 md:px-8 lg:p-12 rounded-3xl bg-card border border-border backdrop-blur-md flex flex-col shadow-2xl dark:bg-white/5 dark:border-white/10">
                             <div className="flex items-center justify-between mb-4 md:mb-6">
                                 <h2 className="text-2xl lg:text-3xl font-bold">Send Message</h2>
                                 <button
                                     onClick={() => setIsFlipped(false)}
-                                    className="p-2 rounded-full hover:bg-white/10 transition-colors text-muted-foreground hover:text-white"
+                                    className="p-2 rounded-full hover:bg-accent transition-colors text-muted-foreground hover:text-foreground"
                                 >
                                     <ArrowLeft size={20} />
                                 </button>
@@ -189,7 +189,7 @@ export default function Contact() {
                             <form onSubmit={handleSubmit} className="flex-1 flex flex-col gap-3 md:gap-4 lg:gap-6">
                                 <div className="grid lg:grid-cols-2 gap-3 md:gap-4 lg:gap-6">
                                     <div className="space-y-1.5 md:space-y-2">
-                                        <label htmlFor="name" className="text-sm font-medium ml-1">Name</label>
+                                        <label htmlFor="name" className="text-sm font-semibold text-foreground ml-1">Name</label>
                                         <input
                                             type="text"
                                             id="name"
@@ -197,13 +197,13 @@ export default function Contact() {
                                             required
                                             value={formData.name}
                                             onChange={handleChange}
-                                            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/5 focus:border-primary focus:bg-white/10 focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 placeholder:text-white/20"
+                                            className="w-full px-4 py-3 rounded-xl bg-secondary/30 border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-all duration-300 placeholder:text-muted-foreground text-foreground dark:bg-white/5 dark:border-white/5 dark:focus:bg-white/10 dark:placeholder:text-white/20"
                                             placeholder="John Doe"
                                         />
                                     </div>
 
                                     <div className="space-y-1.5 md:space-y-2">
-                                        <label htmlFor="email" className="text-sm font-medium ml-1">Email</label>
+                                        <label htmlFor="email" className="text-sm font-semibold text-foreground ml-1">Email</label>
                                         <input
                                             type="email"
                                             id="email"
@@ -211,21 +211,21 @@ export default function Contact() {
                                             required
                                             value={formData.email}
                                             onChange={handleChange}
-                                            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/5 focus:border-primary focus:bg-white/10 focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 placeholder:text-white/20"
+                                            className="w-full px-4 py-3 rounded-xl bg-secondary/30 border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-all duration-300 placeholder:text-muted-foreground text-foreground dark:bg-white/5 dark:border-white/5 dark:focus:bg-white/10 dark:placeholder:text-white/20"
                                             placeholder="john@example.com"
                                         />
                                     </div>
                                 </div>
 
                                 <div className="space-y-1.5 md:space-y-2 flex-1">
-                                    <label htmlFor="message" className="text-sm font-medium ml-1">Message</label>
+                                    <label htmlFor="message" className="text-sm font-semibold text-foreground ml-1">Message</label>
                                     <textarea
                                         id="message"
                                         name="message"
                                         required
                                         value={formData.message}
                                         onChange={handleChange}
-                                        className="w-full h-full min-h-[120px] lg:min-h-[160px] px-4 py-3 rounded-xl bg-white/5 border border-white/5 focus:border-primary focus:bg-white/10 focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 resize-none placeholder:text-white/20"
+                                        className="w-full h-full min-h-[120px] lg:min-h-[160px] px-4 py-3 rounded-xl bg-secondary/30 border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-all duration-300 resize-none placeholder:text-muted-foreground text-foreground dark:bg-white/5 dark:border-white/5 dark:focus:bg-white/10 dark:placeholder:text-white/20"
                                         placeholder="Tell me about your project..."
                                     />
                                 </div>

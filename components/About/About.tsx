@@ -28,7 +28,7 @@ export default function About() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                className="relative h-full p-6 md:p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm overflow-hidden hover:border-white/20 transition-colors"
+                className="relative h-full p-6 md:p-8 rounded-3xl bg-card border border-border backdrop-blur-sm overflow-hidden hover:border-primary/30 dark:bg-white/5 dark:border-white/10 dark:hover:border-white/20 transition-colors shadow-md"
             >
                 {/* Status Badge */}
                 <div className="absolute top-6 right-6 md:top-8 md:right-8 flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20">
@@ -44,7 +44,7 @@ export default function About() {
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
-                        className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-white to-white/60 bg-clip-text"
+                        className="text-2xl md:text-4xl font-bold text-foreground"
                     >
                         About Me
                     </motion.h2>
@@ -56,7 +56,7 @@ export default function About() {
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.2 }}
-                            className="relative w-24 h-24 md:w-32 md:h-32 flex-shrink-0 rounded-full overflow-hidden border-2 border-white/10 shadow-2xl group mx-auto sm:mx-0"
+                            className="relative w-24 h-24 md:w-32 md:h-32 flex-shrink-0 rounded-full overflow-hidden border-2 border-border dark:border-white/10 shadow-2xl group mx-auto sm:mx-0"
                         >
                             <Image
                                 src={aboutData?.avatar || '/MyAvatar.png'}
@@ -77,7 +77,7 @@ export default function About() {
 
                 {/* Currently Status - Dark Card Style */}
                 {aboutData?.status && (
-                    <div className="mt-6 md:mt-8 flex items-start gap-4 text-sm text-primary/80   p-5 rounded-2xl border border-white/5 shadow-inner">
+                    <div className="mt-6 md:mt-8 flex items-start gap-4 text-sm text-primary/80 p-5 rounded-2xl bg-secondary/50 border border-border dark:border-white/5 shadow-inner">
                         <span className="text-xl mt-0.5">🚀</span>
                         <span className="leading-relaxed">
                             Currently creating modern web solutions at <span className="font-semibold text-primary">{aboutData.status.company}</span>
