@@ -3,16 +3,21 @@ import { getDb } from '@/lib/db'
 import { ContactInfo } from '@/lib/models'
 
 export async function GET() {
+  const defaultContact: ContactInfo = {
+    email: 'prashantbasnet222@gmail.com',
+    phone: '+91 7030842261',
+    location: 'Mumbai, India'
+  }
+
   try {
     const db = await getDb()
+    if (!db) {
+      return NextResponse.json(defaultContact)
+    }
+
     const contact = await db.collection<ContactInfo>('contact').findOne({})
     
     if (!contact) {
-      const defaultContact: ContactInfo = {
-        email: 'prashantbasnet222@gmail.com',
-        phone: '+91 7030842261',
-        location: 'Mumbai, India'
-      }
       return NextResponse.json(defaultContact)
     }
 
@@ -20,10 +25,7 @@ export async function GET() {
     return NextResponse.json(contactData)
   } catch (error) {
     console.error('Error fetching contact data:', error)
-    return NextResponse.json(
-      { error: 'Failed to read contact data' },
-      { status: 500 }
-    )
+    return NextResponse.json(defaultContact)
   }
 }
 
@@ -47,6 +49,13 @@ export async function POST(request: Request) {
     }
 
     const db = await getDb()
+    if (!db) {
+      return NextResponse.json(
+        { error: 'Database connection unavailable' },
+        { status: 503 }
+      )
+    }
+
     const now = new Date()
     
     const result = await db.collection<ContactInfo>('contact').findOneAndUpdate(

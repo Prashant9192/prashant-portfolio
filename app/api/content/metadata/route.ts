@@ -3,19 +3,24 @@ import { getDb } from '@/lib/db'
 import { SiteMetadata } from '@/lib/models'
 
 export async function GET() {
+  const defaultMetadata: SiteMetadata = {
+    title: 'Prashant Basnet — Web Developer',
+    description: 'Portfolio',
+    robots: 'index, follow',
+    ogType: 'website',
+    twitterCard: 'summary_large_image',
+    language: 'en'
+  }
+
   try {
     const db = await getDb()
+    if (!db) {
+      return NextResponse.json(defaultMetadata)
+    }
+
     const metadata = await db.collection<SiteMetadata>('metadata').findOne({})
     
     if (!metadata) {
-      const defaultMetadata: SiteMetadata = {
-        title: 'Prashant Basnet — Web Developer',
-        description: 'Portfolio',
-        robots: 'index, follow',
-        ogType: 'website',
-        twitterCard: 'summary_large_image',
-        language: 'en'
-      }
       return NextResponse.json(defaultMetadata)
     }
 
@@ -23,10 +28,7 @@ export async function GET() {
     return NextResponse.json(metadataData)
   } catch (error) {
     console.error('Error fetching metadata:', error)
-    return NextResponse.json(
-      { error: 'Failed to read metadata' },
-      { status: 500 }
-    )
+    return NextResponse.json(defaultMetadata)
   }
 }
 
@@ -50,6 +52,13 @@ export async function POST(request: Request) {
     }
 
     const db = await getDb()
+    if (!db) {
+      return NextResponse.json(
+        { error: 'Database connection unavailable' },
+        { status: 503 }
+      )
+    }
+
     const now = new Date()
     
     const result = await db.collection<SiteMetadata>('metadata').findOneAndUpdate(

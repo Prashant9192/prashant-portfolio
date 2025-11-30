@@ -7,12 +7,15 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
   
   try {
     const db = await getDb()
-    const metadata = await db.collection<SiteMetadata>('metadata').findOne({})
-    
-    if (metadata?.canonicalUrl) {
-      baseUrl = metadata.canonicalUrl
+    if (db) {
+      const metadata = await db.collection<SiteMetadata>('metadata').findOne({})
+      
+      if (metadata?.canonicalUrl) {
+        baseUrl = metadata.canonicalUrl
+      }
     }
   } catch (error) {
+    // Silently fail and use defaults - robots.txt will still work
     console.error('Error fetching canonical URL for robots:', error)
   }
 
