@@ -23,6 +23,7 @@ A modern, responsive portfolio website built with Next.js, featuring a fully cus
   - Featured projects with tags
   - Contact form with flip animation
 - **SEO Optimized**: Dynamic meta tags, robots.txt, and sitemap.xml
+- **Web Analytics**: Integrated Vercel Analytics for visitor tracking and page view analytics
 
 ### 🔐 Admin Panel Features
 - **OTP-Based Authentication**: Secure login using email OTP
@@ -59,6 +60,7 @@ A modern, responsive portfolio website built with Next.js, featuring a fully cus
 - **Typewriter Effect** - Animated typing effect
 - **Sonner** - Toast notifications
 - **Three.js** - 3D graphics (for future 3D elements)
+- **@vercel/analytics** - Web analytics and visitor tracking
 
 ## 🚀 Getting Started
 
@@ -110,7 +112,7 @@ A modern, responsive portfolio website built with Next.js, featuring a fully cus
    - Generate an App Password for "Mail"
    - Use this password in `EMAIL_PASSWORD`
 
-4. **Run the development server**
+5. **Run the development server**
    ```bash
    npm run dev
    # or
@@ -119,7 +121,7 @@ A modern, responsive portfolio website built with Next.js, featuring a fully cus
    pnpm dev
    ```
 
-5. **Open your browser**
+6. **Open your browser**
    
    Navigate to [http://localhost:3000](http://localhost:3000)
 
@@ -218,6 +220,24 @@ All components are in the `components/` directory and can be customized to match
 
 If MongoDB is not configured, the site uses default content from the API route files in `app/api/content/`.
 
+## 📊 Analytics
+
+This project includes **Vercel Analytics** for tracking website visitors and page views. The analytics are automatically enabled when deployed on Vercel.
+
+### Features
+- **Visitor Tracking**: Count unique visitors to your portfolio
+- **Page Views**: Track which pages are most popular
+- **Real-time Data**: View analytics in your Vercel dashboard
+- **Privacy-Friendly**: Compliant with privacy regulations
+
+### Setup
+1. The `@vercel/analytics` package is already installed and configured
+2. The `<Analytics />` component is added to the root layout (`app/layout.tsx`)
+3. Deploy to Vercel - analytics will automatically start collecting data
+4. View analytics in your Vercel project dashboard under "Web Analytics"
+
+**Note**: Analytics only work when deployed on Vercel. For local development, the component is included but won't send data.
+
 ## 🚢 Deployment
 
 ### Vercel (Recommended)
@@ -226,6 +246,7 @@ If MongoDB is not configured, the site uses default content from the API route f
 2. Import the repository on [Vercel](https://vercel.com)
 3. Add environment variables in Vercel dashboard
 4. Deploy!
+5. Analytics will automatically start tracking visitors - view data in your Vercel dashboard
 
 ### Other Platforms
 
@@ -235,7 +256,9 @@ The app can be deployed to any platform supporting Next.js:
 - AWS Amplify
 - Self-hosted servers
 
-**Important**: Make sure to set all environment variables in your deployment platform.
+**Important**: 
+- Make sure to set all environment variables in your deployment platform
+- Vercel Analytics only works when deployed on Vercel. For other platforms, you may want to use alternative analytics solutions (e.g., Google Analytics, Plausible)
 
 ## 🔒 Security
 
