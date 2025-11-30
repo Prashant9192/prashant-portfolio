@@ -9,16 +9,18 @@ import { SiteMetadata } from '@/lib/models'
 async function getMetadata(): Promise<SiteMetadata> {
   try {
     const db = await getDb()
-    const metadata = await db.collection<SiteMetadata>('metadata').findOne({})
-    
-    if (metadata) {
-      return metadata
+    if (db) {
+      const metadata = await db.collection<SiteMetadata>('metadata').findOne({})
+      
+      if (metadata) {
+        return metadata
+      }
     }
   } catch (error) {
     console.error('Error fetching metadata:', error)
   }
   
-  // Return default metadata if fetch fails
+  // Return default metadata if fetch fails or DB unavailable
   return {
     title: 'Prashant Basnet — Web Developer',
     description: 'Portfolio',

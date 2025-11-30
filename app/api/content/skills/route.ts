@@ -3,54 +3,59 @@ import { getDb } from '@/lib/db'
 import { SkillsContent, Skill } from '@/lib/models'
 
 export async function GET() {
+  const defaultSkills: Skill[] = [
+    {
+      name: 'Next.js',
+      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
+      className: 'dark:invert',
+      order: 0
+    },
+    {
+      name: 'React',
+      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
+      order: 1
+    },
+    {
+      name: 'JavaScript',
+      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
+      order: 2
+    },
+    {
+      name: 'TypeScript',
+      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
+      order: 3
+    },
+    {
+      name: 'Node.js',
+      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
+      order: 4
+    },
+    {
+      name: 'Tailwind',
+      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg',
+      order: 5
+    },
+    {
+      name: 'PHP',
+      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg',
+      order: 6
+    },
+    {
+      name: 'MongoDB',
+      icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg',
+      order: 7
+    }
+  ]
+
   try {
     const db = await getDb()
+    if (!db) {
+      return NextResponse.json({ skills: defaultSkills })
+    }
+
     const skills = await db.collection<SkillsContent>('skills').findOne({})
     
     if (!skills || !skills.skills || skills.skills.length === 0) {
-      const defaultSkills: Skill[] = [
-        {
-          name: 'Next.js',
-          icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
-          className: 'dark:invert',
-          order: 0
-        },
-        {
-          name: 'React',
-          icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
-          order: 1
-        },
-        {
-          name: 'JavaScript',
-          icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
-          order: 2
-        },
-        {
-          name: 'TypeScript',
-          icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
-          order: 3
-        },
-        {
-          name: 'Node.js',
-          icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
-          order: 4
-        },
-        {
-          name: 'Tailwind',
-          icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg',
-          order: 5
-        },
-        {
-          name: 'PHP',
-          icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg',
-          order: 6
-        },
-        {
-          name: 'MongoDB',
-          icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg',
-          order: 7
-        }
-      ]
       return NextResponse.json({ skills: defaultSkills })
     }
 
@@ -61,10 +66,7 @@ export async function GET() {
     return NextResponse.json({ skills: sortedSkills })
   } catch (error) {
     console.error('Error fetching skills data:', error)
-    return NextResponse.json(
-      { error: 'Failed to read skills data' },
-      { status: 500 }
-    )
+    return NextResponse.json({ skills: defaultSkills })
   }
 }
 
@@ -88,6 +90,13 @@ export async function POST(request: Request) {
     }
 
     const db = await getDb()
+    if (!db) {
+      return NextResponse.json(
+        { error: 'Database connection unavailable' },
+        { status: 503 }
+      )
+    }
+
     const now = new Date()
     
     const skillsWithOrder = body.skills.map((skill: Skill, index: number) => ({
@@ -112,9 +121,13 @@ export async function POST(request: Request) {
       }
     )
     
-    const sortedSkills = (result?.value?.skills || skillsWithOrder)
+    const skillsToSort = result?.skills || skillsWithOrder
+    const sortedSkills = skillsToSort
       .sort((a: Skill, b: Skill) => a.order - b.order)
-      .map(({ _id, ...skill }: Skill) => skill)
+      .map((skill: Skill & { _id?: unknown }) => {
+        const { _id, ...rest } = skill
+        return rest
+      })
     
     return NextResponse.json({ success: true, data: { skills: sortedSkills } })
   } catch (error) {

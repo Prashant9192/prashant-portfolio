@@ -11,13 +11,15 @@ import { SiteMetadata } from '@/lib/models'
 export async function generateMetadata(): Promise<Metadata> {
   try {
     const db = await getDb()
-    const metadata = await db.collection<SiteMetadata>('metadata').findOne({})
-    
-    if (metadata?.canonicalUrl) {
-      return {
-        alternates: {
-          canonical: metadata.canonicalUrl,
-        },
+    if (db) {
+      const metadata = await db.collection<SiteMetadata>('metadata').findOne({})
+      
+      if (metadata?.canonicalUrl) {
+        return {
+          alternates: {
+            canonical: metadata.canonicalUrl,
+          },
+        }
       }
     }
   } catch (error) {

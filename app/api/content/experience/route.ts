@@ -3,29 +3,34 @@ import { getDb } from '@/lib/db'
 import { ExperienceContent, ExperienceItem } from '@/lib/models'
 
 export async function GET() {
+  const defaultExperiences: ExperienceItem[] = [
+    {
+      role: 'Web Developer',
+      company: 'Digitrix Agency',
+      period: 'Aug 2024 - Present',
+      logo: 'm',
+      logoBg: 'bg-blue-600',
+      order: 0
+    },
+    {
+      role: 'Sr. PHP Developer',
+      company: 'Benum.oDesign',
+      period: 'Apr 2024 - Jun 2024',
+      logo: '☼',
+      logoBg: 'bg-blue-500',
+      order: 1
+    }
+  ]
+
   try {
     const db = await getDb()
+    if (!db) {
+      return NextResponse.json({ experiences: defaultExperiences })
+    }
+
     const experience = await db.collection<ExperienceContent>('experience').findOne({})
     
     if (!experience || !experience.experiences || experience.experiences.length === 0) {
-      const defaultExperiences: ExperienceItem[] = [
-        {
-          role: 'Web Developer',
-          company: 'Digitrix Agency',
-          period: 'Aug 2024 - Present',
-          logo: 'm',
-          logoBg: 'bg-blue-600',
-          order: 0
-        },
-        {
-          role: 'Sr. PHP Developer',
-          company: 'Benum.oDesign',
-          period: 'Apr 2024 - Jun 2024',
-          logo: '☼',
-          logoBg: 'bg-blue-500',
-          order: 1
-        }
-      ]
       return NextResponse.json({ experiences: defaultExperiences })
     }
 
@@ -37,10 +42,7 @@ export async function GET() {
     return NextResponse.json({ experiences: sortedExperiences })
   } catch (error) {
     console.error('Error fetching experience data:', error)
-    return NextResponse.json(
-      { error: 'Failed to read experience data' },
-      { status: 500 }
-    )
+    return NextResponse.json({ experiences: defaultExperiences })
   }
 }
 
@@ -64,6 +66,13 @@ export async function POST(request: Request) {
     }
 
     const db = await getDb()
+    if (!db) {
+      return NextResponse.json(
+        { error: 'Database connection unavailable' },
+        { status: 503 }
+      )
+    }
+
     const now = new Date()
     
     // Add order to each experience if not present
@@ -89,9 +98,13 @@ export async function POST(request: Request) {
       }
     )
     
-    const sortedExperiences = (result?.value?.experiences || experiencesWithOrder)
+    const experiencesToSort = result?.experiences || experiencesWithOrder
+    const sortedExperiences = experiencesToSort
       .sort((a: ExperienceItem, b: ExperienceItem) => a.order - b.order)
-      .map(({ _id, ...exp }: ExperienceItem) => exp)
+      .map((exp: ExperienceItem & { _id?: unknown }) => {
+        const { _id, ...rest } = exp
+        return rest
+      })
     
     return NextResponse.json({ success: true, data: { experiences: sortedExperiences } })
   } catch (error) {

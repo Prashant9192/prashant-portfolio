@@ -8,14 +8,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   
   try {
     const db = await getDb()
-    const metadata = await db.collection<SiteMetadata>('metadata').findOne({})
-    
-    if (metadata) {
-      if (metadata.canonicalUrl) {
-        baseUrl = metadata.canonicalUrl
-      }
-      if (metadata.updatedAt) {
-        lastModified = new Date(metadata.updatedAt)
+    if (db) {
+      const metadata = await db.collection<SiteMetadata>('metadata').findOne({})
+      
+      if (metadata) {
+        if (metadata.canonicalUrl) {
+          baseUrl = metadata.canonicalUrl
+        }
+        if (metadata.updatedAt) {
+          lastModified = new Date(metadata.updatedAt)
+        }
       }
     }
   } catch (error) {

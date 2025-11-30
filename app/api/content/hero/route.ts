@@ -3,31 +3,31 @@ import { getDb } from '@/lib/db'
 import { HeroContent } from '@/lib/models'
 
 export async function GET() {
+  const defaultHero: HeroContent = {
+    name: 'Prashant Basnet',
+    roles: ['Full Stack Web Developer', 'UI/UX Enthusiast', 'React Specialist', 'Next.js Expert'],
+    description: 'I build scalable, fast, and modern web applications. Currently, I work at Digitrix Agency.',
+    avatar: '/MyAvatar.png',
+    resumeUrl: '/Prashant-Resume.pdf'
+  }
+
   try {
     const db = await getDb()
-    const hero = await db.collection<HeroContent>('hero').findOne({})
-    
-    if (!hero) {
-      // Return default data if nothing exists in DB
-      const defaultHero: HeroContent = {
-        name: 'Prashant Basnet',
-        roles: ['Full Stack Web Developer', 'UI/UX Enthusiast', 'React Specialist', 'Next.js Expert'],
-        description: 'I build scalable, fast, and modern web applications. Currently, I work at Digitrix Agency.',
-        avatar: '/MyAvatar.png',
-        resumeUrl: '/Prashant-Resume.pdf'
-      }
+    if (!db) {
       return NextResponse.json(defaultHero)
     }
 
-    // Remove MongoDB _id field and convert to plain object
+    const hero = await db.collection<HeroContent>('hero').findOne({})
+    
+    if (!hero) {
+      return NextResponse.json(defaultHero)
+    }
+
     const { _id, ...heroData } = hero
     return NextResponse.json(heroData)
   } catch (error) {
     console.error('Error fetching hero data:', error)
-    return NextResponse.json(
-      { error: 'Failed to read hero data' },
-      { status: 500 }
-    )
+    return NextResponse.json(defaultHero)
   }
 }
 
@@ -53,6 +53,13 @@ export async function POST(request: Request) {
     }
 
     const db = await getDb()
+    if (!db) {
+      return NextResponse.json(
+        { error: 'Database connection unavailable' },
+        { status: 503 }
+      )
+    }
+
     const now = new Date()
     
     // Update or insert hero content
@@ -73,7 +80,8 @@ export async function POST(request: Request) {
       }
     )
     
-    const { _id, ...heroData } = result?.value || body
+    const updatedHero = result || body
+    const { _id, ...heroData } = updatedHero
     return NextResponse.json({ success: true, data: heroData })
   } catch (error) {
     console.error('Error updating hero data:', error)

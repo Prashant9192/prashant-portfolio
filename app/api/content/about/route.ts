@@ -5,6 +5,19 @@ import { AboutContent } from '@/lib/models'
 export async function GET() {
   try {
     const db = await getDb()
+    if (!db) {
+      // Return default data if database is unavailable
+      const defaultAbout: AboutContent = {
+        bio: "I'm a Full Stack web Developer with experience in building scalable, SEO-friendly and modern web applications.",
+        avatar: '/MyAvatar.png',
+        status: {
+          available: true,
+          company: 'Digitrix Agency'
+        }
+      }
+      return NextResponse.json(defaultAbout)
+    }
+
     const about = await db.collection<AboutContent>('about').findOne({})
     
     if (!about) {
@@ -23,10 +36,16 @@ export async function GET() {
     return NextResponse.json(aboutData)
   } catch (error) {
     console.error('Error fetching about data:', error)
-    return NextResponse.json(
-      { error: 'Failed to read about data' },
-      { status: 500 }
-    )
+    // Return default data on error
+    const defaultAbout: AboutContent = {
+      bio: "I'm a Full Stack web Developer with experience in building scalable, SEO-friendly and modern web applications.",
+      avatar: '/MyAvatar.png',
+      status: {
+        available: true,
+        company: 'Digitrix Agency'
+      }
+    }
+    return NextResponse.json(defaultAbout)
   }
 }
 
@@ -50,6 +69,13 @@ export async function POST(request: Request) {
     }
 
     const db = await getDb()
+    if (!db) {
+      return NextResponse.json(
+        { error: 'Database connection unavailable' },
+        { status: 503 }
+      )
+    }
+
     const now = new Date()
     
     const result = await db.collection<AboutContent>('about').findOneAndUpdate(
@@ -69,7 +95,8 @@ export async function POST(request: Request) {
       }
     )
     
-    const { _id, ...aboutData } = result?.value || body
+    const updatedAbout = result || body
+    const { _id, ...aboutData } = updatedAbout
     return NextResponse.json({ success: true, data: aboutData })
   } catch (error) {
     console.error('Error updating about data:', error)
