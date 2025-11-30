@@ -1,7 +1,8 @@
 .header {
-  background-color: color-mix(in srgb, var(--background) 5%, transparent);
-  backdrop-filter: blur(5px) !important;
-  -webkit-backdrop-filter: blur(5px);
+  background-color: color-mix(in srgb, var(--card) 90%, transparent);
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
   transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
 }
 
@@ -21,7 +22,10 @@
   pointer-events: none;
   transition: opacity 150ms ease, transform 150ms ease;
   z-index: 60;
-  background: linear-gradient(180deg, rgba(10,12,16,0.96), rgba(12,14,18,0.98));
+  background: color-mix(in srgb, var(--card) 98%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
   display: none; /* show only on small screens with JS class */
 }
 

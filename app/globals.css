@@ -44,10 +44,11 @@
 }
 
 :root {
-  --background: #ffffff;
+  --background: #fafafa;
   --foreground: #0a0a0a;
   --card: #ffffff;
   --card-foreground: #0a0a0a;
+  --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
   --popover: #ffffff;
   --popover-foreground: #0a0a0a;
   --primary: #2563eb;
@@ -60,8 +61,8 @@
   --accent-foreground: #1f2937;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: #e5e7eb;
-  --input: #e5e7eb;
+  --border: #d1d5db;
+  --input: #d1d5db;
   --ring: #2563eb;
   --radius: 0.5rem;
 }

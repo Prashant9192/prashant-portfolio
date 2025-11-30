@@ -47,7 +47,7 @@ export default function Skills() {
                                 whileInView={{ opacity: 1, scale: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: index * 0.05 }}
-                                className="group flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-primary/50 dark:hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-white/10 transition-all cursor-default shadow-sm hover:shadow-lg"
+                                className="group flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-card border border-border hover:border-primary/50 hover:bg-primary/5 transition-all cursor-default shadow-sm hover:shadow-lg dark:bg-white/5 dark:border-white/10 dark:hover:bg-white/10"
                                 title={skill.name}
                             >
                                 <div className="relative w-10 h-10 md:w-12 md:h-12 transition-transform duration-300 group-hover:scale-110">

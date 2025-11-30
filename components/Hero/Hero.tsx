@@ -100,7 +100,7 @@ export default function Hero() {
                                 <a
                                     href={heroData.resumeUrl}
                                     download={heroData.resumeUrl.split('/').pop()}
-                                    className="text-base inline-flex items-center gap-2 bg-[#1F2229] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#2A2D35] transition-colors border border-white/5"
+                                    className="text-base inline-flex items-center gap-2 bg-foreground text-background px-6 py-3 rounded-lg font-medium hover:bg-foreground/90 transition-colors border border-border dark:border-white/5"
                                 >
                                     Download Resume
                                 </a>

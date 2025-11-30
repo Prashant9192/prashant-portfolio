@@ -28,13 +28,13 @@ export default function Experience() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                className="relative h-full p-6 md:p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm overflow-hidden hover:border-white/20 transition-colors"
+                className="relative h-full p-6 md:p-8 rounded-3xl bg-card border border-border backdrop-blur-sm overflow-hidden hover:border-primary/30 dark:bg-white/5 dark:border-white/10 dark:hover:border-white/20 transition-colors shadow-md"
             >
                 <motion.h2
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    className="text-2xl md:text-4xl font-bold mb-6 md:mb-8 bg-gradient-to-r from-white to-white/60 bg-clip-text"
+                    className="text-2xl md:text-4xl font-bold mb-6 md:mb-8 text-foreground"
                 >
                     Experience
                 </motion.h2>

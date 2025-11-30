@@ -25,13 +25,13 @@ export default function MobileMenu() {
       >
         <div className="px-4 pt-4 pb-8">
           <nav className="flex flex-col gap-4 text-base font-medium">
-            <Link href="#home" onClick={() => setOpen(false)} className="text-white hover:text-primary transition-colors">Home</Link>
-            <Link href="#about" onClick={() => setOpen(false)} className="text-white hover:text-primary transition-colors">About</Link>
-            <Link href="#skills" onClick={() => setOpen(false)} className="text-white hover:text-primary transition-colors">Skills</Link>
-            <Link href="#projects" onClick={() => setOpen(false)} className="text-white hover:text-primary transition-colors">Projects</Link>
-            <Link href="#experience" onClick={() => setOpen(false)} className="text-white hover:text-primary transition-colors">Experience</Link>
-            <Link href="#contact" onClick={() => setOpen(false)} className="text-white hover:text-primary transition-colors">Contact</Link>
-            <a href="/Prashant-Resume.pdf" download="Prashant-Resume.pdf" onClick={() => setOpen(false)} className="text-white hover:text-primary transition-colors">Download Resume</a>
+            <Link href="#home" onClick={() => setOpen(false)} className="text-foreground hover:text-primary transition-colors">Home</Link>
+            <Link href="#about" onClick={() => setOpen(false)} className="text-foreground hover:text-primary transition-colors">About</Link>
+            <Link href="#skills" onClick={() => setOpen(false)} className="text-foreground hover:text-primary transition-colors">Skills</Link>
+            <Link href="#projects" onClick={() => setOpen(false)} className="text-foreground hover:text-primary transition-colors">Projects</Link>
+            <Link href="#experience" onClick={() => setOpen(false)} className="text-foreground hover:text-primary transition-colors">Experience</Link>
+            <Link href="#contact" onClick={() => setOpen(false)} className="text-foreground hover:text-primary transition-colors">Contact</Link>
+            <a href="/Prashant-Resume.pdf" download="Prashant-Resume.pdf" onClick={() => setOpen(false)} className="text-foreground hover:text-primary transition-colors">Download Resume</a>
           </nav>
         </div>
       </div>
