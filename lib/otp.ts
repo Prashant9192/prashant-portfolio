@@ -30,6 +30,11 @@ export function verifyOTP(email: string, otp: string): boolean {
 }
 
 export async function sendOTPEmail(email: string, otp: string) {
+  // Check if email credentials are configured
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
+    throw new Error('Email credentials not configured. Please set EMAIL_USER and EMAIL_PASSWORD environment variables.')
+  }
+
   // Create transporter using Gmail
   const transporter = nodemailer.createTransport({
     service: 'gmail',
