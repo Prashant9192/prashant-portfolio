@@ -69,7 +69,8 @@ export async function POST(request: Request) {
       }
     )
     
-    const { _id, ...metadataData } = result?.value || body
+    const updatedMetadata = result || body
+    const { _id, ...metadataData } = updatedMetadata
     return NextResponse.json({ success: true, data: metadataData })
   } catch (error) {
     console.error('Error updating metadata:', error)

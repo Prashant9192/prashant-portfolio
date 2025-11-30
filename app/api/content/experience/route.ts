@@ -89,9 +89,13 @@ export async function POST(request: Request) {
       }
     )
     
-    const sortedExperiences = (result?.value?.experiences || experiencesWithOrder)
+    const experiencesToSort = result?.experiences || experiencesWithOrder
+    const sortedExperiences = experiencesToSort
       .sort((a: ExperienceItem, b: ExperienceItem) => a.order - b.order)
-      .map(({ _id, ...exp }: ExperienceItem) => exp)
+      .map((exp: ExperienceItem & { _id?: unknown }) => {
+        const { _id, ...rest } = exp
+        return rest
+      })
     
     return NextResponse.json({ success: true, data: { experiences: sortedExperiences } })
   } catch (error) {

@@ -112,9 +112,13 @@ export async function POST(request: Request) {
       }
     )
     
-    const sortedSkills = (result?.value?.skills || skillsWithOrder)
+    const skillsToSort = result?.skills || skillsWithOrder
+    const sortedSkills = skillsToSort
       .sort((a: Skill, b: Skill) => a.order - b.order)
-      .map(({ _id, ...skill }: Skill) => skill)
+      .map((skill: Skill & { _id?: unknown }) => {
+        const { _id, ...rest } = skill
+        return rest
+      })
     
     return NextResponse.json({ success: true, data: { skills: sortedSkills } })
   } catch (error) {

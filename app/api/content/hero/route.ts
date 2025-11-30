@@ -73,7 +73,8 @@ export async function POST(request: Request) {
       }
     )
     
-    const { _id, ...heroData } = result?.value || body
+    const updatedHero = result || body
+    const { _id, ...heroData } = updatedHero
     return NextResponse.json({ success: true, data: heroData })
   } catch (error) {
     console.error('Error updating hero data:', error)
