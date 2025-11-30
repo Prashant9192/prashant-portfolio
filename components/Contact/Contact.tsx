@@ -189,7 +189,7 @@ export default function Contact() {
                             <form onSubmit={handleSubmit} className="flex-1 flex flex-col gap-3 md:gap-4 lg:gap-6">
                                 <div className="grid lg:grid-cols-2 gap-3 md:gap-4 lg:gap-6">
                                     <div className="space-y-1.5 md:space-y-2">
-                                        <label htmlFor="name" className="text-sm font-medium ml-1">Name</label>
+                                        <label htmlFor="name" className="text-sm font-semibold text-foreground ml-1">Name</label>
                                         <input
                                             type="text"
                                             id="name"
@@ -197,13 +197,13 @@ export default function Contact() {
                                             required
                                             value={formData.name}
                                             onChange={handleChange}
-                                            className="w-full px-4 py-3 rounded-xl bg-background border border-input focus:border-primary focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 placeholder:text-muted-foreground dark:bg-white/5 dark:border-white/5 dark:focus:bg-white/10 dark:placeholder:text-white/20"
+                                            className="w-full px-4 py-3 rounded-xl bg-secondary/30 border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-all duration-300 placeholder:text-muted-foreground text-foreground dark:bg-white/5 dark:border-white/5 dark:focus:bg-white/10 dark:placeholder:text-white/20"
                                             placeholder="John Doe"
                                         />
                                     </div>
 
                                     <div className="space-y-1.5 md:space-y-2">
-                                        <label htmlFor="email" className="text-sm font-medium ml-1">Email</label>
+                                        <label htmlFor="email" className="text-sm font-semibold text-foreground ml-1">Email</label>
                                         <input
                                             type="email"
                                             id="email"
@@ -211,21 +211,21 @@ export default function Contact() {
                                             required
                                             value={formData.email}
                                             onChange={handleChange}
-                                            className="w-full px-4 py-3 rounded-xl bg-background border border-input focus:border-primary focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 placeholder:text-muted-foreground dark:bg-white/5 dark:border-white/5 dark:focus:bg-white/10 dark:placeholder:text-white/20"
+                                            className="w-full px-4 py-3 rounded-xl bg-secondary/30 border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-all duration-300 placeholder:text-muted-foreground text-foreground dark:bg-white/5 dark:border-white/5 dark:focus:bg-white/10 dark:placeholder:text-white/20"
                                             placeholder="john@example.com"
                                         />
                                     </div>
                                 </div>
 
                                 <div className="space-y-1.5 md:space-y-2 flex-1">
-                                    <label htmlFor="message" className="text-sm font-medium ml-1">Message</label>
+                                    <label htmlFor="message" className="text-sm font-semibold text-foreground ml-1">Message</label>
                                     <textarea
                                         id="message"
                                         name="message"
                                         required
                                         value={formData.message}
                                         onChange={handleChange}
-                                        className="w-full h-full min-h-[120px] lg:min-h-[160px] px-4 py-3 rounded-xl bg-background border border-input focus:border-primary focus:ring-1 focus:ring-primary/50 outline-none transition-all duration-300 resize-none placeholder:text-muted-foreground dark:bg-white/5 dark:border-white/5 dark:focus:bg-white/10 dark:placeholder:text-white/20"
+                                        className="w-full h-full min-h-[120px] lg:min-h-[160px] px-4 py-3 rounded-xl bg-secondary/30 border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-all duration-300 resize-none placeholder:text-muted-foreground text-foreground dark:bg-white/5 dark:border-white/5 dark:focus:bg-white/10 dark:placeholder:text-white/20"
                                         placeholder="Tell me about your project..."
                                     />
                                 </div>
