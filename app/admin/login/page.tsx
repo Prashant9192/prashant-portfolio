@@ -16,7 +16,7 @@ export default function AdminLogin() {
 
     useEffect(() => {
         // Check if already logged in
-        if (localStorage.getItem('adminToken')) {
+        if (typeof window !== 'undefined' && localStorage.getItem('adminToken')) {
             router.push('/admin')
         }
     }, [router])
@@ -61,7 +61,9 @@ export default function AdminLogin() {
             const data = await res.json()
 
             if (res.ok) {
-                localStorage.setItem('adminToken', data.token)
+                if (typeof window !== 'undefined') {
+                    localStorage.setItem('adminToken', data.token)
+                }
                 toast.success('Login successful!')
                 router.push('/admin')
             } else {
@@ -77,23 +79,32 @@ export default function AdminLogin() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-background p-4">
             <div className="w-full max-w-md">
-                <div className="bg-card border border-border rounded-2xl p-8 shadow-2xl">
-                    <div className="flex items-center gap-3 mb-2">
-                        <div className="p-3 rounded-xl bg-primary/10 text-primary">
-                            <Mail size={24} />
+                <div className="relative bg-card border-2 border-border rounded-3xl p-8 shadow-2xl overflow-hidden">
+                    {/* Decorative gradient background */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-purple-500/5 opacity-50" />
+                    
+                    <div className="relative z-10">
+                        <div className="flex items-center gap-4 mb-6">
+                            <div className="p-4 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 border border-primary/20">
+                                <Mail className="text-primary" size={28} />
+                            </div>
+                            <div>
+                                <h1 className="text-3xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                                    Admin Login
+                                </h1>
+                                <p className="text-xs text-muted-foreground">Secure Access Portal</p>
+                            </div>
                         </div>
-                        <h1 className="text-3xl font-bold text-foreground">Admin Login</h1>
-                    </div>
-                    <p className="text-muted-foreground mb-8">
-                        {step === 'email'
-                            ? 'Enter your email to receive OTP'
-                            : 'Enter the 6-digit code sent to your email'}
-                    </p>
+                        <p className="text-muted-foreground mb-8 text-lg">
+                            {step === 'email'
+                                ? 'Enter your email to receive a verification code'
+                                : 'Enter the 6-digit code sent to your email'}
+                        </p>
 
                     {step === 'email' ? (
                         <form onSubmit={handleSendOTP} className="space-y-6">
                             <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
+                                <label htmlFor="email" className="block text-sm font-semibold text-foreground mb-3">
                                     Email Address
                                 </label>
                                 <input
@@ -101,18 +112,20 @@ export default function AdminLogin() {
                                     id="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full px-4 py-3 rounded-xl bg-background border border-input text-foreground placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/50 outline-none transition-all"
+                                    className="w-full px-5 py-3.5 rounded-xl bg-background border-2 border-input text-foreground placeholder-muted-foreground focus:border-primary focus:ring-4 focus:ring-primary/20 outline-none transition-all font-medium"
                                     placeholder="your@email.com"
                                     required
                                     disabled
                                 />
-                                <p className="text-xs text-muted-foreground mt-2">Admin email is pre-configured</p>
+                                <p className="text-xs text-muted-foreground mt-2.5 flex items-center gap-1">
+                                    <span>🔒</span> Admin email is pre-configured
+                                </p>
                             </div>
 
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="w-full py-3 px-4 rounded-xl bg-primary text-primary-foreground font-bold hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg"
+                                className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-primary to-primary/90 text-primary-foreground font-bold hover:from-primary/90 hover:to-primary/80 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
                             >
                                 {loading ? (
                                     <>
@@ -127,27 +140,27 @@ export default function AdminLogin() {
                     ) : (
                         <form onSubmit={handleVerifyOTP} className="space-y-6">
                             <div>
-                                <label htmlFor="otp" className="block text-sm font-medium text-foreground mb-2">
-                                    6-Digit OTP
+                                <label htmlFor="otp" className="block text-sm font-semibold text-foreground mb-3">
+                                    6-Digit Verification Code
                                 </label>
                                 <input
                                     type="text"
                                     id="otp"
                                     value={otp}
                                     onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                                    className="w-full px-4 py-3 rounded-xl bg-background border border-input text-foreground placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/50 outline-none transition-all text-center text-2xl tracking-widest font-bold"
-                                    placeholder="000000"
+                                    className="w-full px-5 py-4 rounded-xl bg-background border-2 border-input text-foreground placeholder-muted-foreground focus:border-primary focus:ring-4 focus:ring-primary/20 outline-none transition-all text-center text-3xl tracking-[0.5em] font-bold"
+                                    placeholder="••••••"
                                     maxLength={6}
                                     required
                                     autoFocus
                                 />
-                                <p className="text-xs text-muted-foreground mt-2">Code expires in 10 minutes</p>
+                                <p className="text-xs text-muted-foreground mt-3 text-center">⏱️ Code expires in 10 minutes</p>
                             </div>
 
                             <button
                                 type="submit"
                                 disabled={loading || otp.length !== 6}
-                                className="w-full py-3 px-4 rounded-xl bg-primary text-primary-foreground font-bold hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg"
+                                className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-primary to-primary/90 text-primary-foreground font-bold hover:from-primary/90 hover:to-primary/80 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
                             >
                                 {loading ? (
                                     <>
@@ -165,12 +178,13 @@ export default function AdminLogin() {
                                     setStep('email')
                                     setOtp('')
                                 }}
-                                className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors"
+                                className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors font-medium py-2 hover:underline"
                             >
                                 ← Back to email
                             </button>
                         </form>
                     )}
+                    </div>
                 </div>
             </div>
         </div>

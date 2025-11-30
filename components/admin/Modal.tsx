@@ -47,31 +47,33 @@ export default function Modal({ isOpen, onClose, title, children, maxWidth = 'xl
 
     return (
         <div
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-in fade-in duration-200"
             onClick={onClose}
         >
             {/* Backdrop */}
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+            <div className="absolute inset-0 bg-black/70 backdrop-blur-md animate-in fade-in duration-200" />
 
             {/* Modal */}
             <div
-                className={`relative bg-card border border-border rounded-2xl shadow-2xl w-full ${maxWidthClasses[maxWidth]} max-h-[90vh] flex flex-col`}
+                className={`relative bg-card border-2 border-border rounded-3xl shadow-2xl w-full ${maxWidthClasses[maxWidth]} max-h-[90vh] flex flex-col animate-in zoom-in-95 duration-300`}
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}
-                <div className="flex items-center justify-between p-6 border-b border-border">
-                    <h2 className="text-2xl font-bold text-foreground">{title}</h2>
+                <div className="flex items-center justify-between p-6 border-b-2 border-border bg-gradient-to-r from-card to-card/50">
+                    <h2 className="text-2xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                        {title}
+                    </h2>
                     <button
                         onClick={onClose}
-                        className="p-2 rounded-lg hover:bg-accent transition-colors text-muted-foreground hover:text-foreground"
+                        className="p-2.5 rounded-xl hover:bg-destructive/10 hover:text-destructive transition-all text-muted-foreground hover:text-foreground group"
                         aria-label="Close modal"
                     >
-                        <X size={24} />
+                        <X size={22} className="group-hover:rotate-90 transition-transform duration-300" />
                     </button>
                 </div>
 
                 {/* Content */}
-                <div className="overflow-y-auto flex-1 p-6">
+                <div className="overflow-y-auto flex-1 p-6 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
                     {children}
                 </div>
             </div>
