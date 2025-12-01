@@ -41,6 +41,11 @@ export default function Skills() {
                                         alt={skill.name}
                                         fill
                                         className={`object-contain ${skill.className || ''}`}
+                                        unoptimized={skill.icon.startsWith('http')}
+                                        onError={(e) => {
+                                            console.error(`Failed to load icon for ${skill.name}:`, skill.icon)
+                                            // You could set a fallback icon here
+                                        }}
                                     />
                                 </div>
                             </motion.div>

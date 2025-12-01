@@ -84,14 +84,47 @@ const defaultProjects: Project[] = [
 ]
 
 const defaultSkills: Skill[] = [
-  { name: 'React', icon: '/skills/react.svg', order: 0 },
-  { name: 'Next.js', icon: '/skills/nextjs.svg', order: 1 },
-  { name: 'TypeScript', icon: '/skills/typescript.svg', order: 2 },
-  { name: 'Node.js', icon: '/skills/nodejs.svg', order: 3 },
-  { name: 'MongoDB', icon: '/skills/mongodb.svg', order: 4 },
-  { name: 'Tailwind CSS', icon: '/skills/tailwind.svg', order: 5 },
-  { name: 'Git', icon: '/skills/git.svg', order: 6 },
-  { name: 'JavaScript', icon: '/skills/javascript.svg', order: 7 }
+  {
+    name: 'Next.js',
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
+    className: 'dark:invert',
+    order: 0
+  },
+  {
+    name: 'React',
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
+    order: 1
+  },
+  {
+    name: 'JavaScript',
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
+    order: 2
+  },
+  {
+    name: 'TypeScript',
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
+    order: 3
+  },
+  {
+    name: 'Node.js',
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
+    order: 4
+  },
+  {
+    name: 'Tailwind',
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg',
+    order: 5
+  },
+  {
+    name: 'PHP',
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg',
+    order: 6
+  },
+  {
+    name: 'MongoDB',
+    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg',
+    order: 7
+  }
 ]
 
 const defaultContact: ContactInfo = {
