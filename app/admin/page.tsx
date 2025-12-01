@@ -119,33 +119,35 @@ export default function AdminDashboard() {
         <>
             {/* Enhanced Header */}
             <header className="sticky top-0 z-50 bg-card/95 backdrop-blur-xl border-b border-border/50 shadow-sm">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center py-4">
-                        <div className="flex items-center gap-4">
-                            <div className="p-2.5 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10">
-                                <Layers className="text-primary" size={24} />
+                <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
+                    <div className="flex justify-between items-center py-3 sm:py-4">
+                        <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
+                            <div className="p-1.5 sm:p-2.5 rounded-lg sm:rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 shrink-0">
+                                <Layers className="text-primary w-5 h-5 sm:w-6 sm:h-6" />
                             </div>
-                            <div>
-                                <h1 className="text-2xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                            <div className="min-w-0 flex-1">
+                                <h1 className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent truncate">
                                     Portfolio CMS
                                 </h1>
-                                <p className="text-xs text-muted-foreground">Content Management System</p>
+                                <p className="hidden sm:block text-xs text-muted-foreground">Content Management System</p>
                             </div>
                         </div>
-                        <div className="flex gap-3">
+                        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
                             <Link
                                 href="/"
-                                className="px-5 py-2.5 rounded-xl bg-background border border-border hover:bg-accent hover:border-primary/50 transition-all text-foreground flex items-center gap-2 font-medium group"
+                                className="p-2 sm:px-4 sm:py-2.5 rounded-lg sm:rounded-xl bg-background border border-border hover:bg-accent hover:border-primary/50 transition-all text-foreground flex items-center gap-1.5 sm:gap-2 font-medium group"
+                                title="View Site"
                             >
-                                <Home size={18} className="group-hover:scale-110 transition-transform" />
-                                View Site
+                                <Home size={18} className="group-hover:scale-110 transition-transform shrink-0" />
+                                <span className="hidden sm:inline">View Site</span>
                             </Link>
                             <button
                                 onClick={handleLogout}
-                                className="px-5 py-2.5 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive hover:bg-destructive/20 transition-all flex items-center gap-2 font-medium group"
+                                className="p-2 sm:px-4 sm:py-2.5 rounded-lg sm:rounded-xl bg-destructive/10 border border-destructive/20 text-destructive hover:bg-destructive/20 transition-all flex items-center gap-1.5 sm:gap-2 font-medium group"
+                                title="Logout"
                             >
-                                <LogOut size={18} className="group-hover:scale-110 transition-transform" />
-                                Logout
+                                <LogOut size={18} className="group-hover:scale-110 transition-transform shrink-0" />
+                                <span className="hidden sm:inline">Logout</span>
                             </button>
                         </div>
                     </div>
