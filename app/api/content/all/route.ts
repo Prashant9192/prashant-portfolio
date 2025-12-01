@@ -86,43 +86,43 @@ const defaultProjects: Project[] = [
 const defaultSkills: Skill[] = [
   {
     name: 'Next.js',
-    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
+    icon: 'https://api.iconify.design/logos:nextjs-icon.svg',
     className: 'dark:invert',
     order: 0
   },
   {
     name: 'React',
-    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
+    icon: 'https://api.iconify.design/logos:react.svg',
     order: 1
   },
   {
     name: 'JavaScript',
-    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
+    icon: 'https://api.iconify.design/logos:javascript.svg',
     order: 2
   },
   {
     name: 'TypeScript',
-    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
+    icon: 'https://api.iconify.design/logos:typescript-icon.svg',
     order: 3
   },
   {
     name: 'Node.js',
-    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
+    icon: 'https://api.iconify.design/logos:nodejs-icon.svg',
     order: 4
   },
   {
-    name: 'Tailwind',
-    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg',
+    name: 'Tailwind CSS',
+    icon: 'https://api.iconify.design/logos:tailwindcss-icon.svg',
     order: 5
   },
   {
     name: 'PHP',
-    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg',
+    icon: 'https://api.iconify.design/logos:php.svg',
     order: 6
   },
   {
     name: 'MongoDB',
-    icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg',
+    icon: 'https://api.iconify.design/logos:mongodb-icon.svg',
     order: 7
   }
 ]
@@ -205,7 +205,24 @@ export async function GET() {
     if (skillsResult?.skills && skillsResult.skills.length > 0) {
       skills = skillsResult.skills
         .sort((a, b) => a.order - b.order)
-        .map(({ _id, ...skill }) => skill)
+        .map(({ _id, ...skill }) => {
+          // Fix local paths that don't exist - convert to CDN URLs
+          if (skill.icon && skill.icon.startsWith('/skills/')) {
+            // Map local paths to CDN URLs
+            const iconMap: Record<string, string> = {
+              '/skills/nextjs.svg': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
+              '/skills/react.svg': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
+              '/skills/javascript.svg': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
+              '/skills/typescript.svg': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
+              '/skills/nodejs.svg': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
+              '/skills/tailwind.svg': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg',
+              '/skills/git.svg': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg',
+              '/skills/mongodb.svg': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg',
+            }
+            skill.icon = iconMap[skill.icon] || skill.icon
+          }
+          return skill
+        })
     }
 
     // Process contact data
