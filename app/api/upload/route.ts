@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
       filename = `resume-${timestamp}.${fileExtension}`
       filePath = join(process.cwd(), 'public', filename)
     } else if (type === 'favicon') {
-      // Favicon should be saved as favicon.ico (or favicon.png, etc.)
+      // Save favicon to public folder
       filename = `favicon.${fileExtension}`
       filePath = join(process.cwd(), 'public', filename)
     } else {
@@ -95,6 +95,20 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
     await writeFile(filePath, buffer)
+
+    // For favicon, also save to app directory as favicon.ico for Next.js automatic detection
+    if (type === 'favicon') {
+      const appDir = join(process.cwd(), 'app')
+      
+      // Ensure app directory exists
+      if (!existsSync(appDir)) {
+        await mkdir(appDir, { recursive: true })
+      }
+      
+      // Next.js prioritizes app/favicon.ico - always save as favicon.ico regardless of original format
+      const appIconPath = join(appDir, 'favicon.ico')
+      await writeFile(appIconPath, buffer)
+    }
 
     // Return the public path
     const publicPath = `/${filename}`

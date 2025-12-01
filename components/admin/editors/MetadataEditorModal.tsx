@@ -361,7 +361,7 @@ export default function MetadataEditorModal({ onClose, onSave }: MetadataEditorM
                             </label>
                         </div>
                         <p className="text-xs text-muted-foreground">
-                            Recommended: 32x32px or 64x64px. Formats: .ico, .png, .svg (max 2MB)
+                            <span className="font-semibold text-primary">Recommended: .ico format</span> for best browser compatibility. Size: 32x32px or 64x64px (max 2MB)
                         </p>
                     </div>
                 </div>
