@@ -140,7 +140,14 @@ export async function POST(request: Request) {
       }
     )
     
-    const skillsToSort = result?.skills || skillsWithOrder
+    if (!result) {
+      return NextResponse.json(
+        { error: 'Failed to update skills data' },
+        { status: 500 }
+      )
+    }
+    
+    const skillsToSort = result.skills || skillsWithOrder
     const sortedSkills = skillsToSort
       .sort((a: Skill, b: Skill) => a.order - b.order)
       .map((skill: Skill & { _id?: unknown }) => {

@@ -73,12 +73,15 @@ export async function POST(request: Request) {
 
     const now = new Date()
     
+    // Extract only the fields we want to update (exclude _id, createdAt, updatedAt from body)
+    const { _id: bodyId, createdAt, updatedAt: bodyUpdatedAt, ...updateData } = body
+    
     // Update or insert hero content
     const result = await db.collection<HeroContent>('hero').findOneAndUpdate(
       {}, // Find any existing document
       {
         $set: {
-          ...body,
+          ...updateData,
           updatedAt: now
         },
         $setOnInsert: {
@@ -91,8 +94,14 @@ export async function POST(request: Request) {
       }
     )
     
-    const updatedHero = result || body
-    const { _id, ...heroData } = updatedHero
+    if (!result) {
+      return NextResponse.json(
+        { error: 'Failed to update hero data' },
+        { status: 500 }
+      )
+    }
+    
+    const { _id, ...heroData } = result
     return NextResponse.json({ success: true, data: heroData })
   } catch (error) {
     console.error('Error updating hero data:', error)

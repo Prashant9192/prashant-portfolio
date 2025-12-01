@@ -117,7 +117,14 @@ export async function POST(request: Request) {
       }
     )
     
-    const experiencesToSort = result?.experiences || experiencesWithOrder
+    if (!result) {
+      return NextResponse.json(
+        { error: 'Failed to update experience data' },
+        { status: 500 }
+      )
+    }
+    
+    const experiencesToSort = result.experiences || experiencesWithOrder
     const sortedExperiences = experiencesToSort
       .sort((a: ExperienceItem, b: ExperienceItem) => a.order - b.order)
       .map((exp: ExperienceItem & { _id?: unknown }) => {

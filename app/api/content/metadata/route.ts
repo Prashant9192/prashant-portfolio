@@ -61,11 +61,14 @@ export async function POST(request: Request) {
 
     const now = new Date()
     
+    // Extract only the fields we want to update (exclude _id, createdAt, updatedAt from body)
+    const { _id: bodyId, createdAt, updatedAt: bodyUpdatedAt, ...updateData } = body
+    
     const result = await db.collection<SiteMetadata>('metadata').findOneAndUpdate(
       {},
       {
         $set: {
-          ...body,
+          ...updateData,
           updatedAt: now
         },
         $setOnInsert: {
@@ -78,8 +81,14 @@ export async function POST(request: Request) {
       }
     )
     
-    const updatedMetadata = result || body
-    const { _id, ...metadataData } = updatedMetadata
+    if (!result) {
+      return NextResponse.json(
+        { error: 'Failed to update metadata' },
+        { status: 500 }
+      )
+    }
+    
+    const { _id, ...metadataData } = result
     return NextResponse.json({ success: true, data: metadataData })
   } catch (error) {
     console.error('Error updating metadata:', error)

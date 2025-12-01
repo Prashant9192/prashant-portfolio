@@ -77,11 +77,14 @@ export async function POST(request: Request) {
 
     const now = new Date()
     
+    // Extract only the fields we want to update (exclude _id, createdAt, updatedAt from body)
+    const { _id: bodyId, createdAt, updatedAt: bodyUpdatedAt, ...updateData } = body
+    
     const result = await db.collection<ContactInfo>('contact').findOneAndUpdate(
       {},
       {
         $set: {
-          ...body,
+          ...updateData,
           updatedAt: now
         },
         $setOnInsert: {
@@ -94,8 +97,14 @@ export async function POST(request: Request) {
       }
     )
     
-    const updatedContact = result || body
-    const { _id, ...contactData } = updatedContact
+    if (!result) {
+      return NextResponse.json(
+        { error: 'Failed to update contact data' },
+        { status: 500 }
+      )
+    }
+    
+    const { _id, ...contactData } = result
     return NextResponse.json({ success: true, data: contactData })
   } catch (error) {
     console.error('Error updating contact data:', error)

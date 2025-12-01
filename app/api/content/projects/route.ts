@@ -126,7 +126,14 @@ export async function POST(request: Request) {
       }
     )
     
-    const projectsToSort = result?.projects || projectsWithOrder
+    if (!result) {
+      return NextResponse.json(
+        { error: 'Failed to update projects data' },
+        { status: 500 }
+      )
+    }
+    
+    const projectsToSort = result.projects || projectsWithOrder
     const sortedProjects = projectsToSort
       .sort((a: Project, b: Project) => a.order - b.order)
       .map((project: Project & { _id?: unknown }) => {
