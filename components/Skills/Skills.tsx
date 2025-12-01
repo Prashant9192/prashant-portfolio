@@ -1,27 +1,12 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import { Skill } from '@/lib/models'
+import { useContent } from '@/contexts/ContentContext'
 
 export default function Skills() {
-    const [skills, setSkills] = useState<Skill[]>([])
-
-    useEffect(() => {
-        async function fetchSkills() {
-            try {
-                const res = await fetch('/api/content/skills')
-                if (res.ok) {
-                    const data = await res.json()
-                    setSkills(data.skills || [])
-                }
-            } catch (error) {
-                console.error('Failed to fetch skills data:', error)
-            }
-        }
-        fetchSkills()
-    }, [])
+    const { skills } = useContent()
     return (
         <section id="skills" className="py-20">
             <div className="container mx-auto px-4">

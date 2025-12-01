@@ -1,30 +1,15 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { motion } from 'framer-motion'
 import { Github, ArrowUpRight } from 'lucide-react'
 import Image from 'next/image'
 import SpotlightCard from '@/components/ui/SpotlightCard'
 import TiltCard from '@/components/ui/TiltCard'
-import { Project } from '@/lib/models'
+import { useContent } from '@/contexts/ContentContext'
 
 export default function Projects() {
-    const [projects, setProjects] = useState<Project[]>([])
-
-    useEffect(() => {
-        async function fetchProjects() {
-            try {
-                const res = await fetch('/api/content/projects')
-                if (res.ok) {
-                    const data = await res.json()
-                    setProjects(data.projects || [])
-                }
-            } catch (error) {
-                console.error('Failed to fetch projects data:', error)
-            }
-        }
-        fetchProjects()
-    }, [])
+    const { projects } = useContent()
     return (
         <section id="projects" className="py-20 relative overflow-hidden">
             {/* Background Elements */}

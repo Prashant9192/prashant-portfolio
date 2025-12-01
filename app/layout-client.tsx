@@ -7,13 +7,14 @@ import ScrollProgress from '@/components/ScrollProgress/ScrollProgress'
 import CustomCursor from '@/components/ui/CustomCursor'
 import Preloader from '@/components/ui/Preloader'
 import ParticlesBackground from '@/components/ui/ParticlesBackground'
+import { ContentProvider } from '@/contexts/ContentContext'
 
 export default function LayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const isAdminRoute = pathname?.startsWith('/admin')
 
   return (
-    <>
+    <ContentProvider>
       {!isAdminRoute && (
         <>
           <Preloader />
@@ -27,7 +28,7 @@ export default function LayoutClient({ children }: { children: React.ReactNode }
         {children}
       </main>
       {!isAdminRoute && <Footer />}
-    </>
+    </ContentProvider>
   )
 }
 

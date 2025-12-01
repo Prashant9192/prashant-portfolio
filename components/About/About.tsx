@@ -1,27 +1,12 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import { AboutContent } from '@/lib/models'
+import { useContent } from '@/contexts/ContentContext'
 
 export default function About() {
-    const [aboutData, setAboutData] = useState<AboutContent | null>(null)
-
-    useEffect(() => {
-        async function fetchAboutData() {
-            try {
-                const res = await fetch('/api/content/about')
-                if (res.ok) {
-                    const data = await res.json()
-                    setAboutData(data)
-                }
-            } catch (error) {
-                console.error('Failed to fetch about data:', error)
-            }
-        }
-        fetchAboutData()
-    }, [])
+    const { about: aboutData } = useContent()
     return (
         <section id="about" className="h-full">
             <motion.div

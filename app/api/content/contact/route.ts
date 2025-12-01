@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server'
 import { getDb } from '@/lib/db'
 import { ContactInfo } from '@/lib/models'
 
+// Cache configuration - revalidate every 60 seconds
+export const revalidate = 60
+
 export async function GET() {
   const defaultContact: ContactInfo = {
     email: 'prashantbasnet222@gmail.com',
@@ -12,20 +15,36 @@ export async function GET() {
   try {
     const db = await getDb()
     if (!db) {
-      return NextResponse.json(defaultContact)
+      return NextResponse.json(defaultContact, {
+        headers: {
+          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+        }
+      })
     }
 
     const contact = await db.collection<ContactInfo>('contact').findOne({})
     
     if (!contact) {
-      return NextResponse.json(defaultContact)
+      return NextResponse.json(defaultContact, {
+        headers: {
+          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+        }
+      })
     }
 
     const { _id, ...contactData } = contact
-    return NextResponse.json(contactData)
+    return NextResponse.json(contactData, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+      }
+    })
   } catch (error) {
     console.error('Error fetching contact data:', error)
-    return NextResponse.json(defaultContact)
+    return NextResponse.json(defaultContact, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+      }
+    })
   }
 }
 

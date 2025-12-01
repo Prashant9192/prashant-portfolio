@@ -1,27 +1,12 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { motion } from 'framer-motion'
 import SpotlightCard from '@/components/ui/SpotlightCard'
-import { ExperienceItem } from '@/lib/models'
+import { useContent } from '@/contexts/ContentContext'
 
 export default function Experience() {
-    const [experiences, setExperiences] = useState<ExperienceItem[]>([])
-
-    useEffect(() => {
-        async function fetchExperiences() {
-            try {
-                const res = await fetch('/api/content/experience')
-                if (res.ok) {
-                    const data = await res.json()
-                    setExperiences(data.experiences || [])
-                }
-            } catch (error) {
-                console.error('Failed to fetch experience data:', error)
-            }
-        }
-        fetchExperiences()
-    }, [])
+    const { experiences } = useContent()
     return (
         <section id="experience" className="h-full">
             <motion.div

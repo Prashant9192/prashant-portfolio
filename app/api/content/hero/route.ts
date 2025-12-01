@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server'
 import { getDb } from '@/lib/db'
 import { HeroContent } from '@/lib/models'
 
+// Cache configuration - revalidate every 60 seconds
+export const revalidate = 60
+
 export async function GET() {
   const defaultHero: HeroContent = {
     name: 'Prashant Basnet',
@@ -24,10 +27,18 @@ export async function GET() {
     }
 
     const { _id, ...heroData } = hero
-    return NextResponse.json(heroData)
+    return NextResponse.json(heroData, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+      }
+    })
   } catch (error) {
     console.error('Error fetching hero data:', error)
-    return NextResponse.json(defaultHero)
+    return NextResponse.json(defaultHero, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+      }
+    })
   }
 }
 
