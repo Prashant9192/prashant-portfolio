@@ -1,7 +1,6 @@
 import './globals.css'
 import { ThemeProvider } from 'next-themes'
-import { Toaster } from 'sonner'
-import { Analytics } from '@vercel/analytics/react'
+// import { Analytics } from '@vercel/analytics/react'
 import LayoutClient from './layout-client'
 import { Metadata } from 'next'
 import { getDb } from '@/lib/db'
@@ -29,6 +28,7 @@ async function getMetadata(): Promise<SiteMetadata> {
     ogType: 'website',
     twitterCard: 'summary_large_image',
     language: 'en',
+    favicon: '',
   }
 }
 
@@ -78,6 +78,19 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: canonicalUrl ? new URL(canonicalUrl) : undefined,
     themeColor: metadata.themeColor || '#2563eb',
     viewport: metadata.viewport || 'width=device-width, initial-scale=1',
+    icons: metadata.favicon ? {
+      icon: [
+        { 
+          url: metadata.favicon, 
+          sizes: 'any',
+          type: metadata.favicon.endsWith('.png') ? 'image/png' : 
+                metadata.favicon.endsWith('.svg') ? 'image/svg+xml' :
+                metadata.favicon.endsWith('.ico') ? 'image/x-icon' : 'image/png'
+        }
+      ],
+      shortcut: metadata.favicon,
+      apple: metadata.favicon,
+    } : undefined,
   }
   
   return metadataObject
@@ -93,8 +106,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <LayoutClient>
             {children}
           </LayoutClient>
-          <Toaster richColors position="bottom-right" />
-          <Analytics />
+          {/* <Analytics /> */}
         </ThemeProvider>
       </body>
     </html>

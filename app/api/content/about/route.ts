@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server'
 import { getDb } from '@/lib/db'
 import { AboutContent } from '@/lib/models'
 
+// Cache configuration - revalidate every 60 seconds
+export const revalidate = 60
+
 export async function GET() {
   try {
     const db = await getDb()
@@ -15,7 +18,11 @@ export async function GET() {
           company: 'Digitrix Agency'
         }
       }
-      return NextResponse.json(defaultAbout)
+      return NextResponse.json(defaultAbout, {
+        headers: {
+          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+        }
+      })
     }
 
     const about = await db.collection<AboutContent>('about').findOne({})
@@ -29,11 +36,19 @@ export async function GET() {
           company: 'Digitrix Agency'
         }
       }
-      return NextResponse.json(defaultAbout)
+      return NextResponse.json(defaultAbout, {
+        headers: {
+          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+        }
+      })
     }
 
     const { _id, ...aboutData } = about
-    return NextResponse.json(aboutData)
+    return NextResponse.json(aboutData, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+      }
+    })
   } catch (error) {
     console.error('Error fetching about data:', error)
     // Return default data on error
@@ -45,7 +60,11 @@ export async function GET() {
         company: 'Digitrix Agency'
       }
     }
-    return NextResponse.json(defaultAbout)
+    return NextResponse.json(defaultAbout, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+      }
+    })
   }
 }
 
@@ -78,11 +97,14 @@ export async function POST(request: Request) {
 
     const now = new Date()
     
+    // Extract only the fields we want to update (exclude _id, createdAt, updatedAt from body)
+    const { _id: bodyId, createdAt, updatedAt: bodyUpdatedAt, ...updateData } = body
+    
     const result = await db.collection<AboutContent>('about').findOneAndUpdate(
       {},
       {
         $set: {
-          ...body,
+          ...updateData,
           updatedAt: now
         },
         $setOnInsert: {
@@ -95,8 +117,14 @@ export async function POST(request: Request) {
       }
     )
     
-    const updatedAbout = result || body
-    const { _id, ...aboutData } = updatedAbout
+    if (!result) {
+      return NextResponse.json(
+        { error: 'Failed to update about data' },
+        { status: 500 }
+      )
+    }
+    
+    const { _id, ...aboutData } = result
     return NextResponse.json({ success: true, data: aboutData })
   } catch (error) {
     console.error('Error updating about data:', error)

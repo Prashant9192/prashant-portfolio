@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server'
 import { getDb } from '@/lib/db'
 import { SkillsContent, Skill } from '@/lib/models'
 
+// Cache configuration - revalidate every 60 seconds
+export const revalidate = 60
+
 export async function GET() {
   const defaultSkills: Skill[] = [
     {
@@ -50,23 +53,39 @@ export async function GET() {
   try {
     const db = await getDb()
     if (!db) {
-      return NextResponse.json({ skills: defaultSkills })
+      return NextResponse.json({ skills: defaultSkills }, {
+        headers: {
+          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+        }
+      })
     }
 
     const skills = await db.collection<SkillsContent>('skills').findOne({})
     
     if (!skills || !skills.skills || skills.skills.length === 0) {
-      return NextResponse.json({ skills: defaultSkills })
+      return NextResponse.json({ skills: defaultSkills }, {
+        headers: {
+          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+        }
+      })
     }
 
     const sortedSkills = skills.skills
       .sort((a, b) => a.order - b.order)
       .map(({ _id, ...skill }) => skill)
     
-    return NextResponse.json({ skills: sortedSkills })
+    return NextResponse.json({ skills: sortedSkills }, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+      }
+    })
   } catch (error) {
     console.error('Error fetching skills data:', error)
-    return NextResponse.json({ skills: defaultSkills })
+    return NextResponse.json({ skills: defaultSkills }, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+      }
+    })
   }
 }
 
@@ -121,7 +140,14 @@ export async function POST(request: Request) {
       }
     )
     
-    const skillsToSort = result?.skills || skillsWithOrder
+    if (!result) {
+      return NextResponse.json(
+        { error: 'Failed to update skills data' },
+        { status: 500 }
+      )
+    }
+    
+    const skillsToSort = result.skills || skillsWithOrder
     const sortedSkills = skillsToSort
       .sort((a: Skill, b: Skill) => a.order - b.order)
       .map((skill: Skill & { _id?: unknown }) => {

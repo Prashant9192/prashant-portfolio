@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server'
 import { getDb } from '@/lib/db'
 import { ContactInfo } from '@/lib/models'
 
+// Cache configuration - revalidate every 60 seconds
+export const revalidate = 60
+
 export async function GET() {
   const defaultContact: ContactInfo = {
     email: 'prashantbasnet222@gmail.com',
@@ -12,20 +15,36 @@ export async function GET() {
   try {
     const db = await getDb()
     if (!db) {
-      return NextResponse.json(defaultContact)
+      return NextResponse.json(defaultContact, {
+        headers: {
+          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+        }
+      })
     }
 
     const contact = await db.collection<ContactInfo>('contact').findOne({})
     
     if (!contact) {
-      return NextResponse.json(defaultContact)
+      return NextResponse.json(defaultContact, {
+        headers: {
+          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+        }
+      })
     }
 
     const { _id, ...contactData } = contact
-    return NextResponse.json(contactData)
+    return NextResponse.json(contactData, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+      }
+    })
   } catch (error) {
     console.error('Error fetching contact data:', error)
-    return NextResponse.json(defaultContact)
+    return NextResponse.json(defaultContact, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+      }
+    })
   }
 }
 
@@ -58,11 +77,14 @@ export async function POST(request: Request) {
 
     const now = new Date()
     
+    // Extract only the fields we want to update (exclude _id, createdAt, updatedAt from body)
+    const { _id: bodyId, createdAt, updatedAt: bodyUpdatedAt, ...updateData } = body
+    
     const result = await db.collection<ContactInfo>('contact').findOneAndUpdate(
       {},
       {
         $set: {
-          ...body,
+          ...updateData,
           updatedAt: now
         },
         $setOnInsert: {
@@ -75,8 +97,14 @@ export async function POST(request: Request) {
       }
     )
     
-    const updatedContact = result || body
-    const { _id, ...contactData } = updatedContact
+    if (!result) {
+      return NextResponse.json(
+        { error: 'Failed to update contact data' },
+        { status: 500 }
+      )
+    }
+    
+    const { _id, ...contactData } = result
     return NextResponse.json({ success: true, data: contactData })
   } catch (error) {
     console.error('Error updating contact data:', error)

@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
         hostname: 'cdn.jsdelivr.net',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'api.iconify.design',
+        pathname: '/**',
+      },
     ],
   },
 };

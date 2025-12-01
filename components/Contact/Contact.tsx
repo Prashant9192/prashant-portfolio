@@ -1,36 +1,21 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Send, Loader2, Mail, MapPin, Phone, ArrowRight, ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
 import MagneticButton from '@/components/ui/MagneticButton'
-import { ContactInfo } from '@/lib/models'
+import { useContent } from '@/contexts/ContentContext'
 
 export default function Contact() {
     const [isFlipped, setIsFlipped] = useState(false)
-    const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null)
+    const { contact: contactInfo } = useContent()
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         message: ''
     })
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
-
-    useEffect(() => {
-        async function fetchContactInfo() {
-            try {
-                const res = await fetch('/api/content/contact')
-                if (res.ok) {
-                    const data = await res.json()
-                    setContactInfo(data)
-                }
-            } catch (error) {
-                console.error('Failed to fetch contact info:', error)
-            }
-        }
-        fetchContactInfo()
-    }, [])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()

@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server'
 import { getDb } from '@/lib/db'
 import { ProjectsContent, Project } from '@/lib/models'
 
+// Cache configuration - revalidate every 60 seconds
+export const revalidate = 60
+
 export async function GET() {
   const defaultProjects: Project[] = [
     {
@@ -36,23 +39,39 @@ export async function GET() {
   try {
     const db = await getDb()
     if (!db) {
-      return NextResponse.json({ projects: defaultProjects })
+      return NextResponse.json({ projects: defaultProjects }, {
+        headers: {
+          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+        }
+      })
     }
 
     const projects = await db.collection<ProjectsContent>('projects').findOne({})
     
     if (!projects || !projects.projects || projects.projects.length === 0) {
-      return NextResponse.json({ projects: defaultProjects })
+      return NextResponse.json({ projects: defaultProjects }, {
+        headers: {
+          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+        }
+      })
     }
 
     const sortedProjects = projects.projects
       .sort((a, b) => a.order - b.order)
       .map(({ _id, ...project }) => project)
     
-    return NextResponse.json({ projects: sortedProjects })
+    return NextResponse.json({ projects: sortedProjects }, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+      }
+    })
   } catch (error) {
     console.error('Error fetching projects data:', error)
-    return NextResponse.json({ projects: defaultProjects })
+    return NextResponse.json({ projects: defaultProjects }, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+      }
+    })
   }
 }
 
@@ -107,7 +126,14 @@ export async function POST(request: Request) {
       }
     )
     
-    const projectsToSort = result?.projects || projectsWithOrder
+    if (!result) {
+      return NextResponse.json(
+        { error: 'Failed to update projects data' },
+        { status: 500 }
+      )
+    }
+    
+    const projectsToSort = result.projects || projectsWithOrder
     const sortedProjects = projectsToSort
       .sort((a: Project, b: Project) => a.order - b.order)
       .map((project: Project & { _id?: unknown }) => {

@@ -26,7 +26,7 @@ export default function SkillsEditorModal({ onClose }: SkillsEditorModalProps) {
                 setSkills(data.skills || [])
             }
         } catch (error) {
-            toast.error('Failed to load skills data')
+            toast.error('Failed to load skills data', { id: 'skills-load-error' })
         } finally {
             setLoading(false)
         }
@@ -46,13 +46,13 @@ export default function SkillsEditorModal({ onClose }: SkillsEditorModalProps) {
             })
 
             if (res.ok) {
-                toast.success('Skills updated successfully!')
+                toast.success('Skills updated successfully!', { id: 'skills-update-success' })
                 onClose()
             } else {
-                toast.error('Failed to update skills')
+                toast.error('Failed to update skills', { id: 'skills-update-error' })
             }
         } catch (error) {
-            toast.error('An error occurred while saving')
+            toast.error('An error occurred while saving', { id: 'skills-save-error' })
         } finally {
             setSaving(false)
         }

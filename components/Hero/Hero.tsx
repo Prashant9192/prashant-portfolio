@@ -1,34 +1,16 @@
 'use client'
 
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef } from 'react'
 import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionTemplate } from 'framer-motion'
 import { ArrowRight, Download } from 'lucide-react'
 import Image from 'next/image'
 import Typewriter from 'typewriter-effect'
 import MagneticButton from '@/components/ui/MagneticButton'
-import { HeroContent } from '@/lib/models'
+import { useContent } from '@/contexts/ContentContext'
 
 export default function Hero() {
     const ref = useRef(null)
-    const [heroData, setHeroData] = useState<HeroContent | null>(null)
-    const [loading, setLoading] = useState(true)
-
-    useEffect(() => {
-        async function fetchHeroData() {
-            try {
-                const res = await fetch('/api/content/hero')
-                if (res.ok) {
-                    const data = await res.json()
-                    setHeroData(data)
-                }
-            } catch (error) {
-                console.error('Failed to fetch hero data:', error)
-            } finally {
-                setLoading(false)
-            }
-        }
-        fetchHeroData()
-    }, [])
+    const { hero: heroData, loading } = useContent()
 
     // 3D Tilt Effect
     const x = useMotionValue(0)

@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server'
 import { getDb } from '@/lib/db'
 import { HeroContent } from '@/lib/models'
 
+// Cache configuration - revalidate every 60 seconds
+export const revalidate = 60
+
 export async function GET() {
   const defaultHero: HeroContent = {
     name: 'Prashant Basnet',
@@ -24,10 +27,18 @@ export async function GET() {
     }
 
     const { _id, ...heroData } = hero
-    return NextResponse.json(heroData)
+    return NextResponse.json(heroData, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+      }
+    })
   } catch (error) {
     console.error('Error fetching hero data:', error)
-    return NextResponse.json(defaultHero)
+    return NextResponse.json(defaultHero, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+      }
+    })
   }
 }
 
@@ -62,12 +73,15 @@ export async function POST(request: Request) {
 
     const now = new Date()
     
+    // Extract only the fields we want to update (exclude _id, createdAt, updatedAt from body)
+    const { _id: bodyId, createdAt, updatedAt: bodyUpdatedAt, ...updateData } = body
+    
     // Update or insert hero content
     const result = await db.collection<HeroContent>('hero').findOneAndUpdate(
       {}, // Find any existing document
       {
         $set: {
-          ...body,
+          ...updateData,
           updatedAt: now
         },
         $setOnInsert: {
@@ -80,8 +94,14 @@ export async function POST(request: Request) {
       }
     )
     
-    const updatedHero = result || body
-    const { _id, ...heroData } = updatedHero
+    if (!result) {
+      return NextResponse.json(
+        { error: 'Failed to update hero data' },
+        { status: 500 }
+      )
+    }
+    
+    const { _id, ...heroData } = result
     return NextResponse.json({ success: true, data: heroData })
   } catch (error) {
     console.error('Error updating hero data:', error)

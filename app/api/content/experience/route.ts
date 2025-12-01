@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server'
 import { getDb } from '@/lib/db'
 import { ExperienceContent, ExperienceItem } from '@/lib/models'
 
+// Cache configuration - revalidate every 60 seconds
+export const revalidate = 60
+
 export async function GET() {
   const defaultExperiences: ExperienceItem[] = [
     {
@@ -25,13 +28,21 @@ export async function GET() {
   try {
     const db = await getDb()
     if (!db) {
-      return NextResponse.json({ experiences: defaultExperiences })
+      return NextResponse.json({ experiences: defaultExperiences }, {
+        headers: {
+          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+        }
+      })
     }
 
     const experience = await db.collection<ExperienceContent>('experience').findOne({})
     
     if (!experience || !experience.experiences || experience.experiences.length === 0) {
-      return NextResponse.json({ experiences: defaultExperiences })
+      return NextResponse.json({ experiences: defaultExperiences }, {
+        headers: {
+          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+        }
+      })
     }
 
     // Sort by order and remove _id
@@ -39,10 +50,18 @@ export async function GET() {
       .sort((a, b) => a.order - b.order)
       .map(({ _id, ...exp }) => exp)
     
-    return NextResponse.json({ experiences: sortedExperiences })
+    return NextResponse.json({ experiences: sortedExperiences }, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+      }
+    })
   } catch (error) {
     console.error('Error fetching experience data:', error)
-    return NextResponse.json({ experiences: defaultExperiences })
+    return NextResponse.json({ experiences: defaultExperiences }, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+      }
+    })
   }
 }
 
@@ -98,7 +117,14 @@ export async function POST(request: Request) {
       }
     )
     
-    const experiencesToSort = result?.experiences || experiencesWithOrder
+    if (!result) {
+      return NextResponse.json(
+        { error: 'Failed to update experience data' },
+        { status: 500 }
+      )
+    }
+    
+    const experiencesToSort = result.experiences || experiencesWithOrder
     const sortedExperiences = experiencesToSort
       .sort((a: ExperienceItem, b: ExperienceItem) => a.order - b.order)
       .map((exp: ExperienceItem & { _id?: unknown }) => {
