@@ -49,7 +49,13 @@ export default function ProjectsEditorModal({ onClose }: ProjectsEditorModalProp
 
             if (res.ok) {
                 toast.success('Projects updated successfully!')
-                onClose()
+                // Trigger content refresh
+                window.dispatchEvent(new Event('contentUpdated'))
+                // Also update localStorage for cross-tab updates
+                localStorage.setItem('contentUpdated', Date.now().toString())
+                setTimeout(() => {
+                    onClose()
+                }, 500)
             } else {
                 toast.error('Failed to update projects')
             }

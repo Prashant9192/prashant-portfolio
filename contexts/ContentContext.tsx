@@ -50,8 +50,10 @@ export function ContentProvider({ children }: { children: ReactNode }) {
         setContent(prev => ({ ...prev, loading: true, error: null }))
         
         // Fetch all content in one request
-        // The API route has cache headers, so browser will cache the response
-        const res = await fetch('/api/content/all')
+        // Add cache-busting timestamp to ensure fresh data
+        const res = await fetch(`/api/content/all?t=${Date.now()}`, {
+          cache: 'no-store'
+        })
         
         if (!res.ok) {
           throw new Error('Failed to fetch content')
@@ -80,6 +82,28 @@ export function ContentProvider({ children }: { children: ReactNode }) {
     }
 
     fetchAllContent()
+
+    // Listen for storage events to refresh content when updated from admin panel
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'contentUpdated') {
+        fetchAllContent()
+        localStorage.removeItem('contentUpdated')
+      }
+    }
+
+    window.addEventListener('storage', handleStorageChange)
+    
+    // Also check for custom event for same-tab updates
+    const handleContentUpdate = () => {
+      fetchAllContent()
+    }
+    
+    window.addEventListener('contentUpdated', handleContentUpdate)
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+      window.removeEventListener('contentUpdated', handleContentUpdate)
+    }
   }, [])
 
   return (
