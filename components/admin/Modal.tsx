@@ -55,7 +55,7 @@ export default function Modal({ isOpen, onClose, title, children, maxWidth = 'xl
 
             {/* Modal */}
             <div
-                className={`relative bg-card border-2 border-border rounded-3xl shadow-2xl w-full ${maxWidthClasses[maxWidth]} max-h-[90vh] flex flex-col animate-in zoom-in-95 duration-300`}
+                className={`relative bg-card border-2 border-border rounded-3xl shadow-2xl w-full ${maxWidthClasses[maxWidth]} max-h-[90vh] flex flex-col animate-in zoom-in-95 duration-300 overflow-hidden`}
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}

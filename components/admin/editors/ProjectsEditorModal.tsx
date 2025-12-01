@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Save, Loader2, Plus, Trash2, X } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
+import { Save, Loader2, Plus, Trash2, X, Upload, Image } from 'lucide-react'
 import { toast } from 'sonner'
 import { Project } from '@/lib/models'
 
@@ -13,6 +13,8 @@ export default function ProjectsEditorModal({ onClose }: ProjectsEditorModalProp
     const [loading, setLoading] = useState(true)
     const [saving, setSaving] = useState(false)
     const [projects, setProjects] = useState<Project[]>([])
+    const [uploadingImages, setUploadingImages] = useState<Record<number, boolean>>({})
+    const imageInputRefs = useRef<Record<number, HTMLInputElement | null>>({})
 
     useEffect(() => {
         fetchData()
@@ -108,6 +110,67 @@ export default function ProjectsEditorModal({ onClose }: ProjectsEditorModalProp
         setProjects(reordered)
     }
 
+    const handleImageUpload = async (file: File, projectIndex: number) => {
+        // Validate file
+        if (!file.type.startsWith('image/')) {
+            toast.error('Please upload an image file')
+            return
+        }
+
+        // Check file size (max 5MB)
+        const maxSize = 5 * 1024 * 1024
+        if (file.size > maxSize) {
+            toast.error('File size must be less than 5MB')
+            return
+        }
+
+        setUploadingImages(prev => ({ ...prev, [projectIndex]: true }))
+
+        try {
+            const token = localStorage.getItem('adminToken')
+            const formData = new FormData()
+            formData.append('file', file)
+            formData.append('type', 'project')
+
+            const res = await fetch('/api/upload', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData
+            })
+
+            if (!res.ok) {
+                const error = await res.json()
+                throw new Error(error.error || 'Failed to upload image')
+            }
+
+            const result = await res.json()
+            updateProject(projectIndex, 'image', result.path)
+            toast.success('Project image uploaded successfully!')
+        } catch (error) {
+            console.error('Upload error:', error)
+            toast.error(error instanceof Error ? error.message : 'Failed to upload image')
+        } finally {
+            setUploadingImages(prev => ({ ...prev, [projectIndex]: false }))
+            const input = imageInputRefs.current[projectIndex]
+            if (input) {
+                input.value = ''
+            }
+        }
+    }
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>, projectIndex: number) => {
+        const file = e.target.files?.[0]
+        if (file) {
+            handleImageUpload(file, projectIndex)
+        }
+    }
+
+    const setImageInputRef = (projectIndex: number, element: HTMLInputElement | null) => {
+        imageInputRefs.current[projectIndex] = element
+    }
+
     if (loading) {
         return (
             <div className="flex items-center justify-center py-12">
@@ -181,15 +244,58 @@ export default function ProjectsEditorModal({ onClose }: ProjectsEditorModalProp
 
                                 <div>
                                     <label className="block text-sm font-medium text-foreground mb-2">
-                                        Image Path
+                                        Project Image
                                     </label>
-                                    <input
-                                        type="text"
-                                        value={project.image}
-                                        onChange={(e) => updateProject(index, 'image', e.target.value)}
-                                        className="w-full px-4 py-3 rounded-xl bg-background border border-input text-foreground placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/50 outline-none transition-all"
-                                        placeholder="/projects/project.png"
-                                    />
+                                    <div className="space-y-3">
+                                        {project.image && (
+                                            <div className="relative w-full h-32 rounded-xl bg-background border border-input overflow-hidden">
+                                                <img
+                                                    src={project.image}
+                                                    alt={`${project.title || 'Project'} preview`}
+                                                    className="w-full h-full object-cover"
+                                                    onError={(e) => {
+                                                        e.currentTarget.style.display = 'none'
+                                                    }}
+                                                />
+                                            </div>
+                                        )}
+                                        <div className="flex items-center gap-3">
+                                            <input
+                                                ref={(el) => setImageInputRef(index, el)}
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={(e) => handleImageChange(e, index)}
+                                                className="hidden"
+                                                id={`project-image-${index}`}
+                                                disabled={uploadingImages[index]}
+                                            />
+                                            <label
+                                                htmlFor={`project-image-${index}`}
+                                                className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 border-dashed transition-all cursor-pointer ${
+                                                    uploadingImages[index]
+                                                        ? 'border-primary/50 bg-primary/5 cursor-wait'
+                                                        : 'border-input hover:border-primary hover:bg-accent'
+                                                }`}
+                                            >
+                                                {uploadingImages[index] ? (
+                                                    <>
+                                                        <Loader2 size={18} className="animate-spin text-primary" />
+                                                        <span className="text-sm text-foreground">Uploading...</span>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <Image size={18} className="text-foreground" />
+                                                        <span className="text-sm text-foreground">Upload Image</span>
+                                                    </>
+                                                )}
+                                            </label>
+                                        </div>
+                                        {project.image && (
+                                            <p className="text-xs text-muted-foreground">
+                                                Current: <span className="font-mono">{project.image}</span>
+                                            </p>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
 

@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData()
     const file = formData.get('file') as File
-    const type = formData.get('type') as string // 'avatar' or 'resume'
+    const type = formData.get('type') as string // 'avatar', 'resume', or 'project'
 
     if (!file) {
       return NextResponse.json(
@@ -25,18 +25,18 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (!type || (type !== 'avatar' && type !== 'resume')) {
+    if (!type || (type !== 'avatar' && type !== 'resume' && type !== 'project')) {
       return NextResponse.json(
-        { error: 'Invalid type. Must be "avatar" or "resume"' },
+        { error: 'Invalid type. Must be "avatar", "resume", or "project"' },
         { status: 400 }
       )
     }
 
     // Validate file type
-    if (type === 'avatar') {
+    if (type === 'avatar' || type === 'project') {
       if (!file.type.startsWith('image/')) {
         return NextResponse.json(
-          { error: 'Avatar must be an image file' },
+          { error: `${type === 'avatar' ? 'Avatar' : 'Project image'} must be an image file` },
           { status: 400 }
         )
       }
@@ -60,8 +60,12 @@ export async function POST(request: NextRequest) {
     if (type === 'avatar') {
       filename = `avatar-${timestamp}.${fileExtension}`
       filePath = join(process.cwd(), 'public', filename)
-    } else {
+    } else if (type === 'resume') {
       filename = `resume-${timestamp}.${fileExtension}`
+      filePath = join(process.cwd(), 'public', filename)
+    } else {
+      // Project images - optionally store in projects subfolder
+      filename = `project-${timestamp}.${fileExtension}`
       filePath = join(process.cwd(), 'public', filename)
     }
 
