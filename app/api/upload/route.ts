@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData()
     const file = formData.get('file') as File
-    const type = formData.get('type') as string // 'avatar', 'resume', or 'project'
+    const type = formData.get('type') as string // 'avatar', 'resume', 'project', or 'favicon'
 
     if (!file) {
       return NextResponse.json(
@@ -25,20 +25,32 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (!type || (type !== 'avatar' && type !== 'resume' && type !== 'project')) {
+    if (!type || (type !== 'avatar' && type !== 'resume' && type !== 'project' && type !== 'favicon')) {
       return NextResponse.json(
-        { error: 'Invalid type. Must be "avatar", "resume", or "project"' },
+        { error: 'Invalid type. Must be "avatar", "resume", "project", or "favicon"' },
         { status: 400 }
       )
     }
 
     // Validate file type
-    if (type === 'avatar' || type === 'project') {
+    if (type === 'avatar' || type === 'project' || type === 'favicon') {
       if (!file.type.startsWith('image/')) {
         return NextResponse.json(
-          { error: `${type === 'avatar' ? 'Avatar' : 'Project image'} must be an image file` },
+          { error: `${type === 'avatar' ? 'Avatar' : type === 'project' ? 'Project image' : 'Favicon'} must be an image file` },
           { status: 400 }
         )
+      }
+      
+      // For favicon, prefer .ico, .png, or .svg
+      if (type === 'favicon') {
+        const allowedExtensions = ['ico', 'png', 'svg', 'jpg', 'jpeg', 'webp']
+        const fileExtension = file.name.split('.').pop()?.toLowerCase() || ''
+        if (!allowedExtensions.includes(fileExtension)) {
+          return NextResponse.json(
+            { error: 'Favicon must be .ico, .png, .svg, .jpg, .jpeg, or .webp format' },
+            { status: 400 }
+          )
+        }
       }
     } else if (type === 'resume') {
       if (file.type !== 'application/pdf') {
@@ -63,8 +75,12 @@ export async function POST(request: NextRequest) {
     } else if (type === 'resume') {
       filename = `resume-${timestamp}.${fileExtension}`
       filePath = join(process.cwd(), 'public', filename)
+    } else if (type === 'favicon') {
+      // Favicon should be saved as favicon.ico (or favicon.png, etc.)
+      filename = `favicon.${fileExtension}`
+      filePath = join(process.cwd(), 'public', filename)
     } else {
-      // Project images - optionally store in projects subfolder
+      // Project images
       filename = `project-${timestamp}.${fileExtension}`
       filePath = join(process.cwd(), 'public', filename)
     }

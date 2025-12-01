@@ -77,6 +77,11 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: canonicalUrl ? new URL(canonicalUrl) : undefined,
     themeColor: metadata.themeColor || '#2563eb',
     viewport: metadata.viewport || 'width=device-width, initial-scale=1',
+    icons: {
+      icon: metadata.favicon || '/favicon.ico',
+      shortcut: metadata.favicon || '/favicon.ico',
+      apple: metadata.favicon || '/favicon.ico',
+    },
   }
   
   return metadataObject

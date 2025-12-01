@@ -114,6 +114,7 @@ export interface SiteMetadata {
   viewport?: string
   themeColor?: string
   language?: string
+  favicon?: string
   
   createdAt?: Date
   updatedAt?: Date

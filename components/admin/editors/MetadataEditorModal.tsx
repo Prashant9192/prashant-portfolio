@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Save, Loader2, Info } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
+import { Save, Loader2, Info, Image as ImageIcon } from 'lucide-react'
 import { toast } from 'sonner'
 import { SiteMetadata } from '@/lib/models'
 
@@ -13,6 +13,8 @@ interface MetadataEditorModalProps {
 export default function MetadataEditorModal({ onClose, onSave }: MetadataEditorModalProps) {
     const [loading, setLoading] = useState(true)
     const [saving, setSaving] = useState(false)
+    const [uploadingFavicon, setUploadingFavicon] = useState(false)
+    const faviconInputRef = useRef<HTMLInputElement>(null)
     const [data, setData] = useState<SiteMetadata>({
         title: '',
         description: '',
@@ -35,6 +37,7 @@ export default function MetadataEditorModal({ onClose, onSave }: MetadataEditorM
         viewport: 'width=device-width, initial-scale=1',
         themeColor: '#2563eb',
         language: 'en',
+        favicon: '',
     })
 
     useEffect(() => {
@@ -68,6 +71,7 @@ export default function MetadataEditorModal({ onClose, onSave }: MetadataEditorM
                     viewport: metadataData.viewport || 'width=device-width, initial-scale=1',
                     themeColor: metadataData.themeColor || '#2563eb',
                     language: metadataData.language || 'en',
+                    favicon: metadataData.favicon || '',
                 })
             }
         } catch (error) {
@@ -104,6 +108,64 @@ export default function MetadataEditorModal({ onClose, onSave }: MetadataEditorM
             toast.error('An error occurred while saving', { id: 'metadata-save-error' })
         } finally {
             setSaving(false)
+        }
+    }
+
+    const handleFaviconUpload = async (file: File) => {
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+            toast.error('Favicon must be an image file', { id: 'favicon-file-type-error' })
+            return
+        }
+
+        // Check file size (max 2MB for favicon)
+        const maxSize = 2 * 1024 * 1024
+        if (file.size > maxSize) {
+            toast.error('Favicon file size must be less than 2MB', { id: 'favicon-file-size-error' })
+            return
+        }
+
+        setUploadingFavicon(true)
+
+        try {
+            const token = localStorage.getItem('adminToken')
+            const formData = new FormData()
+            formData.append('file', file)
+            formData.append('type', 'favicon')
+
+            const res = await fetch('/api/upload', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: formData
+            })
+
+            if (!res.ok) {
+                const error = await res.json()
+                throw new Error(error.error || 'Failed to upload favicon')
+            }
+
+            const result = await res.json()
+            setData({ ...data, favicon: result.path })
+            toast.success('Favicon uploaded successfully!', { id: 'favicon-upload-success' })
+        } catch (error) {
+            console.error('Upload error:', error)
+            toast.error(error instanceof Error ? error.message : 'Failed to upload favicon', { 
+                id: 'favicon-upload-error' 
+            })
+        } finally {
+            setUploadingFavicon(false)
+            if (faviconInputRef.current) {
+                faviconInputRef.current.value = ''
+            }
+        }
+    }
+
+    const handleFaviconChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (file) {
+            handleFaviconUpload(file)
         }
     }
 
@@ -224,6 +286,84 @@ export default function MetadataEditorModal({ onClose, onSave }: MetadataEditorM
                         <option value="noindex, follow">No Index, Follow</option>
                         <option value="noindex, nofollow">No Index, No Follow</option>
                     </select>
+                </div>
+            </div>
+
+            {/* Favicon */}
+            <div className="space-y-4 pt-4 border-t border-border">
+                <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
+                    <ImageIcon size={18} />
+                    Favicon
+                </h3>
+                
+                <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                        Site Favicon
+                    </label>
+                    <div className="space-y-3">
+                        {data.favicon && (
+                            <div className="flex items-center gap-4 p-4 rounded-xl bg-background border border-input">
+                                <div className="w-16 h-16 rounded-lg bg-background border border-input flex items-center justify-center overflow-hidden shrink-0">
+                                    <img
+                                        src={data.favicon}
+                                        alt="Favicon preview"
+                                        className="w-full h-full object-contain"
+                                        onError={(e) => {
+                                            e.currentTarget.style.display = 'none'
+                                        }}
+                                    />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <p className="text-sm font-medium text-foreground truncate">
+                                        {data.favicon.split('/').pop()}
+                                    </p>
+                                    <p className="text-xs text-muted-foreground">Current favicon</p>
+                                </div>
+                                <a
+                                    href={data.favicon}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-xs text-primary hover:underline shrink-0"
+                                >
+                                    View
+                                </a>
+                            </div>
+                        )}
+                        <div className="flex items-center gap-3">
+                            <input
+                                ref={faviconInputRef}
+                                type="file"
+                                accept="image/x-icon,image/png,image/svg+xml,image/jpeg,image/webp"
+                                onChange={handleFaviconChange}
+                                className="hidden"
+                                id="favicon-upload"
+                                disabled={uploadingFavicon}
+                            />
+                            <label
+                                htmlFor="favicon-upload"
+                                className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 border-dashed transition-all cursor-pointer ${
+                                    uploadingFavicon
+                                        ? 'border-primary/50 bg-primary/5 cursor-wait'
+                                        : 'border-input hover:border-primary hover:bg-accent'
+                                }`}
+                            >
+                                {uploadingFavicon ? (
+                                    <>
+                                        <Loader2 size={18} className="animate-spin text-primary" />
+                                        <span className="text-sm text-foreground">Uploading...</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <ImageIcon size={18} className="text-foreground" />
+                                        <span className="text-sm text-foreground">Upload Favicon</span>
+                                    </>
+                                )}
+                            </label>
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                            Recommended: 32x32px or 64x64px. Formats: .ico, .png, .svg (max 2MB)
+                        </p>
+                    </div>
                 </div>
             </div>
 
