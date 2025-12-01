@@ -71,7 +71,7 @@ export default function MetadataEditorModal({ onClose, onSave }: MetadataEditorM
                 })
             }
         } catch (error) {
-            toast.error('Failed to load metadata')
+            toast.error('Failed to load metadata', { id: 'metadata-load-error' })
         } finally {
             setLoading(false)
         }
@@ -91,17 +91,17 @@ export default function MetadataEditorModal({ onClose, onSave }: MetadataEditorM
             })
 
             if (res.ok) {
-                toast.success('Metadata updated successfully!')
+                toast.success('Metadata updated successfully!', { id: 'metadata-update-success' })
                 onSave?.()
                 setTimeout(() => {
                     onClose()
                     window.location.reload()
                 }, 1000)
             } else {
-                toast.error('Failed to update metadata')
+                toast.error('Failed to update metadata', { id: 'metadata-update-error' })
             }
         } catch (error) {
-            toast.error('An error occurred while saving')
+            toast.error('An error occurred while saving', { id: 'metadata-save-error' })
         } finally {
             setSaving(false)
         }

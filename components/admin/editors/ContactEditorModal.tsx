@@ -30,7 +30,7 @@ export default function ContactEditorModal({ onClose }: ContactEditorModalProps)
                 setData(contactData)
             }
         } catch (error) {
-            toast.error('Failed to load contact data')
+            toast.error('Failed to load contact data', { id: 'contact-load-error' })
         } finally {
             setLoading(false)
         }
@@ -50,13 +50,13 @@ export default function ContactEditorModal({ onClose }: ContactEditorModalProps)
             })
 
             if (res.ok) {
-                toast.success('Contact information updated successfully!')
+                toast.success('Contact information updated successfully!', { id: 'contact-update-success' })
                 onClose()
             } else {
-                toast.error('Failed to update contact information')
+                toast.error('Failed to update contact information', { id: 'contact-update-error' })
             }
         } catch (error) {
-            toast.error('An error occurred while saving')
+            toast.error('An error occurred while saving', { id: 'contact-save-error' })
         } finally {
             setSaving(false)
         }

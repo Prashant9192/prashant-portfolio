@@ -26,7 +26,7 @@ export default function ExperienceEditorModal({ onClose }: ExperienceEditorModal
                 setExperiences(data.experiences || [])
             }
         } catch (error) {
-            toast.error('Failed to load experience data')
+            toast.error('Failed to load experience data', { id: 'experience-load-error' })
         } finally {
             setLoading(false)
         }
@@ -46,13 +46,13 @@ export default function ExperienceEditorModal({ onClose }: ExperienceEditorModal
             })
 
             if (res.ok) {
-                toast.success('Experience updated successfully!')
+                toast.success('Experience updated successfully!', { id: 'experience-update-success' })
                 onClose()
             } else {
-                toast.error('Failed to update experience')
+                toast.error('Failed to update experience', { id: 'experience-update-error' })
             }
         } catch (error) {
-            toast.error('An error occurred while saving')
+            toast.error('An error occurred while saving', { id: 'experience-save-error' })
         } finally {
             setSaving(false)
         }

@@ -61,13 +61,13 @@ export default function HeroEditorModal({ onClose }: HeroEditorModalProps) {
             })
 
             if (res.ok) {
-                toast.success('Hero section updated successfully!')
+                toast.success('Hero section updated successfully!', { id: 'hero-update-success' })
                 onClose()
             } else {
-                toast.error('Failed to update hero section')
+                toast.error('Failed to update hero section', { id: 'hero-update-error' })
             }
         } catch (error) {
-            toast.error('An error occurred while saving')
+            toast.error('An error occurred while saving', { id: 'hero-save-error' })
         } finally {
             setSaving(false)
         }
@@ -82,18 +82,20 @@ export default function HeroEditorModal({ onClose }: HeroEditorModalProps) {
     const handleFileUpload = async (file: File, type: 'avatar' | 'resume') => {
         // Validate file
         if (type === 'avatar' && !file.type.startsWith('image/')) {
-            toast.error('Please upload an image file for avatar')
+            toast.error('Please upload an image file for avatar', { id: 'avatar-file-type-error' })
             return
         }
         if (type === 'resume' && file.type !== 'application/pdf') {
-            toast.error('Please upload a PDF file for resume')
+            toast.error('Please upload a PDF file for resume', { id: 'resume-file-type-error' })
             return
         }
 
         // Check file size (max 5MB for images, 10MB for PDFs)
         const maxSize = type === 'avatar' ? 5 * 1024 * 1024 : 10 * 1024 * 1024
         if (file.size > maxSize) {
-            toast.error(`File size must be less than ${type === 'avatar' ? '5MB' : '10MB'}`)
+            toast.error(`File size must be less than ${type === 'avatar' ? '5MB' : '10MB'}`, { 
+                id: type === 'avatar' ? 'avatar-file-size-error' : 'resume-file-size-error' 
+            })
             return
         }
 
@@ -126,14 +128,16 @@ export default function HeroEditorModal({ onClose }: HeroEditorModalProps) {
             
             if (type === 'avatar') {
                 setData({ ...data, avatar: result.path })
-                toast.success('Avatar uploaded successfully!')
+                toast.success('Avatar uploaded successfully!', { id: 'avatar-upload-success' })
             } else {
                 setData({ ...data, resumeUrl: result.path })
-                toast.success('Resume uploaded successfully!')
+                toast.success('Resume uploaded successfully!', { id: 'resume-upload-success' })
             }
         } catch (error) {
             console.error('Upload error:', error)
-            toast.error(error instanceof Error ? error.message : 'Failed to upload file')
+            toast.error(error instanceof Error ? error.message : 'Failed to upload file', { 
+                id: type === 'avatar' ? 'avatar-upload-error' : 'resume-upload-error' 
+            })
         } finally {
             if (type === 'avatar') {
                 setUploadingAvatar(false)

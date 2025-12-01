@@ -48,7 +48,7 @@ export default function ProjectsEditorModal({ onClose }: ProjectsEditorModalProp
             })
 
             if (res.ok) {
-                toast.success('Projects updated successfully!')
+                toast.success('Projects updated successfully!', { id: 'projects-update-success' })
                 // Trigger content refresh
                 window.dispatchEvent(new Event('contentUpdated'))
                 // Also update localStorage for cross-tab updates
@@ -57,10 +57,10 @@ export default function ProjectsEditorModal({ onClose }: ProjectsEditorModalProp
                     onClose()
                 }, 500)
             } else {
-                toast.error('Failed to update projects')
+                toast.error('Failed to update projects', { id: 'projects-update-error' })
             }
         } catch (error) {
-            toast.error('An error occurred while saving')
+            toast.error('An error occurred while saving', { id: 'projects-save-error' })
         } finally {
             setSaving(false)
         }
@@ -119,14 +119,14 @@ export default function ProjectsEditorModal({ onClose }: ProjectsEditorModalProp
     const handleImageUpload = async (file: File, projectIndex: number) => {
         // Validate file
         if (!file.type.startsWith('image/')) {
-            toast.error('Please upload an image file')
+            toast.error('Please upload an image file', { id: `project-image-file-type-error-${projectIndex}` })
             return
         }
 
         // Check file size (max 5MB)
         const maxSize = 5 * 1024 * 1024
         if (file.size > maxSize) {
-            toast.error('File size must be less than 5MB')
+            toast.error('File size must be less than 5MB', { id: `project-image-file-size-error-${projectIndex}` })
             return
         }
 
@@ -153,10 +153,12 @@ export default function ProjectsEditorModal({ onClose }: ProjectsEditorModalProp
 
             const result = await res.json()
             updateProject(projectIndex, 'image', result.path)
-            toast.success('Project image uploaded successfully!')
+            toast.success('Project image uploaded successfully!', { id: `project-image-upload-success-${projectIndex}` })
         } catch (error) {
             console.error('Upload error:', error)
-            toast.error(error instanceof Error ? error.message : 'Failed to upload image')
+            toast.error(error instanceof Error ? error.message : 'Failed to upload image', { 
+                id: `project-image-upload-error-${projectIndex}` 
+            })
         } finally {
             setUploadingImages(prev => ({ ...prev, [projectIndex]: false }))
             const input = imageInputRefs.current[projectIndex]

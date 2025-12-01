@@ -1,6 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
+import { Toaster } from 'sonner'
 import Header from '@/components/Header/Header'
 import Footer from '@/components/Footer/Footer'
 import ScrollProgress from '@/components/ScrollProgress/ScrollProgress'
@@ -28,6 +29,14 @@ export default function LayoutClient({ children }: { children: React.ReactNode }
         {children}
       </main>
       {!isAdminRoute && <Footer />}
+      {!isAdminRoute && (
+        <Toaster 
+          richColors 
+          position="bottom-right" 
+          toastOptions={{ duration: 4000 }}
+          expand={false}
+        />
+      )}
     </ContentProvider>
   )
 }

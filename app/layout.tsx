@@ -1,6 +1,5 @@
 import './globals.css'
 import { ThemeProvider } from 'next-themes'
-import { Toaster } from 'sonner'
 // import { Analytics } from '@vercel/analytics/react'
 import LayoutClient from './layout-client'
 import { Metadata } from 'next'
@@ -93,7 +92,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <LayoutClient>
             {children}
           </LayoutClient>
-          <Toaster richColors position="bottom-right" />
           {/* <Analytics /> */}
         </ThemeProvider>
       </body>

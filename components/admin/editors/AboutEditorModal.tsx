@@ -31,7 +31,7 @@ export default function AboutEditorModal({ onClose }: AboutEditorModalProps) {
             const aboutData = await res.json()
             setData(aboutData)
         } catch (error) {
-            toast.error('Failed to load about data')
+            toast.error('Failed to load about data', { id: 'about-load-error' })
         } finally {
             setLoading(false)
         }
@@ -51,13 +51,13 @@ export default function AboutEditorModal({ onClose }: AboutEditorModalProps) {
             })
 
             if (res.ok) {
-                toast.success('About section updated successfully!')
+                toast.success('About section updated successfully!', { id: 'about-update-success' })
                 onClose()
             } else {
-                toast.error('Failed to update about section')
+                toast.error('Failed to update about section', { id: 'about-update-error' })
             }
         } catch (error) {
-            toast.error('An error occurred while saving')
+            toast.error('An error occurred while saving', { id: 'about-save-error' })
         } finally {
             setSaving(false)
         }

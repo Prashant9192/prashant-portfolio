@@ -18,7 +18,13 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           {children}
         </div>
         
-        <Toaster richColors position="top-right" />
+        <Toaster 
+          richColors 
+          position="top-right" 
+          toastOptions={{ duration: 4000 }}
+          closeButton
+          expand={false}
+        />
       </div>
     </ThemeProvider>
   )
