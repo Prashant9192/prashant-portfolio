@@ -29,8 +29,8 @@ export default function Experience() {
                     <p className="text-muted-foreground text-center py-8">No experience data available.</p>
                 ) : (
                     <div className="relative flex-1 min-h-0">
-                        {/* Scrollable container with fixed height */}
-                        <div className="h-full max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent pr-2">
+                        {/* Scrollable container - shows 2 cards by default */}
+                        <div className="h-full max-h-[270px] overflow-y-auto scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent pr-2 hover:scrollbar-thumb-primary/50 transition-colors">
                             <div className="space-y-4 md:space-y-6 relative pb-4">
                                 {experiences.map((exp, index) => (
                                     <motion.div
