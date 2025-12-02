@@ -154,6 +154,12 @@ body::after {
   animation-play-state: paused;
 }
 
+/* Projects carousel mask */
+.projects-carousel-mask {
+  mask-image: linear-gradient(to right, transparent 0%, black 128px, black calc(100% - 128px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 128px, black calc(100% - 128px), transparent 100%);
+}
+
 /* Hide Scrollbar */
 html {
   scrollbar-width: none; /* Firefox */
