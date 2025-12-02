@@ -154,10 +154,36 @@ body::after {
   animation-play-state: paused;
 }
 
+/* Vertical scroll animation for Experience */
+@keyframes scrollVertical {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+.animate-scroll-vertical {
+  animation: scrollVertical 30s linear infinite;
+}
+
+.animate-scroll-vertical:hover {
+  animation-play-state: paused;
+}
+
 /* Projects carousel mask */
 .projects-carousel-mask {
   mask-image: linear-gradient(to right, transparent 0%, black 128px, black calc(100% - 128px), transparent 100%);
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 128px, black calc(100% - 128px), transparent 100%);
+}
+
+/* Experience carousel mask - vertical */
+.experience-carousel-mask {
+  mask-image: linear-gradient(to bottom, transparent 0%, black 60px, black calc(100% - 60px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 60px, black calc(100% - 60px), transparent 100%);
+  height: 400px;
+  max-height: 400px;
 }
 
 /* Hide Scrollbar */
