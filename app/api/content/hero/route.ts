@@ -65,8 +65,15 @@ export async function POST(request: Request) {
 
     const db = await getDb()
     if (!db) {
+      console.error('[Hero POST] Database connection failed - check MONGODB_URI environment variable and MongoDB Atlas network access')
       return NextResponse.json(
-        { error: 'Database connection unavailable' },
+        { 
+          error: 'Database connection unavailable',
+          message: 'Unable to connect to MongoDB. Please check your MONGODB_URI environment variable and MongoDB Atlas network access settings.',
+          details: process.env.NODE_ENV === 'development' 
+            ? 'Check VERCEL_DEPLOYMENT.md for setup instructions'
+            : undefined
+        },
         { status: 503 }
       )
     }
