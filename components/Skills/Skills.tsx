@@ -9,7 +9,7 @@ export default function Skills() {
     const { skills, loading } = useContent()
     
     return (
-        <section id="skills" className="py-20 relative overflow-hidden">
+        <section id="skills" className="py-0 relative overflow-hidden">
             {/* Background Elements */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
                 <div className="absolute top-[20%] right-[10%] w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[100px]" />
