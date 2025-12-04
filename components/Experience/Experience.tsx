@@ -4,8 +4,13 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import SpotlightCard from '@/components/ui/SpotlightCard'
 import { useContent } from '@/contexts/ContentContext'
+import { ExperienceItem } from '@/lib/models'
 
-export default function Experience() {
+interface ExperienceProps {
+    serverData?: ExperienceItem[]
+}
+
+export default function Experience({ serverData }: ExperienceProps) {
     const { experiences } = useContent()
 
     return (
@@ -46,7 +51,7 @@ export default function Experience() {
                                             <div className={`flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-lg ${exp.logoBg} flex items-center justify-center text-white font-bold text-lg md:text-xl shadow-md group-hover:scale-110 group-hover:shadow-lg transition-all duration-300`}>
                                                 {exp.logo}
                                             </div>
-                                            
+
                                             {/* Content */}
                                             <div className="flex-1 min-w-0 pt-0.5">
                                                 <h3 className="text-base md:text-lg font-bold text-foreground group-hover:text-primary transition-colors mb-1">
@@ -62,7 +67,7 @@ export default function Experience() {
                                                     <span>{exp.period}</span>
                                                 </div>
                                             </div>
-                                            
+
                                             {/* Timeline indicator on the left */}
                                             <div className="absolute -left-2 md:-left-3 top-6 bottom-6 w-0.5 bg-gradient-to-b from-primary/40 via-primary/60 to-primary/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                                         </SpotlightCard>
@@ -73,6 +78,48 @@ export default function Experience() {
                     </div>
                 )}
             </motion.div>
+
+            {/* NoScript fallback for SEO and crawlers - visible when JavaScript is disabled */}
+            <noscript>
+                <div className="relative h-full p-6 md:p-8 rounded-3xl bg-card border border-border backdrop-blur-sm overflow-hidden shadow-md flex flex-col">
+                    <h2 className="text-2xl md:text-4xl font-bold mb-6 md:mb-8 text-foreground flex-shrink-0">
+                        Experience
+                    </h2>
+
+                    {serverData && serverData.length > 0 ? (
+                        <div className="space-y-4 md:space-y-6 relative pb-4">
+                            {serverData.map((exp, index) => (
+                                <article key={`noscript-${exp.role}-${exp.company}-${index}`} className="relative group">
+                                    <div className="flex items-start gap-4 p-4 md:p-5 rounded-xl border border-border bg-card hover:border-primary/50 transition-all duration-300">
+                                        {/* Logo/Icon */}
+                                        <div className={`flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-lg ${exp.logoBg} flex items-center justify-center text-white font-bold text-lg md:text-xl shadow-md`}>
+                                            {exp.logo}
+                                        </div>
+
+                                        {/* Content */}
+                                        <div className="flex-1 min-w-0 pt-0.5">
+                                            <h3 className="text-base md:text-lg font-bold text-foreground mb-1">
+                                                {exp.role}
+                                            </h3>
+                                            <p className="text-sm md:text-base text-muted-foreground font-medium mb-1.5">
+                                                {exp.company}
+                                            </p>
+                                            <div className="flex items-center gap-2 text-xs text-muted-foreground/70">
+                                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                </svg>
+                                                <time dateTime={exp.period}>{exp.period}</time>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+                            ))}
+                        </div>
+                    ) : (
+                        <p className="text-muted-foreground text-center py-8">No experience data available.</p>
+                    )}
+                </div>
+            </noscript>
         </section>
     )
 }
