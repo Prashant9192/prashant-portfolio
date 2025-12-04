@@ -3,84 +3,100 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { useContent } from '@/contexts/ContentContext'
+import SpotlightCard from '@/components/ui/SpotlightCard'
 
 export default function Skills() {
     const { skills, loading } = useContent()
     
-    // Debug: Check what data we're getting
-    React.useEffect(() => {
-        console.log('Skills data received:', skills)
-        if (skills.length > 0) {
-            console.log('First skill:', skills[0])
-            console.log('First skill icon URL:', skills[0]?.icon)
-        }
-    }, [skills])
-    
     return (
-        <section id="skills" className="py-20">
+        <section id="skills" className="py-0 relative overflow-hidden">
+            {/* Background Elements */}
+            <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+                <div className="absolute top-[20%] right-[10%] w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[100px]" />
+                <div className="absolute bottom-[10%] left-[5%] w-[400px] h-[400px] bg-purple-500/5 rounded-full blur-[100px]" />
+            </div>
+
             <div className="container mx-auto px-4">
-                <motion.h2
+                <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="text-3xl md:text-4xl font-bold mb-12"
+                    className="mb-8 md:mb-12"
                 >
-                    Skills
-                </motion.h2>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                        Skills & <span className="text-primary">Technologies</span>
+                    </h2>
+                    <p className="text-muted-foreground text-base md:text-lg max-w-2xl">
+                        Technologies and tools I use to bring ideas to life
+                    </p>
+                </motion.div>
 
-                <div className="relative w-full overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
-                    {loading ? (
-                        <p className="text-muted-foreground text-center py-8">Loading skills...</p>
-                    ) : skills.length === 0 ? (
-                        <p className="text-muted-foreground text-center py-8">No skills available.</p>
-                    ) : (
-                        <div className="flex animate-scroll gap-8 w-max">
-                            {/* Duplicate the skills list to create the infinite loop effect */}
-                            {[...skills, ...skills].map((skill, index) => (
-                                <motion.div
-                                    key={`${skill.name}-${index}`}
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: index * 0.05 }}
-                                className="group flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-card border border-border hover:border-primary/50 hover:bg-primary/5 transition-all cursor-default shadow-sm hover:shadow-lg dark:bg-white/5 dark:border-white/10 dark:hover:bg-white/10"
-                                title={skill.name}
-                            >
-                                <div className="relative w-10 h-10 md:w-12 md:h-12 transition-transform duration-300 group-hover:scale-110 flex items-center justify-center">
-                                    {skill.icon ? (
-                                        <img
-                                            src={skill.icon}
-                                            alt={skill.name}
-                                            className={`w-full h-full object-contain ${skill.className || ''}`}
-                                            loading="lazy"
-                                            style={{ maxWidth: '100%', maxHeight: '100%' }}
-                                            onLoad={() => {
-                                                console.log(`✅ Successfully loaded icon for ${skill.name}`)
-                                            }}
-                                            onError={(e) => {
-                                                console.error(`❌ Failed to load icon for ${skill.name}:`, skill.icon)
-                                                // Try to set a fallback
-                                                const target = e.currentTarget
-                                                target.style.display = 'none'
-                                                // Show text as fallback
-                                                const parent = target.parentElement
-                                                if (parent && !parent.querySelector('.skill-fallback')) {
-                                                    const fallback = document.createElement('span')
-                                                    fallback.className = 'skill-fallback text-xs font-medium text-muted-foreground'
-                                                    fallback.textContent = skill.name.charAt(0).toUpperCase()
-                                                    parent.appendChild(fallback)
-                                                }
-                                            }}
-                                        />
-                                    ) : (
-                                        <span className="text-xs font-medium text-muted-foreground">{skill.name.charAt(0)}</span>
-                                    )}
-                                </div>
-                            </motion.div>
-                            ))}
+                {loading ? (
+                    <div className="flex items-center justify-center py-20">
+                        <div className="flex flex-col items-center gap-4">
+                            <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                            <p className="text-muted-foreground">Loading skills...</p>
                         </div>
-                    )}
-                </div>
+                    </div>
+                ) : skills.length === 0 ? (
+                    <p className="text-muted-foreground text-center py-20">No skills available.</p>
+                ) : (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
+                        {skills.map((skill, index) => (
+                            <motion.div
+                                key={`${skill.name}-${index}`}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.05, duration: 0.3 }}
+                            >
+                                <SpotlightCard className="rounded-xl group cursor-pointer h-full" propClass="flex flex-col items-center justify-center p-4 md:p-6 gap-3 min-h-[140px] md:min-h-[160px]">
+                                    {/* Icon Container */}
+                                    <div className="relative w-16 h-16 md:w-20 md:h-20 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                                        {skill.icon ? (
+                                            <img
+                                                src={skill.icon}
+                                                alt={skill.name}
+                                                className={`w-full h-full object-contain transition-all duration-300 ${skill.className || ''}`}
+                                                loading="lazy"
+                                                onError={(e) => {
+                                                    const target = e.currentTarget
+                                                    target.style.display = 'none'
+                                                    const parent = target.parentElement
+                                                    if (parent && !parent.querySelector('.skill-fallback')) {
+                                                        const fallback = document.createElement('div')
+                                                        fallback.className = 'skill-fallback w-full h-full flex items-center justify-center rounded-lg bg-primary/10'
+                                                        const span = document.createElement('span')
+                                                        span.className = 'text-2xl md:text-3xl font-bold text-primary'
+                                                        span.textContent = skill.name.charAt(0).toUpperCase()
+                                                        fallback.appendChild(span)
+                                                        parent.appendChild(fallback)
+                                                    }
+                                                }}
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full flex items-center justify-center rounded-lg bg-primary/10">
+                                                <span className="text-2xl md:text-3xl font-bold text-primary">
+                                                    {skill.name.charAt(0).toUpperCase()}
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Skill Name */}
+                                    <div className="text-center w-full">
+                                        <h3 className="text-sm md:text-base font-semibold text-foreground group-hover:text-primary transition-colors">
+                                            {skill.name}
+                                        </h3>
+                                    </div>
+
+                                    {/* Hover Effect Indicator */}
+                                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-purple-500 to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-b-xl" />
+                                </SpotlightCard>
+                            </motion.div>
+                        ))}
+                    </div>
+                )}
             </div>
         </section>
     )

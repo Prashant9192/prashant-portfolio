@@ -101,6 +101,36 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   
   return (
     <html lang={metadata.language || 'en'} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            // Immediately add class to body when JS is enabled
+            document.documentElement.classList.add('js-enabled');
+          `
+        }} />
+        <noscript>
+          <style dangerouslySetInnerHTML={{
+            __html: `
+              /* Hide JavaScript-dependent content when JS is disabled */
+              .js-only {
+                display: none !important;
+              }
+              /* Show noscript content when JS is disabled */
+              noscript {
+                display: block !important;
+              }
+            `
+          }} />
+        </noscript>
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            /* Hide noscript content when JS is enabled */
+            .js-enabled noscript {
+              display: none !important;
+            }
+          `
+        }} />
+      </head>
       <body className="cursor-none">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <LayoutClient>
