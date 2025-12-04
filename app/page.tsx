@@ -207,26 +207,44 @@ export default async function Home() {
           {/* Skills Section */}
           <section id="skills" className="py-20">
             <div className="container mx-auto px-4">
-              <h2 className="text-3xl md:text-4xl font-bold mb-12">Skills</h2>
+              <div className="mb-8 md:mb-12">
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  Skills & <span className="text-primary">Technologies</span>
+                </h2>
+                <p className="text-muted-foreground text-base md:text-lg max-w-2xl">
+                  Technologies and tools I use to bring ideas to life
+                </p>
+              </div>
               {serverContent.skills.length > 0 ? (
-                <div className="flex flex-wrap gap-4 justify-center">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
                   {serverContent.skills.map((skill, index) => (
-                    <div key={`noscript-skill-${skill.name}-${index}`} className="flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-card border border-border shadow-sm" title={skill.name}>
-                      {skill.icon ? (
-                        <img
-                          src={skill.icon}
-                          alt={skill.name}
-                          className={`w-10 h-10 md:w-12 md:h-12 object-contain ${skill.className || ''}`}
-                          loading="lazy"
-                        />
-                      ) : (
-                        <span className="text-xs font-medium text-muted-foreground">{skill.name.charAt(0)}</span>
-                      )}
+                    <div key={`noscript-skill-${skill.name}-${index}`} className="rounded-xl border border-border bg-card flex flex-col items-center justify-center p-4 md:p-6 gap-3 min-h-[140px] md:min-h-[160px] shadow-sm hover:shadow-md transition-shadow">
+                      <div className="relative w-16 h-16 md:w-20 md:h-20 flex items-center justify-center">
+                        {skill.icon ? (
+                          <img
+                            src={skill.icon}
+                            alt={skill.name}
+                            className={`w-full h-full object-contain ${skill.className || ''}`}
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center rounded-lg bg-primary/10">
+                            <span className="text-2xl md:text-3xl font-bold text-primary">
+                              {skill.name.charAt(0).toUpperCase()}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="text-center w-full">
+                        <h3 className="text-sm md:text-base font-semibold text-foreground">
+                          {skill.name}
+                        </h3>
+                      </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-muted-foreground text-center py-8">No skills available.</p>
+                <p className="text-muted-foreground text-center py-20">No skills available.</p>
               )}
             </div>
           </section>
