@@ -119,7 +119,7 @@ export default function Projects({ serverData }: ProjectsProps) {
                                             <SpotlightCard className="flex flex-col rounded-2xl h-full group min-h-[420px]">
                                                 {/* Image Container */}
                                                 <div className="relative aspect-video w-full overflow-hidden bg-muted">
-                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300" />
 
                                                     {/* Project Image */}
                                                     {project.image ? (
@@ -151,7 +151,7 @@ export default function Projects({ serverData }: ProjectsProps) {
                                                     )}
 
                                                     {/* Overlay Actions */}
-                                                    <div className="absolute bottom-4 right-4 z-20 flex gap-2 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                                                    <div className="absolute bottom-4 right-4 z-20 flex gap-2 opacity-100 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-300">
                                                         <a
                                                             href={project.githubUrl}
                                                             className="p-2 rounded-full bg-black/20 dark:bg-white/10 backdrop-blur-md border border-black/30 dark:border-white/20 text-white hover:bg-black/30 dark:hover:bg-white/20 transition-colors"
