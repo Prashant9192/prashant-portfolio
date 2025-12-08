@@ -104,7 +104,7 @@ export default function Projects({ serverData }: ProjectsProps) {
                 ) : (
                     <>
                         {/* Projects Grid */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 min-h-[500px]">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             <AnimatePresence mode="wait">
                                 {visibleProjects.map((project, index) => (
                                     <motion.div
@@ -113,10 +113,10 @@ export default function Projects({ serverData }: ProjectsProps) {
                                         animate={{ opacity: 1, x: 0 }}
                                         exit={{ opacity: 0, x: -50 }}
                                         transition={{ duration: 0.3, delay: index * 0.1 }}
-                                        className="h-full"
+                                        className="flex"
                                     >
-                                        <TiltCard className="h-full">
-                                            <SpotlightCard className="flex flex-col rounded-2xl h-full group">
+                                        <TiltCard className="w-full">
+                                            <SpotlightCard className="flex flex-col rounded-2xl h-full group min-h-[420px]">
                                                 {/* Image Container */}
                                                 <div className="relative aspect-video w-full overflow-hidden bg-muted">
                                                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -212,8 +212,8 @@ export default function Projects({ serverData }: ProjectsProps) {
                                         key={index}
                                         onClick={() => goToSlide(index)}
                                         className={`h-2 rounded-full transition-all ${index === currentIndex
-                                                ? 'w-8 bg-primary'
-                                                : 'w-2 bg-border hover:bg-primary/50'
+                                            ? 'w-8 bg-primary'
+                                            : 'w-2 bg-border hover:bg-primary/50'
                                             }`}
                                         aria-label={`Go to slide ${index + 1}`}
                                     />
