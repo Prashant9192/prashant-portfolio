@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
 
     // Convert file to buffer
     const bytes = await file.arrayBuffer()
-    let buffer = Buffer.from(bytes)
+    let buffer: Buffer = Buffer.from(bytes)
 
     // Optimize favicon using sharp
     if (type === 'favicon') {
@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
         buffer = await sharp(buffer)
           .resize(32, 32, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
           .png({ quality: 90, compressionLevel: 9 })
-          .toBuffer()
+          .toBuffer() as Buffer
       } catch (error) {
         console.error('Error optimizing favicon:', error)
         // Continue with original buffer if optimization fails
