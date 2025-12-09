@@ -11,7 +11,7 @@ async function getMetadata(): Promise<SiteMetadata> {
     const db = await getDb()
     if (db) {
       const metadata = await db.collection<SiteMetadata>('metadata').findOne({})
-      
+
       if (metadata) {
         return metadata
       }
@@ -19,7 +19,7 @@ async function getMetadata(): Promise<SiteMetadata> {
   } catch (error) {
     console.error('Error fetching metadata:', error)
   }
-  
+
   // Return default metadata if fetch fails or DB unavailable
   return {
     title: 'Prashant Basnet — Web Developer',
@@ -34,13 +34,13 @@ async function getMetadata(): Promise<SiteMetadata> {
 
 export async function generateMetadata(): Promise<Metadata> {
   const metadata = await getMetadata()
-  
+
   const title = metadata.title || 'Prashant Basnet — Web Developer'
   const description = metadata.description || 'Portfolio'
   const canonicalUrl = metadata.canonicalUrl
   const ogImage = metadata.ogImage || '/MyAvatar.png'
   const ogUrl = metadata.ogUrl || canonicalUrl
-  
+
   const metadataObject: Metadata = {
     title,
     description,
@@ -80,28 +80,32 @@ export async function generateMetadata(): Promise<Metadata> {
     viewport: metadata.viewport || 'width=device-width, initial-scale=1',
     icons: metadata.favicon ? {
       icon: [
-        { 
-          url: metadata.favicon, 
+        {
+          url: metadata.favicon,
           sizes: 'any',
-          type: metadata.favicon.endsWith('.png') ? 'image/png' : 
-                metadata.favicon.endsWith('.svg') ? 'image/svg+xml' :
-                metadata.favicon.endsWith('.ico') ? 'image/x-icon' : 'image/png'
+          type: metadata.favicon.endsWith('.png') ? 'image/png' :
+            metadata.favicon.endsWith('.svg') ? 'image/svg+xml' :
+              metadata.favicon.endsWith('.ico') ? 'image/x-icon' : 'image/png'
         }
       ],
       shortcut: metadata.favicon,
       apple: metadata.favicon,
     } : undefined,
   }
-  
+
   return metadataObject
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const metadata = await getMetadata()
-  
+
   return (
     <html lang={metadata.language || 'en'} suppressHydrationWarning>
       <head>
+        {/* Preconnect to CDN for faster third-party resource loading */}
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+        <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+
         <script dangerouslySetInnerHTML={{
           __html: `
             // Immediately add class to body when JS is enabled

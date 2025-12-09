@@ -153,7 +153,8 @@ export async function GET() {
       })
     }
 
-    // Fetch all collections in parallel for better performance
+    // Fetch all collections in parallel with projection for better performance
+    // Projection reduces data transfer by excluding _id fields
     const [
       heroResult,
       aboutResult,
@@ -162,42 +163,36 @@ export async function GET() {
       skillsResult,
       contactResult
     ] = await Promise.all([
-      db.collection<HeroContent>('hero').findOne({}).catch(() => null),
-      db.collection<AboutContent>('about').findOne({}).catch(() => null),
-      db.collection<ExperienceContent>('experience').findOne({}).catch(() => null),
-      db.collection<ProjectsContent>('projects').findOne({}).catch(() => null),
-      db.collection<SkillsContent>('skills').findOne({}).catch(() => null),
-      db.collection<ContactInfo>('contact').findOne({}).catch(() => null)
+      db.collection<HeroContent>('hero').findOne({}, { projection: { _id: 0 } }).catch(() => null),
+      db.collection<AboutContent>('about').findOne({}, { projection: { _id: 0 } }).catch(() => null),
+      db.collection<ExperienceContent>('experience').findOne({}, { projection: { _id: 0 } }).catch(() => null),
+      db.collection<ProjectsContent>('projects').findOne({}, { projection: { _id: 0 } }).catch(() => null),
+      db.collection<SkillsContent>('skills').findOne({}, { projection: { _id: 0 } }).catch(() => null),
+      db.collection<ContactInfo>('contact').findOne({}, { projection: { _id: 0 } }).catch(() => null)
     ])
 
-    // Process hero data
+    // Process hero data (no need to remove _id, projection handles it)
     let hero = defaultHero
     if (heroResult) {
-      const { _id, ...heroData } = heroResult
-      hero = heroData
+      hero = heroResult
     }
 
     // Process about data
     let about = defaultAbout
     if (aboutResult) {
-      const { _id, ...aboutData } = aboutResult
-      about = aboutData
+      about = aboutResult
     }
 
     // Process experience data
     let experiences = defaultExperiences
     if (experienceResult?.experiences && experienceResult.experiences.length > 0) {
-      experiences = experienceResult.experiences
-        .sort((a, b) => a.order - b.order)
-        .map(({ _id, ...exp }) => exp)
+      experiences = experienceResult.experiences.sort((a, b) => a.order - b.order)
     }
 
     // Process projects data
     let projects = defaultProjects
     if (projectsResult?.projects && projectsResult.projects.length > 0) {
-      projects = projectsResult.projects
-        .sort((a, b) => a.order - b.order)
-        .map(({ _id, ...proj }) => proj)
+      projects = projectsResult.projects.sort((a, b) => a.order - b.order)
     }
 
     // Process skills data
@@ -205,7 +200,7 @@ export async function GET() {
     if (skillsResult?.skills && skillsResult.skills.length > 0) {
       skills = skillsResult.skills
         .sort((a, b) => a.order - b.order)
-        .map(({ _id, ...skill }) => {
+        .map((skill) => {
           // Fix local paths that don't exist - convert to CDN URLs
           if (skill.icon && skill.icon.startsWith('/skills/')) {
             // Map local paths to CDN URLs
@@ -228,8 +223,7 @@ export async function GET() {
     // Process contact data
     let contact = defaultContact
     if (contactResult) {
-      const { _id, ...contactData } = contactResult
-      contact = contactData
+      contact = contactResult
     }
 
     return NextResponse.json({
