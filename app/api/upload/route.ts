@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { writeFile, mkdir } from 'fs/promises'
 import { join } from 'path'
 import { existsSync } from 'fs'
+import sharp from 'sharp'
 
 export async function POST(request: NextRequest) {
   try {
@@ -51,6 +52,14 @@ export async function POST(request: NextRequest) {
             { status: 400 }
           )
         }
+
+        // Validate favicon file size (max 100KB)
+        if (file.size > 100 * 1024) {
+          return NextResponse.json(
+            { error: 'Favicon file size must be less than 100KB. Please use a smaller image or our favicon generator.' },
+            { status: 400 }
+          )
+        }
       }
     } else if (type === 'resume') {
       if (file.type !== 'application/pdf') {
@@ -91,9 +100,24 @@ export async function POST(request: NextRequest) {
       await mkdir(publicDir, { recursive: true })
     }
 
-    // Convert file to buffer and save
+    // Convert file to buffer
     const bytes = await file.arrayBuffer()
-    const buffer = Buffer.from(bytes)
+    let buffer = Buffer.from(bytes)
+
+    // Optimize favicon using sharp
+    if (type === 'favicon') {
+      try {
+        buffer = await sharp(buffer)
+          .resize(32, 32, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+          .png({ quality: 90, compressionLevel: 9 })
+          .toBuffer()
+      } catch (error) {
+        console.error('Error optimizing favicon:', error)
+        // Continue with original buffer if optimization fails
+      }
+    }
+
+    // Save file
     await writeFile(filePath, buffer)
 
     // For favicon, also save to app directory as favicon.ico for Next.js automatic detection

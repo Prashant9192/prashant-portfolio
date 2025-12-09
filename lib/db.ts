@@ -80,8 +80,8 @@ export async function getDb(): Promise<Db | null> {
     
     const client = await promise
     
-    // Verify connection is actually alive
-    await client.db('admin').command({ ping: 1 })
+    // Don't ping on every request - connection pooling handles this
+    // The driver will automatically reconnect if the connection is lost
     
     return client.db('portfolio-cms')
   } catch (error: any) {

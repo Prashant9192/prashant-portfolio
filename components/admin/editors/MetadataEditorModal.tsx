@@ -6,8 +6,8 @@ import { toast } from 'sonner'
 import { SiteMetadata } from '@/lib/models'
 
 interface MetadataEditorModalProps {
-  onClose: () => void
-  onSave?: () => void
+    onClose: () => void
+    onSave?: () => void
 }
 
 export default function MetadataEditorModal({ onClose, onSave }: MetadataEditorModalProps) {
@@ -118,10 +118,10 @@ export default function MetadataEditorModal({ onClose, onSave }: MetadataEditorM
             return
         }
 
-        // Check file size (max 2MB for favicon)
-        const maxSize = 2 * 1024 * 1024
+        // Check file size (max 100KB for favicon)
+        const maxSize = 100 * 1024
         if (file.size > maxSize) {
-            toast.error('Favicon file size must be less than 2MB', { id: 'favicon-file-size-error' })
+            toast.error('Favicon file size must be less than 100KB. Please use a smaller image.', { id: 'favicon-file-size-error' })
             return
         }
 
@@ -151,8 +151,8 @@ export default function MetadataEditorModal({ onClose, onSave }: MetadataEditorM
             toast.success('Favicon uploaded successfully!', { id: 'favicon-upload-success' })
         } catch (error) {
             console.error('Upload error:', error)
-            toast.error(error instanceof Error ? error.message : 'Failed to upload favicon', { 
-                id: 'favicon-upload-error' 
+            toast.error(error instanceof Error ? error.message : 'Failed to upload favicon', {
+                id: 'favicon-upload-error'
             })
         } finally {
             setUploadingFavicon(false)
@@ -185,7 +185,7 @@ export default function MetadataEditorModal({ onClose, onSave }: MetadataEditorM
                     <Info size={18} />
                     Basic SEO
                 </h3>
-                
+
                 <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
                         Site Title *
@@ -295,7 +295,7 @@ export default function MetadataEditorModal({ onClose, onSave }: MetadataEditorM
                     <ImageIcon size={18} />
                     Favicon
                 </h3>
-                
+
                 <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
                         Site Favicon
@@ -341,11 +341,10 @@ export default function MetadataEditorModal({ onClose, onSave }: MetadataEditorM
                             />
                             <label
                                 htmlFor="favicon-upload"
-                                className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 border-dashed transition-all cursor-pointer ${
-                                    uploadingFavicon
-                                        ? 'border-primary/50 bg-primary/5 cursor-wait'
-                                        : 'border-input hover:border-primary hover:bg-accent'
-                                }`}
+                                className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 border-dashed transition-all cursor-pointer ${uploadingFavicon
+                                    ? 'border-primary/50 bg-primary/5 cursor-wait'
+                                    : 'border-input hover:border-primary hover:bg-accent'
+                                    }`}
                             >
                                 {uploadingFavicon ? (
                                     <>
@@ -361,7 +360,7 @@ export default function MetadataEditorModal({ onClose, onSave }: MetadataEditorM
                             </label>
                         </div>
                         <p className="text-xs text-muted-foreground">
-                            <span className="font-semibold text-primary">Recommended: .ico format</span> for best browser compatibility. Size: 32x32px or 64x64px (max 2MB)
+                            <span className="font-semibold text-primary">Recommended: .ico or .png format</span> for best browser compatibility. Max size: 100KB. Images will be automatically optimized to 32x32px.
                         </p>
                     </div>
                 </div>
@@ -370,7 +369,7 @@ export default function MetadataEditorModal({ onClose, onSave }: MetadataEditorM
             {/* Open Graph */}
             <div className="space-y-4 pt-4 border-t border-border">
                 <h3 className="text-lg font-bold text-foreground">Open Graph (Facebook, LinkedIn)</h3>
-                
+
                 <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
                         OG Title
@@ -460,7 +459,7 @@ export default function MetadataEditorModal({ onClose, onSave }: MetadataEditorM
             {/* Twitter Card */}
             <div className="space-y-4 pt-4 border-t border-border">
                 <h3 className="text-lg font-bold text-foreground">Twitter Card</h3>
-                
+
                 <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
                         Twitter Card Type
@@ -547,7 +546,7 @@ export default function MetadataEditorModal({ onClose, onSave }: MetadataEditorM
             {/* Additional Settings */}
             <div className="space-y-4 pt-4 border-t border-border">
                 <h3 className="text-lg font-bold text-foreground">Additional Settings</h3>
-                
+
                 <div className="grid md:grid-cols-2 gap-4">
                     <div>
                         <label className="block text-sm font-medium text-foreground mb-2">
