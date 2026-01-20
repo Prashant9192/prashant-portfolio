@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
         hostname: 'api.iconify.design',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '/**',
+      },
     ],
   },
 };
