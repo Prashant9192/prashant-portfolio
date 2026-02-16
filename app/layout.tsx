@@ -2,7 +2,7 @@ import './globals.css'
 import { ThemeProvider } from 'next-themes'
 // import { Analytics } from '@vercel/analytics/react'
 import LayoutClient from './layout-client'
-import { Metadata } from 'next'
+import { Metadata, Viewport } from 'next'
 import { getDb } from '@/lib/db'
 import { SiteMetadata } from '@/lib/models'
 
@@ -76,8 +76,6 @@ export async function generateMetadata(): Promise<Metadata> {
       canonical: canonicalUrl || undefined,
     },
     metadataBase: canonicalUrl ? new URL(canonicalUrl) : undefined,
-    themeColor: metadata.themeColor || '#2563eb',
-    viewport: metadata.viewport || 'width=device-width, initial-scale=1',
     icons: metadata.favicon ? {
       icon: [
         {
@@ -94,6 +92,17 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 
   return metadataObject
+}
+
+export async function generateViewport(): Promise<Viewport> {
+  const metadata = await getMetadata()
+
+  return {
+    themeColor: metadata.themeColor || '#2563eb',
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+  }
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
