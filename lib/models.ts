@@ -119,3 +119,12 @@ export interface SiteMetadata {
   createdAt?: Date
   updatedAt?: Date
 }
+
+export interface Message {
+  _id?: string
+  name: string
+  email: string
+  message: string
+  read: boolean
+  createdAt: Date
+}
