@@ -2,7 +2,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { Toaster } from 'sonner'
 import { ThemeProvider } from 'next-themes'
@@ -10,19 +10,41 @@ import AdminSidebar from '@/components/admin/Sidebar'
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter()
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const pathname = usePathname()
+  const isLoginPage = pathname === '/admin/login'
 
   // Auth protection (Basic check)
   useEffect(() => {
+    // Skip check if already on login page
+    if (isLoginPage) return
+
     const token = localStorage.getItem('adminToken')
     if (!token) {
       router.push('/admin/login')
     }
-  }, [router])
+  }, [router, isLoginPage])
 
-  const handleLogout = () => {
-    localStorage.removeItem('adminToken')
-    router.push('/admin/login')
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' })
+    } catch (error) {
+      console.error('Logout failed:', error)
+    } finally {
+      localStorage.removeItem('adminToken')
+      router.push('/admin/login')
+    }
+  }
+
+  // Simplified layout for login page
+  if (isLoginPage) {
+    return (
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <div className="min-h-screen bg-background flex items-center justify-center">
+          {children}
+        </div>
+        <Toaster richColors position="top-right" />
+      </ThemeProvider>
+    )
   }
 
   return (

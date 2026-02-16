@@ -34,6 +34,17 @@ export async function POST(request: Request) {
         { status: 500 }
       )
     }
+
+    // Set HTTP-only cookie for middleware protection
+    const { cookies } = await import('next/headers')
+    const cookieStore = await cookies()
+    cookieStore.set('admin_session', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7 // 1 week
+    })
     
     return NextResponse.json({ 
       success: true, 

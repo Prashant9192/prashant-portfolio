@@ -14,11 +14,9 @@ export default function AdminButton() {
         // Check if running on client and token exists
         if (typeof window !== 'undefined') {
             const token = localStorage.getItem('adminToken')
-            if (token) {
-                setShow(true)
-            }
+            setShow(!!token)
         }
-    }, [])
+    }, [pathname])
 
     if (!show || pathname?.startsWith('/admin')) return null
 
