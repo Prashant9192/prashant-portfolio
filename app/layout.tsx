@@ -2,6 +2,7 @@ import './globals.css'
 import { ThemeProvider } from 'next-themes'
 // import { Analytics } from '@vercel/analytics/react'
 import LayoutClient from './layout-client'
+import AdminButton from '@/components/AdminButton'
 import { Metadata, Viewport } from 'next'
 import { getDb } from '@/lib/db'
 import { SiteMetadata } from '@/lib/models'
@@ -148,6 +149,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <LayoutClient>
             {children}
+            <AdminButton />
           </LayoutClient>
           {/* <Analytics /> */}
         </ThemeProvider>

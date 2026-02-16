@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
     LayoutDashboard, User, Briefcase, Code, Award,
-    Mail, Settings, LogOut, MessageSquare, ChevronRight, Menu, X
+    Mail, Settings, LogOut, MessageSquare, ChevronRight, Menu, X, Home
 } from 'lucide-react'
 
 interface SidebarProps {
@@ -89,7 +89,15 @@ export default function AdminSidebar({ onLogout }: SidebarProps) {
                     </nav>
 
                     {/* Footer / Logout */}
-                    <div className="p-4 border-t border-border bg-card">
+                    <div className="p-4 border-t border-border bg-card space-y-1">
+                        <Link
+                            href="/"
+                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground transition-colors group"
+                        >
+                            <Home size={18} className="group-hover:text-primary transition-colors" />
+                            <span>Back to Website</span>
+                        </Link>
+
                         <button
                             onClick={onLogout}
                             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors group"
