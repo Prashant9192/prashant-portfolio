@@ -1,17 +1,20 @@
+
 'use client'
 
 import React from 'react'
 import Link from 'next/link'
-import { Facebook, Github, Linkedin, Instagram } from 'lucide-react'
+import { Facebook, Github, Linkedin, Instagram, Twitter } from 'lucide-react'
+import { useContent } from '@/contexts/ContentContext'
 
 export default function Footer() {
     const currentYear = new Date().getFullYear()
+    const { contact } = useContent()
+    const socials = contact?.socials
 
     return (
         <footer className="border-t border-border mt-auto">
             <div className="mx-auto max-w-6xl px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
 
-                {/* Brand */}
                 {/* Brand */}
                 <div className="flex items-center">
                     <span className="font-bold text-xl tracking-tight text-foreground">
@@ -26,18 +29,31 @@ export default function Footer() {
 
                 {/* Social Icons */}
                 <div className="flex items-center gap-4">
-                    <Link href="https://www.facebook.com/prashant.basnet.7902" className="text-muted-foreground hover:text-primary transition-colors">
-                        <Facebook size={20} />
-                    </Link>
-                    <Link href="https://github.com/Prashant9192/" className="text-muted-foreground hover:text-primary transition-colors">
-                        <Github size={20} />
-                    </Link>
-                    <Link href="https://www.linkedin.com/in/prashant-basnet-173b87244/" className="text-muted-foreground hover:text-primary transition-colors">
-                        <Linkedin size={20} />
-                    </Link>
-                    <Link href="https://www.instagram.com/basnet_prashant02/" className="text-muted-foreground hover:text-primary transition-colors">
-                        <Instagram size={20} />
-                    </Link>
+                    {socials?.github && (
+                        <Link href={socials.github} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" title="GitHub">
+                            <Github size={20} />
+                        </Link>
+                    )}
+                    {socials?.linkedin && (
+                        <Link href={socials.linkedin} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" title="LinkedIn">
+                            <Linkedin size={20} />
+                        </Link>
+                    )}
+                    {socials?.twitter && (
+                        <Link href={socials.twitter} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" title="Twitter">
+                            <Twitter size={20} />
+                        </Link>
+                    )}
+                    {socials?.instagram && (
+                        <Link href={socials.instagram} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" title="Instagram">
+                            <Instagram size={20} />
+                        </Link>
+                    )}
+                    {socials?.facebook && (
+                        <Link href={socials.facebook} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" title="Facebook">
+                            <Facebook size={20} />
+                        </Link>
+                    )}
                 </div>
             </div>
         </footer>
