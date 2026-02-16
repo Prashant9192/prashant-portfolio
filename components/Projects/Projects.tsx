@@ -17,20 +17,23 @@ export default function Projects({ serverData }: ProjectsProps) {
     const { projects } = useContent()
     const [currentIndex, setCurrentIndex] = useState(0)
 
-    // Calculate how many projects to show per view based on screen size
-    const getProjectsPerView = () => {
-        if (typeof window === 'undefined') return 3
-        if (window.innerWidth < 768) return 1
-        if (window.innerWidth < 1024) return 2
-        return 3
-    }
-
-    const [projectsPerView, setProjectsPerView] = useState(getProjectsPerView())
+    // Initialize with a default value (3) to match server-side rendering
+    const [projectsPerView, setProjectsPerView] = useState(3)
 
     React.useEffect(() => {
-        const handleResize = () => {
-            setProjectsPerView(getProjectsPerView())
+        const calculateProjectsPerView = () => {
+            if (window.innerWidth < 768) return 1
+            if (window.innerWidth < 1024) return 2
+            return 3
         }
+
+        const handleResize = () => {
+            setProjectsPerView(calculateProjectsPerView())
+        }
+
+        // Set initial value based on actual screen size
+        handleResize()
+
         window.addEventListener('resize', handleResize)
         return () => window.removeEventListener('resize', handleResize)
     }, [])

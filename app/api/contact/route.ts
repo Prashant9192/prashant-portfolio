@@ -1,4 +1,7 @@
+
 import { NextResponse } from 'next/server'
+import { getDb } from '@/lib/db'
+import { Message } from '@/lib/models'
 
 export async function POST(request: Request) {
     try {
@@ -13,36 +16,73 @@ export async function POST(request: Request) {
             )
         }
 
-        // Get Google Script URL from environment variable
-        const GOOGLE_SCRIPT_URL = process.env.GOOGLE_SHEETS_WEBAPP_URL
+        // Basic Rate Limiting (Optional: check last message from this email in DB)
+        // For now, we'll skip complex IP-based rate limiting to keep it simple and portable.
 
-        if (!GOOGLE_SCRIPT_URL) {
-            console.error('GOOGLE_SHEETS_WEBAPP_URL is not defined')
-            // For demo purposes, if no URL is set, we'll simulate success but log a warning
-            // In production, this should probably fail or use a fallback
-            return NextResponse.json(
-                { message: 'Message received (Simulation Mode: Set GOOGLE_SHEETS_WEBAPP_URL to save to Sheets)' },
+        // 1. Save to MongoDB
+        let dbSaved = false
+        try {
+            const db = await getDb()
+            if (db) {
+                const newMessage = {
+                    name,
+                    email,
+                    message,
+                    read: false,
+                    createdAt: new Date()
+                }
+                const result = await db.collection('messages').insertOne(newMessage)
+                if (result.acknowledged) {
+                    dbSaved = true
+                }
+            } else {
+                console.error('Database connection unavailable')
+            }
+        } catch (dbError) {
+            console.error('Failed to save to database:', dbError)
+        }
+
+        // 2. Forward to Google Sheets (Backup/Notification)
+        let sheetSaved = false
+        const GOOGLE_SCRIPT_URL = process.env.GOOGLE_SHEETS_WEBAPP_URL
+        
+        if (GOOGLE_SCRIPT_URL) {
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name, email, message, timestamp: new Date().toISOString() }),
+                })
+                
+                if (response.ok) {
+                    sheetSaved = true
+                } else {
+                    console.warn('Google Sheets API returned error:', response.statusText)
+                }
+            } catch (sheetError) {
+                console.error('Failed to send to Google Sheets:', sheetError)
+            }
+        } else {
+            // If no Google Sheet URL, we treat DB success as sufficient
+            // If DB failed too, then sheetSaved remains false
+            if (dbSaved) sheetSaved = true; // effectively "success" if DB worked
+        }
+
+        // 3. Response Strategy
+        if (dbSaved || sheetSaved) {
+             return NextResponse.json(
+                { message: 'Message sent successfully' },
                 { status: 200 }
             )
+        } else {
+             // Both failed
+             return NextResponse.json(
+                { error: 'Failed to send message. Please try again later.' },
+                { status: 500 }
+            )
         }
-
-        // Forward data to Google Apps Script
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name, email, message, timestamp: new Date().toISOString() }),
-        })
-
-        if (!response.ok) {
-            throw new Error('Failed to submit to Google Sheets')
-        }
-
-        return NextResponse.json(
-            { message: 'Message sent successfully' },
-            { status: 200 }
-        )
 
     } catch (error) {
         console.error('Contact API Error:', error)
