@@ -130,7 +130,13 @@ const defaultSkills: Skill[] = [
 const defaultContact: ContactInfo = {
   email: 'prashantbasnet222@gmail.com',
   phone: '+91 7030842261',
-  location: 'Mumbai, India'
+  location: 'Mumbai, India',
+  socials: {
+    github: 'https://github.com/Prashant9192/',
+    linkedin: 'https://www.linkedin.com/in/prashant-basnet-173b87244/',
+    instagram: 'https://www.instagram.com/basnet_prashant02/',
+    facebook: 'https://www.facebook.com/prashant.basnet.7902'
+  }
 }
 
 export async function GET() {

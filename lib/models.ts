@@ -78,6 +78,13 @@ export interface ContactInfo {
   email: string
   phone: string
   location: string
+  socials?: {
+    github?: string
+    linkedin?: string
+    twitter?: string
+    instagram?: string
+    facebook?: string
+  }
   createdAt?: Date
   updatedAt?: Date
 }
