@@ -25,7 +25,7 @@ export default function Experience({ serverData }: ExperienceProps) {
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    className="text-2xl md:text-4xl font-bold mb-6 md:mb-8 text-foreground flex-shrink-0"
+                    className="font-bold mb-6 md:mb-8 text-foreground flex-shrink-0"
                 >
                     Experience
                 </motion.h2>
@@ -56,7 +56,7 @@ export default function Experience({ serverData }: ExperienceProps) {
 
                                             {/* Content */}
                                             <div className="flex-1 min-w-0 pt-0.5">
-                                                <h3 className="text-base md:text-lg font-bold text-foreground group-hover:text-primary transition-colors mb-1">
+                                                <h3 className="font-bold text-foreground group-hover:text-primary transition-colors mb-1">
                                                     {exp.role}
                                                 </h3>
                                                 <p className="text-sm md:text-base text-muted-foreground font-medium mb-1.5">

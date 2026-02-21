@@ -80,7 +80,7 @@ export default function Contact() {
                     >
                         <div className="h-full py-6 px-4 md:py-8 md:px-8 lg:p-12 rounded-3xl bg-card border border-border backdrop-blur-md flex flex-col lg:flex-row lg:items-center lg:gap-12 justify-between shadow-2xl dark:bg-white/5 dark:border-white/10">
                             <div className="text-center lg:text-left space-y-4 lg:flex-1">
-                                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
+                                <h2 className="font-bold text-foreground">
                                     Get in <span className="text-primary">Touch</span>
                                 </h2>
                                 <p className="text-muted-foreground text-base lg:text-lg">

@@ -34,12 +34,39 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
+
   *,
   ::after,
   ::before,
   ::backdrop,
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
+  }
+
+  html {
+    /* Fluid base font size: 14px on mobile -> 16px on desktop */
+    font-size: clamp(14px, 0.4vw + 12.5px, 16px);
+  }
+
+  body {
+    @apply antialiased;
+    line-height: 1.6;
+  }
+
+  /* Fluid Headings */
+  h1 {
+    font-size: clamp(2.25rem, 6vw + 1rem, 5rem);
+    line-height: 1.1;
+  }
+
+  h2 {
+    font-size: clamp(1.75rem, 4vw + 1rem, 3.5rem);
+    line-height: 1.2;
+  }
+
+  h3 {
+    font-size: clamp(1.5rem, 2.5vw + 1rem, 2.5rem);
+    line-height: 1.3;
   }
 }
 
@@ -68,13 +95,16 @@
 }
 
 .dark {
-  --background: #050511; /* Deep dark blue/black */
+  --background: #050511;
+  /* Deep dark blue/black */
   --foreground: #ffffff;
-  --card: #0f101f; /* Slightly lighter dark blue */
+  --card: #0f101f;
+  /* Slightly lighter dark blue */
   --card-foreground: #ffffff;
   --popover: #0f101f;
   --popover-foreground: #ffffff;
-  --primary: #3b82f6; /* Bright blue */
+  --primary: #3b82f6;
+  /* Bright blue */
   --primary-foreground: #ffffff;
   --secondary: #1e293b;
   --secondary-foreground: #ffffff;
@@ -95,20 +125,25 @@ body {
   font-family: var(--font-inter), Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   position: relative;
   overflow-x: hidden;
-  cursor: none; /* Hide default cursor — overridden on touch below */
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  cursor: none;
+  /* Hide default cursor — overridden on touch below */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
 }
 
-/* Restore native cursor on touch/pointer devices that don't have hover */
-@media (hover: none) and (pointer: coarse) {
+/* Restore native cursor on touch/pointer devices and tablets/mobile */
+@media (hover: none) or (max-width: 1024px) {
   body {
-    cursor: auto;
+    cursor: auto !important;
   }
 }
 
 body::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none;
+  /* Chrome, Safari, Opera */
   width: 0;
   height: 0;
 }
@@ -140,14 +175,69 @@ body::after {
   pointer-events: none;
 }
 
+/* 404 Glitch Animations */
+@keyframes glitch-1 {
+  0% {
+    transform: translate(0);
+  }
 
+  20% {
+    transform: translate(-3px, 3px);
+  }
 
+  40% {
+    transform: translate(-3px, -3px);
+  }
+
+  60% {
+    transform: translate(3px, 3px);
+  }
+
+  80% {
+    transform: translate(3px, -3px);
+  }
+
+  100% {
+    transform: translate(0);
+  }
+}
+
+@keyframes glitch-2 {
+  0% {
+    transform: translate(0);
+  }
+
+  25% {
+    transform: translate(3px, -3px);
+  }
+
+  50% {
+    transform: translate(-3px, 3px);
+  }
+
+  75% {
+    transform: translate(3px, 3px);
+  }
+
+  100% {
+    transform: translate(0);
+  }
+}
+
+.animate-glitch-1 {
+  animation: glitch-1 0.2s infinite;
+}
+
+.animate-glitch-2 {
+  animation: glitch-2 0.3s infinite;
+}
 
 /* Infinite Scroll Animation */
 @keyframes scroll {
   from {
     transform: translateX(0);
   }
+
   to {
     transform: translateX(-50%);
   }
@@ -166,6 +256,7 @@ body::after {
   from {
     transform: translateY(0);
   }
+
   to {
     transform: translateY(-50%);
   }
@@ -195,12 +286,15 @@ body::after {
 
 /* Hide Scrollbar */
 html {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
 }
 
 html::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none;
+  /* Chrome, Safari, Opera */
   width: 0;
   height: 0;
 }
@@ -244,6 +338,7 @@ html::-webkit-scrollbar {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -254,6 +349,7 @@ html::-webkit-scrollbar {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -264,6 +360,7 @@ html::-webkit-scrollbar {
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -285,4 +382,3 @@ html::-webkit-scrollbar {
 .fade-in-up {
   animation: fadeInUp 500ms ease-out;
 }
-

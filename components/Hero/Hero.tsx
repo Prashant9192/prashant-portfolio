@@ -46,9 +46,9 @@ export default function Hero() {
                     transition={{ duration: 0.5 }}
                     className="space-y-6 z-10"
                 >
-                    <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight leading-tight mb-1">
+                    <h1 className="font-bold tracking-tight mb-1">
                         Hi, I&apos;m <br />
-                        <span className="whitespace-nowrap">{heroData?.name || 'Loading...'}</span>
+                        <span className="whitespace-nowrap text-primary">{heroData?.name || 'Loading...'}</span>
                     </h1>
 
                     {heroData?.roles && heroData.roles.length > 0 && (

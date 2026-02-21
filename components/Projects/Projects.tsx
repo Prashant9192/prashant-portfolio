@@ -75,7 +75,7 @@ export default function Projects({ serverData }: ProjectsProps) {
                     viewport={{ once: true }}
                     className="mb-8 md:mb-12 flex items-center justify-between"
                 >
-                    <h2 className="text-3xl md:text-4xl font-bold">
+                    <h2 className="font-bold">
                         Featured <span className="text-primary">Projects</span>
                     </h2>
 
