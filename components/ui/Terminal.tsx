@@ -11,7 +11,7 @@ export default function Terminal() {
     const [history, setHistory] = useState<string[]>(['Type "help" to see available commands'])
     const scrollRef = useRef<HTMLDivElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
-    const { about, skills, projects } = useContent()
+    const { about, skills, projects, contact } = useContent()
 
     useEffect(() => {
         if (scrollRef.current) {
@@ -37,7 +37,7 @@ export default function Terminal() {
                 response = projects.map(p => `• ${p.title}: ${p.liveUrl}`).join('\n')
                 break
             case 'contact':
-                response = 'Email: prashantbasnet111@gmail.com\nLocation: Kathmandu, Nepal'
+                response = `Email: ${contact?.email || 'prashantbasnet111@gmail.com'}\nLocation: ${contact?.location || 'Mumbai, India'}`
                 break
             case 'clear':
                 setHistory([])
