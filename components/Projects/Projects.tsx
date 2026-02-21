@@ -127,11 +127,15 @@ export default function Projects({ serverData }: ProjectsProps) {
                                                     {/* Project Image */}
                                                     {project.image ? (
                                                         <Image
-                                                            src={project.image}
+                                                            src={project.image.includes('cloudinary.com')
+                                                                ? project.image.replace('/upload/', '/upload/f_auto,q_auto,w_800/')
+                                                                : project.image}
                                                             alt={project.title}
                                                             fill
                                                             className="object-cover group-hover:scale-105 transition-transform duration-500"
                                                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                                            placeholder="blur"
+                                                            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/+Z9PQAJQwN+iS5v8AAAAABJRU5ErkJggg=="
                                                             onError={(e) => {
                                                                 const target = e.currentTarget
                                                                 target.style.display = 'none'

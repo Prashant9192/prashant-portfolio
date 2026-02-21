@@ -4,9 +4,10 @@ import { ThemeProvider } from 'next-themes'
 import { Analytics } from '@vercel/analytics/react'
 import LayoutClient from './layout-client'
 import AdminButton from '@/components/AdminButton'
+import Terminal from '@/components/ui/Terminal'
 import { Metadata, Viewport } from 'next'
 import { getDb } from '@/lib/db'
-import { SiteMetadata } from '@/lib/models'
+import { SiteMetadata, Project } from '@/lib/models'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -45,45 +46,49 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const title = metadata.title || 'Prashant Basnet — Full-Stack Web Developer'
   const description = metadata.description || 'Prashant Basnet is a Full-Stack Web Developer specializing in Next.js, React, and Node.js. Building modern, performant web applications. Available for freelance and full-time opportunities.'
-  const canonicalUrl = metadata.canonicalUrl
-  const ogImage = metadata.ogImage || '/MyAvatar.png'
-  const ogUrl = metadata.ogUrl || canonicalUrl
+  const canonicalUrl = metadata.canonicalUrl || 'https://prashant.dev'
 
-  const metadataObject: Metadata = {
+  // Construct dynamic OG Image URL
+  const ogImageUrl = new URL(`${canonicalUrl}/api/og`)
+  ogImageUrl.searchParams.set('name', 'Prashant Basnet')
+  ogImageUrl.searchParams.set('roles', 'Full-Stack Web Developer,Next.js Expert,UI/UX Enthusiast')
+  const ogImage = ogImageUrl.toString()
+
+  return {
     title,
     description,
     keywords: metadata.keywords ? metadata.keywords.split(',').map(k => k.trim()) : undefined,
     authors: metadata.author ? [{ name: metadata.author }] : undefined,
     creator: metadata.author,
     robots: metadata.robots || 'index, follow',
+    metadataBase: new URL(canonicalUrl),
+    alternates: {
+      canonical: '/',
+    },
     openGraph: {
       title: metadata.ogTitle || title,
       description: metadata.ogDescription || description,
-      url: ogUrl,
+      url: './',
       siteName: metadata.ogSiteName || title,
-      images: ogImage ? [
+      images: [
         {
-          url: ogImage.startsWith('http') ? ogImage : (ogUrl ? new URL(ogImage, ogUrl).toString() : ogImage),
+          url: ogImage,
           width: 1200,
           height: 630,
           alt: title,
-        }
-      ] : undefined,
+        },
+      ],
+      locale: metadata.language || 'en_US',
       type: (metadata.ogType as 'website' | 'profile' | 'article') || 'website',
-      locale: metadata.language || 'en',
     },
     twitter: {
       card: (metadata.twitterCard as 'summary' | 'summary_large_image') || 'summary_large_image',
       title: metadata.twitterTitle || title,
       description: metadata.twitterDescription || description,
-      images: metadata.twitterImage ? [metadata.twitterImage] : ogImage ? [ogImage] : undefined,
+      images: [ogImage],
       site: metadata.twitterSite ? `@${metadata.twitterSite.replace('@', '')}` : undefined,
       creator: metadata.twitterCreator ? `@${metadata.twitterCreator.replace('@', '')}` : undefined,
     },
-    alternates: {
-      canonical: canonicalUrl || undefined,
-    },
-    metadataBase: canonicalUrl ? new URL(canonicalUrl) : undefined,
     icons: metadata.favicon ? {
       icon: [
         {
@@ -98,8 +103,6 @@ export async function generateMetadata(): Promise<Metadata> {
       apple: metadata.favicon,
     } : undefined,
   }
-
-  return metadataObject
 }
 
 export async function generateViewport(): Promise<Viewport> {
@@ -116,8 +119,24 @@ export async function generateViewport(): Promise<Viewport> {
   }
 }
 
+async function getProjects(): Promise<Project[]> {
+  try {
+    const db = await getDb()
+    if (db) {
+      // The projects are stored as an array inside a document in the 'projects' collection
+      const result = await db.collection<{ projects: Project[] }>('projects').findOne({})
+      if (result && result.projects) {
+        return result.projects.sort((a, b) => a.order - b.order)
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching projects for SEO:', error)
+  }
+  return []
+}
+
 // JSON-LD structured data helper
-function buildJsonLd(metadata: SiteMetadata) {
+function buildJsonLd(metadata: SiteMetadata, projects: Project[]) {
   const siteUrl = metadata.canonicalUrl || 'https://prashant.dev'
   const authorName = metadata.author || 'Prashant Basnet'
   const siteTitle = metadata.title || 'Prashant Basnet — Full-Stack Web Developer'
@@ -146,12 +165,28 @@ function buildJsonLd(metadata: SiteMetadata) {
     },
   }
 
-  return [personSchema, websiteSchema]
+  const projectSchemas = projects.map(project => ({
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: project.title,
+    description: project.description,
+    image: project.image.startsWith('http') ? project.image : `${siteUrl}${project.image}`,
+    url: project.liveUrl !== '#' ? project.liveUrl : siteUrl,
+    codeRepository: project.githubUrl !== '#' ? project.githubUrl : undefined,
+    author: {
+      '@type': 'Person',
+      name: authorName
+    },
+    keywords: project.tags.join(', ')
+  }))
+
+  return [personSchema, websiteSchema, ...projectSchemas]
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const metadata = await getMetadata()
-  const jsonLd = buildJsonLd(metadata)
+  const projects = await getProjects()
+  const jsonLd = buildJsonLd(metadata, projects)
 
   return (
     <html lang={metadata.language || 'en'} suppressHydrationWarning className={inter.variable}>
@@ -200,6 +235,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <LayoutClient>
             {children}
             <AdminButton />
+            <Terminal />
           </LayoutClient>
           <Analytics />
         </ThemeProvider>
