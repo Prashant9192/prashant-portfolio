@@ -4,15 +4,25 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Preloader() {
-    const [isLoading, setIsLoading] = useState(true)
+    // Skip preloader on repeat visits within the same session
+    const [isLoading, setIsLoading] = useState(() => {
+        if (typeof window === 'undefined') return true
+        const visited = sessionStorage.getItem('preloader-shown')
+        return !visited
+    })
 
     useEffect(() => {
+        if (!isLoading) return // Already skipped
+
+        // Mark as shown so repeat visits skip the loader
+        sessionStorage.setItem('preloader-shown', '1')
+
         const timer = setTimeout(() => {
             setIsLoading(false)
-        }, 2000)
+        }, 1800) // Reduced from 2000ms for snappier feel
 
         return () => clearTimeout(timer)
-    }, [])
+    }, [isLoading])
 
     return (
         <AnimatePresence mode="wait">
@@ -38,8 +48,8 @@ export default function Preloader() {
                             animate={{ width: '100%' }}
                             transition={{ duration: 1.5, ease: "easeInOut" }}
                         >
-                            <motion.div 
-                                className="h-full bg-primary w-full origin-left" 
+                            <motion.div
+                                className="h-full bg-primary w-full origin-left"
                                 initial={{ scaleX: 0 }}
                                 animate={{ scaleX: 1 }}
                                 transition={{ duration: 1.5, ease: "easeInOut" }}
