@@ -7,6 +7,7 @@ import { motion, useScroll } from 'framer-motion'
 import Brand from './Brand'
 import ThemeToggle from './ThemeToggle'
 import MobileMenu from './MobileMenu'
+import MagneticButton from '@/components/ui/MagneticButton'
 
 export default function Header() {
   const [activeSection, setActiveSection] = React.useState('home')
@@ -71,19 +72,20 @@ export default function Header() {
                 (link.href === '#about' && activeSection === 'experience');
 
               return (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className={`
-                                px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200
-                                ${isActive
-                      ? 'bg-primary text-primary-foreground shadow-sm'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-background/50'
-                    }
-                            `}
-                >
-                  {link.name}
-                </Link>
+                <MagneticButton key={link.name}>
+                  <Link
+                    href={link.href}
+                    className={`
+                      px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200
+                      ${isActive
+                        ? 'bg-primary text-primary-foreground shadow-sm'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-background/50'
+                      }
+                    `}
+                  >
+                    {link.name}
+                  </Link>
+                </MagneticButton>
               )
             })}
           </nav>

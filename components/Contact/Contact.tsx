@@ -13,7 +13,8 @@ export default function Contact() {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        message: ''
+        message: '',
+        website: '' // Honeypot field
     })
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
 
@@ -34,7 +35,7 @@ export default function Contact() {
 
             setStatus('success')
             toast.success('Message sent successfully!')
-            setFormData({ name: '', email: '', message: '' })
+            setFormData({ name: '', email: '', message: '', website: '' })
 
             // Reset success message after 3 seconds
             setTimeout(() => {
@@ -212,6 +213,18 @@ export default function Contact() {
                                         onChange={handleChange}
                                         className="w-full h-full min-h-[120px] lg:min-h-[160px] px-4 py-3 rounded-xl bg-secondary/30 border-2 border-border focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-all duration-300 resize-none placeholder:text-muted-foreground text-foreground dark:bg-white/5 dark:border-white/5 dark:focus:bg-white/10 dark:placeholder:text-white/20"
                                         placeholder="Tell me about your project..."
+                                    />
+                                </div>
+
+                                {/* Honeypot field - hidden from users */}
+                                <div className="hidden" aria-hidden="true">
+                                    <input
+                                        type="text"
+                                        name="website"
+                                        value={formData.website}
+                                        onChange={handleChange}
+                                        tabIndex={-1}
+                                        autoComplete="off"
                                     />
                                 </div>
 

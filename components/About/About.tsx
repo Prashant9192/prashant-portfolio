@@ -1,9 +1,30 @@
 'use client'
 
-import React from 'react'
-import { motion } from 'framer-motion'
+import React, { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import { useContent } from '@/contexts/ContentContext'
+
+function HighlightWord({ children }: { children: string }) {
+    const ref = useRef<HTMLSpanElement>(null)
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ["start 0.9", "start 0.6"]
+    })
+
+    const opacity = useTransform(scrollYProgress, [0, 1], [0.2, 1])
+    const color = useTransform(scrollYProgress, [0, 1], ["var(--muted-foreground)", "var(--foreground)"])
+
+    return (
+        <motion.span
+            ref={ref}
+            style={{ opacity, color }}
+            className="inline-block transition-colors"
+        >
+            {children}
+        </motion.span>
+    )
+}
 
 export default function About() {
     const { about: aboutData } = useContent()
@@ -53,8 +74,16 @@ export default function About() {
 
                         {/* Bio Text */}
                         <div className="space-y-4 md:space-y-6 text-center sm:text-left">
-                            <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
-                                {aboutData?.bio || 'Loading...'}
+                            <p className="text-muted-foreground text-base md:text-lg leading-relaxed flex flex-wrap gap-x-[0.3em] gap-y-0 translate-y-0.5">
+                                {aboutData?.bio ? (
+                                    aboutData.bio.split(' ').map((word, i) => (
+                                        <HighlightWord key={i}>
+                                            {word}
+                                        </HighlightWord>
+                                    ))
+                                ) : (
+                                    'Loading...'
+                                )}
                             </p>
                         </div>
                     </div>
