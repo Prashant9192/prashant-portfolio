@@ -34,8 +34,10 @@ export default function Experience({ serverData }: ExperienceProps) {
                     <p className="text-muted-foreground text-center py-8">No experience data available.</p>
                 ) : (
                     <div className="relative flex-1 min-h-0">
-                        {/* Scrollable container - shows 2 cards by default */}
-                        <div className="h-full max-h-[270px] overflow-y-auto scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent pr-2 hover:scrollbar-thumb-primary/50 transition-colors">
+                        {/* Scrollable container — flexible height showing ~3 cards */}
+                        <div className="h-full max-h-[320px] overflow-y-auto scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent pr-2 hover:scrollbar-thumb-primary/50 transition-colors"
+                            style={{ scrollbarGutter: 'stable' }}
+                        >
                             <div className="space-y-4 md:space-y-6 relative pb-4">
                                 {experiences.map((exp, index) => (
                                     <motion.div

@@ -6,6 +6,7 @@ import { motion, useMotionValue, useSpring } from 'framer-motion'
 export default function CustomCursor() {
     const [isHovering, setIsHovering] = useState(false)
     const [isVisible, setIsVisible] = useState(false)
+    const [isTouchDevice, setIsTouchDevice] = useState(true) // assume touch until proven otherwise
 
     // Mouse position
     const mouseX = useMotionValue(0)
@@ -17,6 +18,12 @@ export default function CustomCursor() {
     const cursorY = useSpring(mouseY, springConfig)
 
     useEffect(() => {
+        // Only enable custom cursor for pointer/hover capable devices
+        const isPointerDevice = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+        setIsTouchDevice(!isPointerDevice)
+
+        if (!isPointerDevice) return // No cursor needed on touch devices
+
         let timer: NodeJS.Timeout
 
         const moveCursor = (e: MouseEvent) => {
@@ -53,6 +60,9 @@ export default function CustomCursor() {
             clearTimeout(timer)
         }
     }, [mouseX, mouseY])
+
+    // Don't render on touch devices at all
+    if (isTouchDevice) return null
 
     return (
         <motion.div

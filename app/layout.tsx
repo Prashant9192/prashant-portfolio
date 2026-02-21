@@ -1,4 +1,5 @@
 import './globals.css'
+import { Inter } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
 import { Analytics } from '@vercel/analytics/react'
 import LayoutClient from './layout-client'
@@ -6,6 +7,12 @@ import AdminButton from '@/components/AdminButton'
 import { Metadata, Viewport } from 'next'
 import { getDb } from '@/lib/db'
 import { SiteMetadata } from '@/lib/models'
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+})
 
 async function getMetadata(): Promise<SiteMetadata> {
   try {
@@ -23,8 +30,8 @@ async function getMetadata(): Promise<SiteMetadata> {
 
   // Return default metadata if fetch fails or DB unavailable
   return {
-    title: 'Prashant Basnet — Web Developer',
-    description: 'Portfolio',
+    title: 'Prashant Basnet — Full-Stack Web Developer',
+    description: 'Prashant Basnet is a Full-Stack Web Developer specializing in Next.js, React, and Node.js. Building modern, performant web applications. Available for freelance and full-time opportunities.',
     robots: 'index, follow',
     ogType: 'website',
     twitterCard: 'summary_large_image',
@@ -36,8 +43,8 @@ async function getMetadata(): Promise<SiteMetadata> {
 export async function generateMetadata(): Promise<Metadata> {
   const metadata = await getMetadata()
 
-  const title = metadata.title || 'Prashant Basnet — Web Developer'
-  const description = metadata.description || 'Portfolio'
+  const title = metadata.title || 'Prashant Basnet — Full-Stack Web Developer'
+  const description = metadata.description || 'Prashant Basnet is a Full-Stack Web Developer specializing in Next.js, React, and Node.js. Building modern, performant web applications. Available for freelance and full-time opportunities.'
   const canonicalUrl = metadata.canonicalUrl
   const ogImage = metadata.ogImage || '/MyAvatar.png'
   const ogUrl = metadata.ogUrl || canonicalUrl
@@ -99,22 +106,65 @@ export async function generateViewport(): Promise<Viewport> {
   const metadata = await getMetadata()
 
   return {
-    themeColor: metadata.themeColor || '#2563eb',
+    themeColor: [
+      { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+      { media: '(prefers-color-scheme: dark)', color: '#050511' },
+    ],
     width: 'device-width',
     initialScale: 1,
-    maximumScale: 1,
+    // maximumScale removed — prevents pinch-zoom accessibility violation (WCAG 1.4.4)
   }
+}
+
+// JSON-LD structured data helper
+function buildJsonLd(metadata: SiteMetadata) {
+  const siteUrl = metadata.canonicalUrl || 'https://prashant.dev'
+  const authorName = metadata.author || 'Prashant Basnet'
+  const siteTitle = metadata.title || 'Prashant Basnet — Full-Stack Web Developer'
+
+  const personSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: authorName,
+    url: siteUrl,
+    jobTitle: 'Full-Stack Web Developer',
+    description: metadata.description || 'Full-Stack Web Developer specializing in Next.js, React, and Node.js.',
+    image: metadata.ogImage ? (metadata.ogImage.startsWith('http') ? metadata.ogImage : `${siteUrl}${metadata.ogImage}`) : `${siteUrl}/MyAvatar.png`,
+    sameAs: [],
+    knowsAbout: ['Next.js', 'React', 'Node.js', 'TypeScript', 'Web Development', 'Full-Stack Development'],
+  }
+
+  const websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: siteTitle,
+    url: siteUrl,
+    description: metadata.description || 'Portfolio of Prashant Basnet — Full-Stack Web Developer.',
+    author: {
+      '@type': 'Person',
+      name: authorName,
+    },
+  }
+
+  return [personSchema, websiteSchema]
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const metadata = await getMetadata()
+  const jsonLd = buildJsonLd(metadata)
 
   return (
-    <html lang={metadata.language || 'en'} suppressHydrationWarning>
+    <html lang={metadata.language || 'en'} suppressHydrationWarning className={inter.variable}>
       <head>
         {/* Preconnect to CDN for faster third-party resource loading */}
         <link rel="preconnect" href="https://cdn.jsdelivr.net" />
         <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+
+        {/* JSON-LD Structured Data — Person + WebSite schema for Google rich results */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
 
         <script dangerouslySetInnerHTML={{
           __html: `

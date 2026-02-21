@@ -1,4 +1,13 @@
 import { MongoClient, Db, MongoClientOptions } from 'mongodb'
+import dns from 'dns'
+
+// Fix: Node.js on some Windows/Linux setups defaults its DNS resolver to
+// 127.0.0.1 (expecting a local DNS daemon) which causes ECONNREFUSED when
+// MongoDB Atlas tries to resolve SRV records. We override to reliable public
+// DNS servers. This ONLY affects Node's internal resolver, not the OS.
+if (dns.getServers().includes('127.0.0.1') || dns.getServers().length === 0) {
+  dns.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1'])
+}
 
 // Declare global type for MongoDB client promise (for both dev and serverless)
 declare global {
