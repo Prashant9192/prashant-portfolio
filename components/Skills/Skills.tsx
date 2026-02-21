@@ -7,7 +7,7 @@ import SpotlightCard from '@/components/ui/SpotlightCard'
 
 export default function Skills() {
     const { skills, loading } = useContent()
-    
+
     return (
         <section id="skills" className="py-0 relative overflow-hidden">
             {/* Background Elements */}
@@ -23,7 +23,7 @@ export default function Skills() {
                     viewport={{ once: true }}
                     className="mb-8 md:mb-12"
                 >
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                    <h2 className="font-bold mb-4">
                         Skills & <span className="text-primary">Technologies</span>
                     </h2>
                     <p className="text-muted-foreground text-base md:text-lg max-w-2xl">

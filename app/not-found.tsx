@@ -41,7 +41,7 @@ export default function NotFound() {
             <AlertTriangle size={16} />
             <span>System Error: Path_Not_Found</span>
           </div>
-          <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
+          <h1 className="font-bold tracking-tight text-foreground">
             Lost in the <span className="text-primary italic">Digital Void</span>
           </h1>
           <p className="text-muted-foreground text-lg max-w-lg mx-auto leading-relaxed">
