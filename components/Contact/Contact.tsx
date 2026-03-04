@@ -58,7 +58,7 @@ export default function Contact() {
     }
 
     return (
-        <section id="contact" className="py-20 relative overflow-hidden min-h-[800px] flex items-center justify-center">
+        <section id="contact" className="py-10 md:py-10 relative overflow-hidden min-h-[400px] md:min-h-[600px] flex items-center justify-center">
             {/* Background Elements */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
                 <div className="absolute bottom-[20%] left-[10%] w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[100px] animate-pulse" />
