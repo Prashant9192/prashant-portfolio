@@ -1,288 +1,142 @@
-# Prashant.dev - Modern Portfolio Website
+# 🚀 Prashant.dev – Modern Developer Portfolio
 
-A modern, responsive portfolio website built with Next.js, featuring a fully customizable Content Management System (CMS) for dynamic content management. This portfolio showcases professional work, skills, experience, and projects with a beautiful, animated UI.
+[![Netlify Status](https://api.netlify.com/api/v1/badges/8b53ef58-71ce-42b2-93cb-61bd0bbbc562/deploy-status)](https://app.netlify.com/projects/prashantbasnet/deploys)
 
-## ✨ Features
+🌐 **Live Demo:** https://prashantbasnet.netlify.app
 
-### 🎨 User-Facing Features
-- **Modern, Animated UI**: Smooth animations and transitions powered by Framer Motion
-- **Dark/Light Theme**: Theme switcher with system preference detection
-- **Responsive Design**: Fully responsive layout for all devices
-- **Smooth Scrolling**: Custom scroll animations and progress indicator
-- **Interactive Components**: 
-  - 3D animated hero section
-  - Magnetic buttons
-  - Spotlight cards with hover effects
-  - Tilt cards for projects
-  - Custom cursor effects
-- **Sections**:
-  - Hero section with typewriter effect
-  - About section with availability status
-  - Experience timeline
-  - Skills showcase with infinite scroll
-  - Featured projects with tags
-  - Contact form with flip animation
-- **SEO Optimized**: Dynamic meta tags, robots.txt, and sitemap.xml
-- **Web Analytics**: Integrated Vercel Analytics for visitor tracking and page view analytics
-
-### 🔐 Admin Panel Features
-- **OTP-Based Authentication**: Secure login using email OTP
-- **Content Management System (CMS)**: Manage all portfolio content dynamically
-- **Modal-Based Editors**: 
-  - Site Metadata (SEO settings, Open Graph, Twitter Cards)
-  - Hero Section
-  - About Section
-  - Projects
-  - Experience
-  - Skills
-  - Contact Information
-- **Real-time Updates**: Changes reflect immediately on the frontend
-- **Professional UI**: Modern admin dashboard with statistics and easy navigation
-
-## 🛠️ Tech Stack
-
-### Frontend
-- **Next.js 16** - React framework with App Router
-- **React 19** - UI library
-- **TypeScript** - Type safety
-- **Tailwind CSS 4** - Utility-first CSS framework
-- **Framer Motion** - Animation library
-- **Lucide React** - Icon library
-- **next-themes** - Theme management
-
-### Backend
-- **Next.js API Routes** - Serverless API endpoints
-- **MongoDB** - Database for content storage
-- **Nodemailer** - Email service for OTP
-- **bcryptjs** - Password hashing (for future features)
-
-### Additional Libraries
-- **Typewriter Effect** - Animated typing effect
-- **Sonner** - Toast notifications
-- **Three.js** - 3D graphics (for future 3D elements)
-- **@vercel/analytics** - Web analytics and visitor tracking
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js 18+ and npm/yarn/pnpm
-- MongoDB database (local or cloud)
-- Email account for OTP (Gmail recommended)
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd prashant-portfolio
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   # or
-   yarn install
-   # or
-   pnpm install
-   ```
-
-3. **Set up environment variables**
-   
-   Create a `.env.local` file in the root directory:
-   ```env
-   # MongoDB Connection
-   MONGODB_URI=your_mongodb_connection_string
-
-   # Admin Authentication
-   ADMIN_SECRET=your_super_secret_admin_key
-   ADMIN_EMAIL=your-admin@email.com
-
-   # Email Configuration (for OTP)
-   EMAIL_USER=your-email@gmail.com
-   EMAIL_PASSWORD=your_app_password
-
-   # Next.js
-   NEXTAUTH_URL=http://localhost:3000
-   NEXTAUTH_SECRET=your_nextauth_secret
-   ```
-
-   **Note**: For Gmail, you'll need to create an [App Password](https://support.google.com/accounts/answer/185833):
-   - Go to Google Account settings
-   - Enable 2-Step Verification
-   - Generate an App Password for "Mail"
-   - Use this password in `EMAIL_PASSWORD`
-
-5. **Run the development server**
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   # or
-   pnpm dev
-   ```
-
-6. **Open your browser**
-   
-   Navigate to [http://localhost:3000](http://localhost:3000)
-
-## 📁 Project Structure
-
-```
-prashant-portfolio/
-├── app/
-│   ├── admin/              # Admin panel pages
-│   │   ├── login/         # OTP login page
-│   │   └── page.tsx       # Admin dashboard
-│   ├── api/               # API routes
-│   │   ├── auth/         # Authentication endpoints
-│   │   ├── contact/      # Contact form endpoint
-│   │   └── content/      # CMS API endpoints
-│   ├── layout.tsx        # Root layout with metadata
-│   ├── page.tsx          # Homepage
-│   ├── robots.ts         # Dynamic robots.txt
-│   └── sitemap.ts        # Dynamic sitemap.xml
-├── components/
-│   ├── admin/            # Admin panel components
-│   │   └── editors/     # Content editor modals
-│   ├── About/           # About section
-│   ├── Contact/         # Contact section
-│   ├── Experience/      # Experience section
-│   ├── Header/          # Navigation header
-│   ├── Hero/            # Hero section
-│   ├── Projects/        # Projects section
-│   ├── Skills/          # Skills section
-│   └── ui/              # Reusable UI components
-├── lib/
-│   ├── db.ts            # MongoDB connection utility
-│   ├── models.ts        # TypeScript interfaces
-│   └── otp.ts           # OTP generation/validation
-└── public/              # Static assets
-```
-
-## 🔧 Configuration
-
-### MongoDB Setup
-
-1. Create a MongoDB database (local or MongoDB Atlas)
-2. Get your connection string
-3. Add it to `.env.local` as `MONGODB_URI`
-
-The database will automatically create collections:
-- `metadata` - SEO and site metadata
-- `hero` - Hero section content
-- `about` - About section content
-- `projects` - Projects list
-- `experience` - Work experience
-- `skills` - Skills list
-- `contact` - Contact information
-
-### Admin Panel Access
-
-1. Navigate to `/admin/login`
-2. Enter your admin email (from `ADMIN_EMAIL`)
-3. Request OTP - check your email
-4. Enter the 6-digit OTP to login
-5. Access the dashboard at `/admin`
-
-## 📝 Usage
-
-### Managing Content
-
-1. **Login to Admin Panel**: Go to `/admin/login` and authenticate
-2. **Edit Content**: Click on any section card to open the editor modal
-3. **Update Information**: Modify content in the modal forms
-4. **Save Changes**: Click "Save" to update the database
-5. **View Changes**: Refresh the homepage to see updates
-
-### Available Sections
-
-- **Site Metadata**: SEO settings, meta tags, Open Graph, Twitter Cards
-- **Hero Section**: Name, roles, description, avatar, resume link
-- **About Section**: Bio, avatar image, availability status
-- **Projects**: Add/edit projects with tags, images, and links
-- **Experience**: Manage work history and roles
-- **Skills**: Add/remove skills with icons
-- **Contact**: Email, phone, location
-
-## 🎨 Customization
-
-### Theme Colors
-
-Edit `app/globals.css` to customize theme colors:
-- Light theme: `:root` variables
-- Dark theme: `.dark` class variables
-
-### Components
-
-All components are in the `components/` directory and can be customized to match your style.
-
-### Default Content
-
-If MongoDB is not configured, the site uses default content from the API route files in `app/api/content/`.
-
-## 📊 Analytics
-
-This project includes **Vercel Analytics** for tracking website visitors and page views. The analytics are automatically enabled when deployed on Vercel.
-
-### Features
-- **Visitor Tracking**: Count unique visitors to your portfolio
-- **Page Views**: Track which pages are most popular
-- **Real-time Data**: View analytics in your Vercel dashboard
-- **Privacy-Friendly**: Compliant with privacy regulations
-
-### Setup
-1. The `@vercel/analytics` package is already installed and configured
-2. The `<Analytics />` component is added to the root layout (`app/layout.tsx`)
-3. Deploy to Vercel - analytics will automatically start collecting data
-4. View analytics in your Vercel project dashboard under "Web Analytics"
-
-**Note**: Analytics only work when deployed on Vercel. For local development, the component is included but won't send data.
-
-## 🚢 Deployment
-
-### Vercel (Recommended)
-
-1. Push your code to GitHub
-2. Import the repository on [Vercel](https://vercel.com)
-3. Add environment variables in Vercel dashboard
-4. Deploy!
-5. Analytics will automatically start tracking visitors - view data in your Vercel dashboard
-
-### Other Platforms
-
-The app can be deployed to any platform supporting Next.js:
-- Netlify
-- Railway
-- AWS Amplify
-- Self-hosted servers
-
-**Important**: 
-- Make sure to set all environment variables in your deployment platform
-- Vercel Analytics only works when deployed on Vercel. For other platforms, you may want to use alternative analytics solutions (e.g., Google Analytics, Plausible)
-
-## 🔒 Security
-
-- Admin routes are protected with Bearer token authentication
-- OTP expires after 10 minutes
-- Email credentials stored securely in environment variables
-- Database connection uses secure connection strings
-
-## 📄 License
-
-This project is private and proprietary.
-
-## 👨‍💻 Author
-
-**Prashant Basnet**
-- Portfolio: [prashant.dev](https://prashant.dev)
-- Email: prashantbasnet664@gmail.com
-
-## 🙏 Acknowledgments
-
-- Built with [Next.js](https://nextjs.org/)
-- UI components inspired by modern design trends
-- Icons from [Lucide](https://lucide.dev/)
+A modern, responsive **developer portfolio** built with **Next.js**, featuring a fully customizable **Content Management System (CMS)** and a beautiful animated UI.
 
 ---
 
-**Note**: This is a personal portfolio project. For questions or issues, please contact the author.
+# ✨ Features
+
+### 🎨 Frontend
+
+* Modern animated UI with **Framer Motion**
+* **Dark / Light theme**
+* Fully **responsive design**
+* Smooth scrolling animations
+* Interactive hero section
+* Project showcase with hover effects
+* Contact form with animation
+* SEO optimized (meta tags, sitemap, robots)
+
+### 🔐 Admin CMS
+
+* OTP based authentication
+* Dynamic content management
+* Manage:
+
+  * Projects
+  * Experience
+  * Skills
+  * About section
+  * Contact details
+* Real-time updates to frontend
+
+---
+
+# 🧰 Tech Stack
+
+### Frontend
+
+* **Next.js 16**
+* **React 19**
+* **TypeScript**
+* **Tailwind CSS 4**
+* **Framer Motion**
+
+### Backend
+
+* **Next.js API Routes**
+* **MongoDB**
+* **Nodemailer**
+
+### Other Tools
+
+* Lucide Icons
+* Sonner Toasts
+* Three.js (future 3D features)
+
+---
+
+# 📸 Preview
+
+![Portfolio Preview](public/preview.png)
+
+---
+
+# ⚙️ Environment Variables
+
+Create `.env.local`
+
+```env
+MONGODB_URI=
+
+ADMIN_SECRET=
+ADMIN_EMAIL=
+
+EMAIL_USER=
+EMAIL_PASSWORD=
+
+NEXTAUTH_SECRET=
+NEXTAUTH_URL=
+```
+
+---
+
+# 🚀 Running Locally
+
+Clone the project
+
+```bash
+git clone https://github.com/your-username/prashant-portfolio.git
+cd prashant-portfolio
+```
+
+Install dependencies
+
+```bash
+npm install
+```
+
+Run development server
+
+```bash
+npm run dev
+```
+
+Open
+
+```
+http://localhost:3000
+```
+
+---
+
+# 🚢 Deployment
+
+### Vercel (Recommended)
+
+1. Push repo to GitHub
+2. Import to Vercel
+3. Add environment variables
+4. Deploy
+
+### Netlify
+
+Already configured for automatic deployment.
+
+---
+
+# 👨‍💻 Author
+
+**Prashant Basnet**
+
+📧 [prashantbasnet664@gmail.com](mailto:prashantbasnet664@gmail.com)
+🌐 https://prashantbasnet.netlify.app
+💼 https://www.linkedin.com/in/prashant-basnet-173b87244/
+
+---
+
+⭐ If you like this project, consider starring the repository.
